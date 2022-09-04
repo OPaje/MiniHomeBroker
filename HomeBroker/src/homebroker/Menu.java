@@ -70,6 +70,12 @@ public class Menu {
             
             case 3:
             {
+                String Deposito = JOptionPane.showInputDialog(null, "Insira o valor que deseja depositar: ");
+                int vDeposito = Integer.parseInt(Deposito);
+                //falta fazer uma verificação para saber a partir da senha em qual conta depositar,
+                //fazer um input pedindo a senha e verificar em qual posicao do vetor está a senha, salvar essa posição em
+                //uma variável e será o indice de qual conta deve depositar.
+                conta[1].depositar(vDeposito); 
                 break; 
             }
             
