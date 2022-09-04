@@ -9,5 +9,12 @@ package homebroker;
  * @author jeanc
  */
 public class Ativo {
+    int id;
+    int totalAtivos;
+    double precoInicial;
+    String nomeEmpresa;
+//    String dataCriacao;
+//    String dataModficacao;
+    String ticker;       
     
 }
