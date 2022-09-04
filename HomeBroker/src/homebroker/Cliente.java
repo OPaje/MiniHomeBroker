@@ -10,8 +10,15 @@ package homebroker;
  */
 public class Cliente {
     int id;
+    int tipoUsuario;
     String nome;
     String cpf;
+    String login;
+    String senha;
+    String endereco;
+    String telefone;
+    String dataCriacao;
+    String dataModificacao;
     
     
 }
