@@ -4,6 +4,18 @@
  */
 package homebroker;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.Month;
+import java.time.MonthDay;
+import java.time.Period;
+import java.time.Year;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+
 /**
  *
  * @author Stheffany
@@ -11,8 +23,8 @@ package homebroker;
 public class ContaCorrente {
     int id;
     double saldo;
-    String dataCriacao;
-    String dataModificacao;    
+    LocalDate dataCriacao;
+    LocalDate dataModificacao;    
     Cliente c;
    
     void depositar(double valor){

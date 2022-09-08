@@ -3,6 +3,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package homebroker;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.Month;
+import java.time.MonthDay;
+import java.time.Period;
+import java.time.Year;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 /**
  *
@@ -13,8 +24,8 @@ public class Ativo {
     int totalAtivos;
     double precoInicial;
     String nomeEmpresa;
-//    String dataCriacao;
-//    String dataModficacao;
     String ticker;       
+    LocalDate dataCriacao;
+    LocalDate dataModficacao;
     
 }
