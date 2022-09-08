@@ -24,8 +24,8 @@ public class Menu {
                 + "3) Depósito\n"
                 + "4) Saque\n"
                 + "5) Saldo\n"
-                + "6) Pagamento\n"
-                + "7) Transferência\n"
+                + "6) Transferência\n"
+                + "7) Pagamento\n"
                 + "8) Extrato\n";
         do {
             switch (opcao) {
@@ -40,12 +40,12 @@ public class Menu {
                     c[1].nome = "Joao";
                     c[2].nome = "Pedro";
                     c[3].nome = "Maria";
-                    c[4].nome = "Banco";
-                    c[0].senha = "asdf";
+                    c[4].nome = "Jean";
+                    c[0].senha = "adm";
                     c[1].senha = "abcd";
                     c[2].senha = "qwer";
                     c[3].senha = "dcba";
-                    c[4].senha = "adm";
+                    c[4].senha = "asdf";
                     conta[0] = new ContaCorrente();
                     conta[0].c = new Cliente();
                     conta[0].c = c[0];
@@ -71,10 +71,10 @@ public class Menu {
 
                 case 2: {
                     JOptionPane.showMessageDialog(null, "Nome: " + c[0].nome + "\nSaldo: $" + conta[0].saldo
-                                                    + "\n\nNome: " + c[1].nome + "\nSaldo: $" + conta[1].saldo
-                                                    + "\n\nNome: " + c[2].nome + "\nSaldo: $" + conta[2].saldo
-                                                    + "\n\nNome: " + c[3].nome + "\nSaldo: $" + conta[3].saldo
-                                                    + "\n\nNome: " + c[4].nome + "\nSaldo: $" + conta[4].saldo);
+                            + "\n\nNome: " + c[1].nome + "\nSaldo: $" + conta[1].saldo
+                            + "\n\nNome: " + c[2].nome + "\nSaldo: $" + conta[2].saldo
+                            + "\n\nNome: " + c[3].nome + "\nSaldo: $" + conta[3].saldo
+                            + "\n\nNome: " + c[4].nome + "\nSaldo: $" + conta[4].saldo);
                     break;
                 }
 
@@ -88,7 +88,7 @@ public class Menu {
                             flag = 1;
                         }
                     }
-                    
+
                     if (flag == 0) {
                         JOptionPane.showMessageDialog(null, "Senha inválida!");
                     } else {
@@ -109,7 +109,7 @@ public class Menu {
                             flag = 1;
                         }
                     }
-                    
+
                     if (flag == 0) {
                         JOptionPane.showMessageDialog(null, "Senha inválida!");
                     } else {
@@ -130,7 +130,7 @@ public class Menu {
                             flag = 1;
                         }
                     }
-                    
+
                     if (flag == 0) {
                         JOptionPane.showMessageDialog(null, "Senha inválida!");
                     } else {
@@ -139,10 +139,48 @@ public class Menu {
                     break;
                 }
 
-                case 6: {                    
+                case 6: {
+                    String senha = JOptionPane.showInputDialog(null, "Insira sua senha para confirmar a operação: ");
+                    int index = 0;
+                    int flag = 0;
+                    for (int i = 0; i < c.length; i++) {
+                        if (senha.equals(c[i].senha)) {
+                            index = i;
+                            flag = 1;
+                        }
+                    }
+                    int index2=0;
+                    if (flag == 0) {
+                        JOptionPane.showMessageDialog(null, "Senha inválida!");
+                    } else {
+                        String cDestino = JOptionPane.showInputDialog(null, "Informe a conta para qual deseja transferir: ");//nome
+                        String sTransferencia = JOptionPane.showInputDialog(null, "Informe o valor que deseja transferir: ");
+                        int vTransferencia = Integer.parseInt(sTransferencia);
+                        for (int i = 0; i < c.length; i++) {
+                        if (cDestino.equals(c[i].nome)) {
+                            index2 = i;
+                        }
+                    }
+                        conta[index].transfere(conta[index2], vTransferencia);
+                    }                    
                     break;
                 }
                 case 7: {
+                    String senha = JOptionPane.showInputDialog(null, "Insira sua senha para confirmar a operação: ");
+                    int index = 0;
+                    int flag = 0;
+                    for (int i = 0; i < c.length; i++) {
+                        if (senha.equals(c[i].senha)) {
+                            index = i;
+                            flag = 1;
+                        }
+                    }
+
+                    if (flag == 0) {
+                        JOptionPane.showMessageDialog(null, "Senha inválida!");
+                    } else {
+                        conta[index].transfere(conta[0], 20);
+                    }
                     break;
                 }
                 case 8: {
