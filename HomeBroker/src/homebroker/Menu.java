@@ -4,6 +4,10 @@
  */
 package homebroker;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import javax.swing.JOptionPane;
 
 /**
@@ -36,31 +40,71 @@ public class Menu {
                     c[2] = new Cliente();
                     c[3] = new Cliente();
                     c[4] = new Cliente();
+                    
                     c[0].nome = "Administrador";
+<<<<<<< HEAD
                     c[1].nome = "Joao";
                     c[2].nome = "Pedro";
                     c[3].nome = "Maria";
                     c[4].nome = "Jean";
                     c[0].senha = "adm";
+=======
+                    c[0].senha = "asdf";
+                    
+                    c[1].nome = "Joao";
+>>>>>>> 50ceed7f3f621f12956b267e15201a9c736e5522
                     c[1].senha = "abcd";
+                    c[1].dataCriacao = LocalDate.now();
+                    c[1].dataCriacao.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                    c[1].dataModificacao = LocalDate.now();
+                    
+                    c[2].nome = "Pedro";
                     c[2].senha = "qwer";
+                    c[2].dataCriacao = LocalDate.now();
+                    c[2].dataModificacao = LocalDate.now();
+                    
+                    c[3].nome = "Maria";
                     c[3].senha = "dcba";
+<<<<<<< HEAD
                     c[4].senha = "asdf";
+=======
+                    c[3].dataCriacao = LocalDate.now();
+                    c[3].dataModificacao = LocalDate.now();
+                    
+                    c[4].nome = "Banco";
+                    c[4].senha = "adm";
+                    
+>>>>>>> 50ceed7f3f621f12956b267e15201a9c736e5522
                     conta[0] = new ContaCorrente();
+                    conta[0].dataCriacao = LocalDate.now();
+                    conta[0].dataModificacao = LocalDate.now();
                     conta[0].c = new Cliente();
                     conta[0].c = c[0];
+                    
                     conta[1] = new ContaCorrente();
+                    conta[1].dataCriacao = LocalDate.now();
+                    conta[1].dataModificacao = LocalDate.now();
                     conta[1].c = new Cliente();
                     conta[1].c = c[1];
+                    
                     conta[2] = new ContaCorrente();
+                    conta[2].dataCriacao = LocalDate.now();
+                    conta[2].dataModificacao = LocalDate.now();
                     conta[2].c = new Cliente();
                     conta[2].c = c[2];
+                    
                     conta[3] = new ContaCorrente();
+                    conta[3].dataCriacao = LocalDate.now();
+                    conta[3].dataModificacao = LocalDate.now();
                     conta[3].c = new Cliente();
                     conta[3].c = c[3];
+                    
                     conta[4] = new ContaCorrente();
+                    conta[4].dataCriacao = LocalDate.now();
+                    conta[4].dataModificacao = LocalDate.now();
                     conta[4].c = new Cliente();
                     conta[4].c = c[4];
+                    
                     conta[0].saldo = 0;
                     conta[1].saldo = 1000;
                     conta[2].saldo = 1000;
@@ -70,11 +114,19 @@ public class Menu {
                 }
 
                 case 2: {
+<<<<<<< HEAD
                     JOptionPane.showMessageDialog(null, "Nome: " + c[0].nome + "\nSaldo: $" + conta[0].saldo
                             + "\n\nNome: " + c[1].nome + "\nSaldo: $" + conta[1].saldo
                             + "\n\nNome: " + c[2].nome + "\nSaldo: $" + conta[2].saldo
                             + "\n\nNome: " + c[3].nome + "\nSaldo: $" + conta[3].saldo
                             + "\n\nNome: " + c[4].nome + "\nSaldo: $" + conta[4].saldo);
+=======
+                    JOptionPane.showMessageDialog(null, "Nome: " + c[0].nome + "\nSaldo: $" + conta[0].saldo 
+                                                    + "\n\nNome: " + c[1].nome + "\nSaldo: $" + conta[1].saldo
+                                                    + "\n\nNome: " + c[2].nome + "\nSaldo: $" + conta[2].saldo
+                                                    + "\n\nNome: " + c[3].nome + "\nSaldo: $" + conta[3].saldo
+                                                    + "\n\nNome: " + c[4].nome + "\nSaldo: $" + conta[4].saldo);
+>>>>>>> 50ceed7f3f621f12956b267e15201a9c736e5522
                     break;
                 }
 
@@ -95,6 +147,7 @@ public class Menu {
                         String Deposito = JOptionPane.showInputDialog(null, "Insira o valor que deseja depositar: ");
                         int vDeposito = Integer.parseInt(Deposito);
                         conta[index].depositar(vDeposito);
+                        conta[index].dataModificacao = LocalDate.now();
                     }
                     break;
                 }
@@ -115,7 +168,12 @@ public class Menu {
                     } else {
                         String Deposito = JOptionPane.showInputDialog(null, "Insira o valor que deseja sacar: ");
                         int vDeposito = Integer.parseInt(Deposito);
-                        conta[index].sacar(vDeposito);
+                        if(conta[index].sacar(vDeposito)){
+                            JOptionPane.showMessageDialog(null, "Saque efetuado com sucesso");
+                            conta[index].dataModificacao = LocalDate.now();
+                        }else{
+                            JOptionPane.showMessageDialog(null, "Saque inválido");
+                        }
                     }
                     break;
                 }
