@@ -42,17 +42,13 @@ public class Menu {
                     c[4] = new Cliente();
                     
                     c[0].nome = "Administrador";
-<<<<<<< HEAD
                     c[1].nome = "Joao";
                     c[2].nome = "Pedro";
                     c[3].nome = "Maria";
                     c[4].nome = "Jean";
                     c[0].senha = "adm";
-=======
-                    c[0].senha = "asdf";
-                    
+                    c[0].senha = "asdf";                   
                     c[1].nome = "Joao";
->>>>>>> 50ceed7f3f621f12956b267e15201a9c736e5522
                     c[1].senha = "abcd";
                     c[1].dataCriacao = LocalDate.now();
                     c[1].dataCriacao.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
@@ -65,16 +61,11 @@ public class Menu {
                     
                     c[3].nome = "Maria";
                     c[3].senha = "dcba";
-<<<<<<< HEAD
                     c[4].senha = "asdf";
-=======
                     c[3].dataCriacao = LocalDate.now();
                     c[3].dataModificacao = LocalDate.now();
-                    
                     c[4].nome = "Banco";
                     c[4].senha = "adm";
-                    
->>>>>>> 50ceed7f3f621f12956b267e15201a9c736e5522
                     conta[0] = new ContaCorrente();
                     conta[0].dataCriacao = LocalDate.now();
                     conta[0].dataModificacao = LocalDate.now();
@@ -114,19 +105,16 @@ public class Menu {
                 }
 
                 case 2: {
-<<<<<<< HEAD
                     JOptionPane.showMessageDialog(null, "Nome: " + c[0].nome + "\nSaldo: $" + conta[0].saldo
                             + "\n\nNome: " + c[1].nome + "\nSaldo: $" + conta[1].saldo
                             + "\n\nNome: " + c[2].nome + "\nSaldo: $" + conta[2].saldo
                             + "\n\nNome: " + c[3].nome + "\nSaldo: $" + conta[3].saldo
                             + "\n\nNome: " + c[4].nome + "\nSaldo: $" + conta[4].saldo);
-=======
                     JOptionPane.showMessageDialog(null, "Nome: " + c[0].nome + "\nSaldo: $" + conta[0].saldo 
                                                     + "\n\nNome: " + c[1].nome + "\nSaldo: $" + conta[1].saldo
                                                     + "\n\nNome: " + c[2].nome + "\nSaldo: $" + conta[2].saldo
                                                     + "\n\nNome: " + c[3].nome + "\nSaldo: $" + conta[3].saldo
                                                     + "\n\nNome: " + c[4].nome + "\nSaldo: $" + conta[4].saldo);
->>>>>>> 50ceed7f3f621f12956b267e15201a9c736e5522
                     break;
                 }
 
