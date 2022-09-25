@@ -63,4 +63,29 @@ public class GUI {
         
         return a;
     }
+   
+    
+    public int Menu(){
+        
+        StringBuilder builder = new StringBuilder("");
+        
+        builder.append("SEJA BEM VINDO AO MEU PROGRAMA\n\n");
+        builder.append("\n1- Listar usuários");
+        builder.append("\n2 - Deposita");
+        builder.append("\n3 - Saque");
+        builder.append("\n4 - Mostra saldo");
+        builder.append("\n5 - Transfere");
+        builder.append("\n6 - Extrato");
+        builder.append("\n7 - Mostrar meus ativos");
+        builder.append("\n8 - Mostrar ativos");
+        builder.append("\n9 - Comprar ativos");
+        builder.append("\n10 - Vender ativos");
+        builder.append("\n Qual sua opção? \n\n");
+        System.out.print(builder.toString());
+        
+        String op = JOptionPane.showInputDialog(null, builder.toString());
+        int x = 0;
+        x = Integer.parseInt(op);
+        return x;
+    }
 }

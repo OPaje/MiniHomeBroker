@@ -26,10 +26,11 @@ public class ContaCorrenteDAO {
 
     public ContaCorrente[] getContaCorrente() {
         return contas;
-    }    
+    }
+    
     
     public void depositar(double valor){
-        this.saldo = this.saldo + valor;
+        setSaldo(valor) = getSaldo() + valor;
     }
 
     public boolean sacar(double valor){

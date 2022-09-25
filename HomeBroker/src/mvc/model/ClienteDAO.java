@@ -5,6 +5,7 @@
 package mvc.model;
 
 import java.time.LocalDate;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -19,7 +20,6 @@ public class ClienteDAO {
     
     public ClienteDAO(){
         // criando os usuários
-        
         Cliente c1 = new Cliente();
         c1.setNome("ADM");
         c1.setCpf("000000001");
@@ -69,7 +69,6 @@ public class ClienteDAO {
         } else {
             return false;
         }
-
     }
 
     public boolean ehVazio() {
@@ -83,15 +82,15 @@ public class ClienteDAO {
     }
 
     public void mostrarTodos() {
-        boolean temJogador = false;
+        boolean temCliente = false;
         for (Cliente c : clientes) {
             if (c != null) {
-                System.out.println(c);
-                temJogador = true;
+                JOptionPane.showMessageDialog(null, c);
+                temCliente = true;
             }
         }
-        if (!temJogador) {
-            System.out.println("não existe jogador cadastrado");
+        if (!temCliente) {
+            System.out.println("Não existe cliente cadastrado");
         }
     }
 
