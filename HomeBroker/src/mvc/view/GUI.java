@@ -6,6 +6,7 @@ package mvc.view;
 
 import java.time.LocalDate;
 import javax.swing.JOptionPane;
+import mvc.model.Ativo;
 import mvc.model.Cliente;
 
 /**
@@ -41,5 +42,30 @@ public class GUI {
         c.setDataModificacao(LocalDate.now());
         
         return c;
+    }
+    
+    public Ativo criarAtivo(){
+        Ativo a = new Ativo();
+        
+        String nomeEmpresa = JOptionPane.showInputDialog(null, "Informe o nome da empresa: ");
+        a.setNomeEmpresa(nomeEmpresa);
+        
+        String ticker = JOptionPane.showInputDialog(null, "Informe o ticker do ativo: ");
+        a.setTicker(ticker);
+        
+        String precoInicial = JOptionPane.showInputDialog(null, "Informe o preco inicial do ativo: ");
+        double preco = Double.parseDouble(precoInicial);
+        a.setPrecoInicial(preco);
+        
+        String endereco = JOptionPane.showInputDialog(null, "Informe o seu endereco: ");
+        c.setEndereco(endereco);
+        
+        String telefone = JOptionPane.showInputDialog(null, "Informe o seu telefone: ");
+        c.setTelefone(telefone);
+        
+        c.setDataCriacao(LocalDate.now());
+        c.setDataModificacao(LocalDate.now());
+        
+        return a;
     }
 }
