@@ -20,46 +20,48 @@ import java.time.temporal.ChronoUnit;
  *
  * @author Stheffany
  */
-public class ContaCorrente {
-    int id;
-    double saldo;
-    LocalDate dataCriacao;
-    LocalDate dataModificacao;    
-    Cliente c;
-   
-    void depositar(double valor){
-        this.saldo = this.saldo + valor; // this referencia o objeto corrente, nesse caso o da conta, diferenciar dados da classe com os do parâmetro
+public class ContaCorrente{
+    private long id;
+    private double saldo;
+    private LocalDate dataCriacao;
+    private LocalDate dataModificacao;    
+    private Cliente c;   
+    
+    private static long serialContaCorrente;
+    
+    public ContaCorrente(){
+        this.id = ++ContaCorrente.serialContaCorrente;
+    }
+            
+    public long getId() {
+        return id;
     }
 
-    boolean sacar(double valor){
-        if(this.saldo < valor){
-            return false;
-        }else{
-            this.saldo = this.saldo - valor;
-            return true;
-        }
+    public double getSaldo() {
+        return saldo;
     }
 
-    String mostraSaldo(){
-        return "Saldo conta do(a) " + this.c.nome + ": " + saldo;
-    }
-    
-    boolean transfere(ContaCorrente destino, double valor){
-        boolean retirou = this.sacar(valor);
-        if(retirou == false){
-        return false;
-        }else{
-            destino.depositar(valor);
-            return true;
-        }
+    public LocalDate getDataCriacao() {
+        return dataCriacao;
     }
 
-    
-    void extrato(){
-        
+    public LocalDate getDataModificacao() {
+        return dataModificacao;
     }
-    
-    void pagamento(){
-        //transferir para a conta do administrador?
+
+    public Cliente getC() {
+        return c;
+    }
+
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
+
+    public void setDataCriacao(LocalDate dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
+
+    public void setDataModificacao(LocalDate dataModificacao) {
+        this.dataModificacao = dataModificacao;
     }
 }
