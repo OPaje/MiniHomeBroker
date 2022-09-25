@@ -56,15 +56,10 @@ public class GUI {
         String precoInicial = JOptionPane.showInputDialog(null, "Informe o preco inicial do ativo: ");
         double preco = Double.parseDouble(precoInicial);
         a.setPrecoInicial(preco);
+       
         
-        String endereco = JOptionPane.showInputDialog(null, "Informe o seu endereco: ");
-        c.setEndereco(endereco);
-        
-        String telefone = JOptionPane.showInputDialog(null, "Informe o seu telefone: ");
-        c.setTelefone(telefone);
-        
-        c.setDataCriacao(LocalDate.now());
-        c.setDataModificacao(LocalDate.now());
+        a.setDataCriacao(LocalDate.now());
+        a.setDataModficacao(LocalDate.now());
         
         return a;
     }
