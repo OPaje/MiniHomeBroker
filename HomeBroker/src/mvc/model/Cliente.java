@@ -22,6 +22,8 @@ public class Cliente {
     private int tipoUsuario;
     private String nome;
     private String cpf;
+    
+    // usar static no login e na senha?
     private String login;
     private String senha;
     private String endereco;
