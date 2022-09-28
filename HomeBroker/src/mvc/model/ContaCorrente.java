@@ -25,7 +25,7 @@ public class ContaCorrente{
     private double saldo;
     private LocalDate dataCriacao;
     private LocalDate dataModificacao;    
-    public static Cliente  c;
+    private Cliente c;
     
     private static long serialContaCorrente;
     
@@ -60,5 +60,19 @@ public class ContaCorrente{
     public void setDataModificacao(LocalDate dataModificacao) {
         this.dataModificacao = dataModificacao;
     }
+
+    public Cliente getC() {
+        return c;
+    }
+
+    public void setC(Cliente c) {
+        this.c = c;
+    }
+
+   
+
+    
+    
+    
     
 }

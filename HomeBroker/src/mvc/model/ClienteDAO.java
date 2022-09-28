@@ -30,6 +30,7 @@ public class ClienteDAO {
         c1.setDataModificacao(LocalDate.now());
         this.adiciona(c1);
         
+        
         Cliente c2 = new Cliente();
         c2.setNome("João");
         c2.setCpf("000000002");
@@ -61,7 +62,7 @@ public class ClienteDAO {
         this.adiciona(c4);
     }
     
-    boolean adiciona(Cliente c) {
+    public boolean adiciona(Cliente c) {
         int proximaPosicaoLivre = this.proximaPosicaoLivre();
         if (proximaPosicaoLivre != -1) {
             clientes[proximaPosicaoLivre] = c;

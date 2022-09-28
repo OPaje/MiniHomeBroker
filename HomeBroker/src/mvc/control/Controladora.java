@@ -16,7 +16,7 @@ import mvc.view.GUI;
 public class Controladora {
     ClienteDAO clienteDAO = new ClienteDAO();
     AtivoDAO ativoDAO = new AtivoDAO();
-    ContaCorrenteDAO contaCorrenteDAO = new ContaCorrenteDAO();
+    ContaCorrenteDAO contaCorrenteDAO = new ContaCorrenteDAO(clienteDAO.getClientes()); // passando como parãmetro o vetor com os clientes
     GUI gui = new GUI();
     
     public static void main(String[] args) {
@@ -32,10 +32,11 @@ public class Controladora {
                 case 1:
                     clienteDAO.mostrarTodos();
                 break;
-                case 2:                    
+                case 11: 
+                    contaCorrenteDAO.mostrarTodos();
                 break;
             }
-        }while (opcao != 11);
+        }while (opcao != 12);
     }
     
       

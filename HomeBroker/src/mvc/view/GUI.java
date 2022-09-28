@@ -80,8 +80,8 @@ public class GUI {
         builder.append("\n8 - Mostrar ativos");
         builder.append("\n9 - Comprar ativos");
         builder.append("\n10 - Vender ativos");
+        builder.append("\n11 - Mostrar contas");
         builder.append("\n Qual sua opção? \n\n");
-        System.out.print(builder.toString());
         
         String op = JOptionPane.showInputDialog(null, builder.toString());
         int x = 0;
