@@ -22,8 +22,6 @@ public class Cliente {
     private int tipoUsuario;
     private String nome;
     private String cpf;
-    
-    // usar static no login e na senha?
     private String login;
     private String senha;
     private String endereco;
@@ -111,11 +109,10 @@ public class Cliente {
         this.dataModificacao = dataModificacao;
     }
 
-    // MELHORAR ESSE TOSTRING
     @Override
     public String toString() {
-        return "Cliente{" + "id=" + id + ", tipoUsuario=" + tipoUsuario + ", nome=" + nome + ", cpf=" + cpf + ", login=" + login + ", endereco=" + endereco + 
-                ", telefone=" + telefone + ", dataCriacao=" + dataCriacao + ", dataModificacao=" + dataModificacao + '}';
+        return "\nCliente id = " + id + "\nTipo de Usuario = " + tipoUsuario + "\nNome = " + nome + "\nCPF = " + cpf + "\nLogin = " + login + "\nEndereco = " + endereco + 
+                "\nTelefone = " + telefone + "\nData de Criação = " + dataCriacao + "\nData de Modificacao = " + dataModificacao + '}';
     }
 
     @Override
