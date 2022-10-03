@@ -82,14 +82,19 @@ public class ClienteDAO {
 
     }
 
-    public void mostrarTodos() {
+   public void mostrarTodos() {
         boolean temCliente = false;
+        StringBuilder builder = new StringBuilder("");
+        
         for (Cliente c : clientes) {
             if (c != null) {
-                JOptionPane.showMessageDialog(null, c);
+                builder.append(c.toString());
                 temCliente = true;
             }
         }
+        
+        JOptionPane.showMessageDialog(null,builder.toString(),"Clientes",JOptionPane.INFORMATION_MESSAGE);
+        
         if (!temCliente) {
             System.out.println("Não existe cliente cadastrado");
         }
