@@ -56,7 +56,10 @@ public class GUI {
         String precoInicial = JOptionPane.showInputDialog(null, "Informe o preco inicial do ativo: ");
         double preco = Double.parseDouble(precoInicial);
         a.setPrecoInicial(preco);
-       
+        
+        String totalDeAtivos = JOptionPane.showInputDialog(null, "Informe a quantidade total de ativos: ");
+        int totalAtivos = Integer.parseInt(totalDeAtivos);
+        a.setTotalAtivos(totalAtivos);
         
         a.setDataCriacao(LocalDate.now());
         a.setDataModficacao(LocalDate.now());
