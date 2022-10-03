@@ -8,28 +8,31 @@ import java.time.LocalDate;
 import javax.swing.JOptionPane;
 import mvc.model.Ativo;
 import mvc.model.Cliente;
+import mvc.model.ContaCorrente;
 
 /**
  *
  * @author jeanc
  */
 public class GUI {
-    public Cliente criarCliente(){
+    public ContaCorrente criarCliente(){
         Cliente c = new Cliente();
+        ContaCorrente conta = new ContaCorrente();
+        
         String nome = JOptionPane.showInputDialog(null, "Informe o seu nome: ");
         c.setNome(nome);
         
         String cpf = JOptionPane.showInputDialog(null, "Informe o seu CPF: ");
         c.setCpf(cpf);
         
-        String tipoUsuario = JOptionPane.showInputDialog(null, "Informe o tipo: ");
+        String tipoUsuario = JOptionPane.showInputDialog(null, "Informe o tipo. 1 para cliente 0 para Administrador: ");
         int tipo = Integer.parseInt(tipoUsuario);
         c.setTipoUsuario(tipo);
         
         String login = JOptionPane.showInputDialog(null, "Informe o seu login: ");
         c.setLogin(login);
         
-        String senha = JOptionPane.showInputDialog(null, "Informe a sua sennha: ");
+        String senha = JOptionPane.showInputDialog(null, "Informe a sua senha: ");
         c.setSenha(senha);
         
         String endereco = JOptionPane.showInputDialog(null, "Informe o seu endereco: ");
@@ -41,7 +44,13 @@ public class GUI {
         c.setDataCriacao(LocalDate.now());
         c.setDataModificacao(LocalDate.now());
         
-        return c;
+        // vinculando o cliente com a conta
+        conta.setC(c);
+        conta.setSaldo(20000);
+        conta.setDataCriacao(LocalDate.now());
+        conta.setDataModificacao(LocalDate.now());
+        
+        return conta;
     }
     
     public Ativo criarAtivo(){
@@ -84,6 +93,9 @@ public class GUI {
         builder.append("\n9 - Comprar ativos");
         builder.append("\n10 - Vender ativos");
         builder.append("\n11 - Mostrar contas");
+        builder.append("\n12 - Editar ativo");
+        builder.append("\n13 - Cadastrar cliente");
+        builder.append("\n14 - Cadastrar ativo");
         builder.append("\n Qual sua opção? \n\n");
         
         String op = JOptionPane.showInputDialog(null, builder.toString());
