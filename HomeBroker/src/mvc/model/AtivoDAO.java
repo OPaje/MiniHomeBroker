@@ -80,21 +80,36 @@ public class AtivoDAO {
         
         public void mostrarTodos() {
         boolean temAtivo = false;
+        StringBuilder builder = new StringBuilder("");
+        
         for (Ativo a : ativos) {
             if (a != null) {
-                JOptionPane.showMessageDialog(null, a);
+                builder.append(a.toString());
                 temAtivo = true;
             }
         }
+        
+        JOptionPane.showMessageDialog(null,builder.toString(),"Ativos",JOptionPane.INFORMATION_MESSAGE);
+        
         if (!temAtivo) {
             System.out.println("Não existe ativo cadastrado");
         }
     }
 
-     public boolean alterarTicker(String ticker, String novoTicker){
-        Ativo a = this.buscaPorTicker(ticker);
+     public boolean alterarTicker(long id, String novoTicker){
+        Ativo a = this.buscaPorId(id);
         if(a != null){
             a.setTicker(novoTicker);
+            return true;
+        }else{
+            return false;
+        }
+    }
+     
+     public boolean alterarNomeEmpresa(String novoNome, long id){
+        Ativo a = this.buscaPorId(id);
+        if(a != null){
+            a.setNomeEmpresa(novoNome);
             return true;
         }else{
             return false;
