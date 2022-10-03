@@ -82,11 +82,10 @@ public class Ativo {
         this.dataModficacao = dataModficacao;
     }
 
-    // MELHORAR ESSE TO STRING
     @Override
     public String toString() {
-        return "Ativo{" + "id=" + id + ", totalAtivos=" + totalAtivos + ", precoInicial=" + precoInicial + ", nomeEmpresa=" + nomeEmpresa + ", ticker=" + ticker + 
-                ", dataCriacao=" + dataCriacao + ", dataModficacao=" + dataModficacao + '}';
+        return "\nAtivo id=" + id + " \nNome da Empresa = " + nomeEmpresa + "\nTicker = " + ticker + "\nTotal de Ativos = " + totalAtivos + 
+                "\nPreço Inicial = " + precoInicial + "\nData de Criação = " + dataCriacao + "\nData de Modficacao = " + dataModficacao;
     }
 
     @Override
