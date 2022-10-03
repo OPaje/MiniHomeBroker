@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
  * @author jeanc
  */
 public class ClienteDAO {
-    Cliente[] clientes = new Cliente[5];
+    private Cliente[] clientes = new Cliente[5];
 
     public Cliente[] getClientes() {
         return clientes;
@@ -136,7 +136,18 @@ public class ClienteDAO {
 
     public boolean remover(String cpf) {
         for (int i = 0; i < clientes.length; i++) {
-            if (clientes[i] != null && clientes[i].getNome().equals(cpf)) {
+            if (clientes[i] != null && clientes[i].getCpf().equals(cpf)) {
+                clientes[i] = null;
+                return true;
+            }
+        }
+        return false;
+
+    }
+    
+    public boolean removerPorId(long id) {
+        for (int i = 0; i < clientes.length; i++) {
+            if (clientes[i] != null && clientes[i].getId() == id) {
                 clientes[i] = null;
                 return true;
             }
