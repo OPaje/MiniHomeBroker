@@ -146,7 +146,7 @@ public class GUI {
     }
     
     
-    public int Menu(){
+    public int menu(){
         
         StringBuilder builder = new StringBuilder("");
         
@@ -171,5 +171,49 @@ public class GUI {
         int x = 0;
         x = Integer.parseInt(op);
         return x;
+    }
+    
+    public int menuInicial(){
+        
+       StringBuilder builder = new StringBuilder("");
+       
+       builder.append("SEJA BEM VINDO AO HOME BROKER\n\n");
+       builder.append("\n1- Cadastrar cliente");
+       builder.append("\n2- Fazer login");
+       builder.append("\n0- Sair");
+       
+       String op = JOptionPane.showInputDialog(null, builder.toString());
+       
+       return Integer.parseInt(op);
+    }
+    
+    public int menuCliente(){
+        
+        StringBuilder builder = new StringBuilder("");
+        builder.append("\n1- Depositar");
+        builder.append("\n2- Mostrar saldo");
+        builder.append("\n3- Saque");
+        builder.append("\n4- Transferência");
+        builder.append("\n5- Extrato");
+        builder.append("\n6- Comprar Ativo");
+        builder.append("\n7- Vender Ativo");
+        builder.append("\n0- Sair");
+        
+        String op = JOptionPane.showInputDialog(null, builder.toString());
+        
+        return Integer.parseInt(op);
+    }
+    
+    public int menuADM(){
+        
+        StringBuilder builder = new StringBuilder("");
+        builder.append("\n1- Pagar dividendos");
+        builder.append("\n2- Cadastrar ativo");
+        builder.append("\n3- Passar o tempo");
+        builder.append("\n0- Sair");
+        
+        String op = JOptionPane.showInputDialog(null, builder.toString());
+        
+        return Integer.parseInt(op);
     }
 }
