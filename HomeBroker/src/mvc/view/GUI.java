@@ -7,14 +7,18 @@ package mvc.view;
 import java.time.LocalDate;
 import javax.swing.JOptionPane;
 import mvc.model.Ativo;
+import mvc.model.AtivoDAO;
 import mvc.model.Cliente;
 import mvc.model.ContaCorrente;
+import mvc.model.ContaCorrenteDAO;
+import mvc.model.Ordem;
 
 /**
  *
  * @author jeanc
  */
 public class GUI {
+    
     public ContaCorrente criarCliente(){
         Cliente c = new Cliente();
         ContaCorrente conta = new ContaCorrente();
@@ -75,7 +79,72 @@ public class GUI {
         
         return a;
     }
-   
+    
+    public Ordem criarOrdem(AtivoDAO ativos, ContaCorrenteDAO contas){
+        Ordem o = new Ordem();
+       
+        do{
+            String id = JOptionPane.showInputDialog(null, "Informe o id da sua conta: ");
+            long idConta = Long.parseLong(id);
+            o.setConta(contas.buscaPorId(idConta));
+            
+            if(o.getConta() == null){
+                JOptionPane.showMessageDialog(null, "ID Inválido", "Erro", 0);
+            }
+            
+        }while(o.getConta() == null);
+        
+        
+        String tipo = JOptionPane.showInputDialog(null, "Informe o tipo da ordem: ");
+        o.setTipoOrdem(tipo);
+        
+        do{
+            String ticker = JOptionPane.showInputDialog(null, "Informe o ticker do ativo: ");
+            o.setTicker(ativos.buscaPorTicker(ticker));
+            
+            if(o.getTicker() == null){
+                JOptionPane.showMessageDialog(null, "Ticker Inválido", "Erro", 0);
+            }
+            
+        }while(o.getTicker() == null);
+        
+        if(o.getTicker().getTotalAtivos() == 0){
+            o.setEstadoOrdem("Não");
+            JOptionPane.showMessageDialog(null, "O ticker não possui ativos a venda", "Erro", 0);
+            return null;
+        }
+
+        String qtd = JOptionPane.showInputDialog(null, "Informe a quantidade de ativos: ");
+        int qtd1 = Integer.parseInt(qtd);
+        o.setQuantidade(qtd1);
+        
+        
+        double valor = 10;
+        o.setValor(valor);
+        o.setValorTotal(qtd1 * valor);
+        
+        // chamar método transfere
+        // mandando para a conta do adm
+        //contas.transfere(contas.buscaPorId(1), o.getValorTotal()); // adcionar como parâmetro a conta de origem
+        
+        if(o.getTicker().getTotalAtivos() < qtd1){
+            o.setEstadoOrdem("Parcial");
+            o.setQuantidade(qtd1 - o.getTicker().getTotalAtivos());
+            o.getTicker().setTotalAtivos(0);
+            
+        }else if(o.getTicker().getTotalAtivos() > qtd1){
+            o.setEstadoOrdem("Total");
+            o.setQuantidade(qtd1);
+            o.getTicker().setTotalAtivos(o.getTicker().getTotalAtivos() - qtd1);
+            
+        }
+        
+        o.setDataCriacao(LocalDate.now());
+        o.setDataModificacao(LocalDate.now());
+        
+        return o;
+    }
+    
     
     public int Menu(){
         
@@ -83,7 +152,7 @@ public class GUI {
         
         builder.append("SEJA BEM VINDO AO MEU PROGRAMA\n\n");
         builder.append("\n1- Listar usuários");
-        builder.append("\n2 - Deposita");
+        builder.append("\n2 - Depositar");
         builder.append("\n3 - Saque");
         builder.append("\n4 - Mostra saldo");
         builder.append("\n5 - Transfere");

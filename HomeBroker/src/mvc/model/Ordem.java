@@ -5,12 +5,7 @@
 package mvc.model;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.Month;
-import java.time.MonthDay;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
+
 
 /**
  *
@@ -20,10 +15,10 @@ public class Ordem {
     private long id;
     private static long serialOrdem = 0;
     private int quantidade;
-    private int tipoOrdem;
-    private int estadoOrdem;
     private double valor;
     private double valorTotal;
+    private String tipoOrdem;
+    private String estadoOrdem;
     private ContaCorrente conta;
     private Ativo ticker;
     private LocalDate dataCriacao;
@@ -45,19 +40,19 @@ public class Ordem {
         this.quantidade = quantidade;
     }
 
-    public int getTipoOrdem() {
+    public String getTipoOrdem() {
         return tipoOrdem;
     }
 
-    public void setTipoOrdem(int tipoOrdem) {
+    public void setTipoOrdem(String tipoOrdem) {
         this.tipoOrdem = tipoOrdem;
     }
 
-    public int getEstadoOrdem() {
+    public String getEstadoOrdem() {
         return estadoOrdem;
     }
 
-    public void setEstadoOrdem(int estadoOrdem) {
+    public void setEstadoOrdem(String estadoOrdem) {
         this.estadoOrdem = estadoOrdem;
     }
 
@@ -109,11 +104,12 @@ public class Ordem {
         this.dataModificacao = dataModificacao;
     }
 
-    // MELHORAR ESSE TOSTRING
     @Override
     public String toString() {
-        return "Ordem{" + "id=" + id + ", quantidade=" + quantidade + ", tipoOrdem=" + tipoOrdem + ", estadoOrdem=" + estadoOrdem + ", valor=" + valor + 
-                ", valorTotal=" + valorTotal + ", conta=" + conta + ", ticker=" + ticker + ", dataCriacao=" + dataCriacao + ", dataModificacao=" + dataModificacao + '}';
+        return "\n\nid: " + id + "\nQuantidade: " + quantidade + "\nTipo da Ordem: " + tipoOrdem + "\nEstado da Ordem: " + estadoOrdem + "\nValor: " + valor + 
+                "\nValor Total: " + valorTotal + "\nConta: " + conta.getC().getNome() + "\nTicker: " + ticker.getTicker() +"\nNome da empresa: " + ticker.getNomeEmpresa() +
+                "\nData de Criacao:" + dataCriacao + 
+                "\nData de Modificacao: " + dataModificacao;
     }
 
     @Override
