@@ -45,7 +45,21 @@ public class ContaCorrenteDAO {
         c2.setDataModificacao(LocalDate.now());
         this.adicionaConta(c2);
         
-        // fazer isso para os outros clientes
+        ContaCorrente c3 = new ContaCorrente();
+        c3.setC(cliente[2]);
+        c3.setSaldo(20000); // ao criar uma conta nova o cliente recebe 20 mil;
+        c3.setDataCriacao(LocalDate.now());
+        c3.setDataModificacao(LocalDate.now());
+        this.adicionaConta(c3);
+        
+        ContaCorrente c4 = new ContaCorrente();
+        c4.setC(cliente[2]);
+        c4.setSaldo(20000); // ao criar uma conta nova o cliente recebe 20 mil;
+        c4.setDataCriacao(LocalDate.now());
+        c4.setDataModificacao(LocalDate.now());
+        this.adicionaConta(c4);
+        
+        
         
     }
     
@@ -59,29 +73,50 @@ public class ContaCorrenteDAO {
         }
     }
     
-    public void depositar(double valor){
-        contas[0].setSaldo(contas[0].getSaldo() + valor); // melhorar isso
+    // apagar essa função
+     public ContaCorrente buscaPorId(long id) {
+        for (ContaCorrente c : contas) {
+            if (c != null && c.getId() == id) {
+                return c;
+            }
+        }
+        return null;
+
+    }
+    
+    public boolean depositar(long id, double valor, ContaCorrenteDAO contas){
+        ContaCorrente c; 
+        c = contas.buscaPorId(id);
+        if(c != null){
+            c.setSaldo(c.getSaldo() + valor);
+            return true;
+        }else{
+            return false;
+        }
     }
 
-    public boolean sacar(double valor){
-        if(this.saldo < valor){
+    public boolean sacar(ContaCorrente conta, double valor){
+        if(conta.getSaldo() < valor){
             return false;
         }else{
-            this.saldo = this.saldo - valor;
+            conta.setSaldo(conta.getSaldo() - valor);
             return true;
         }
     }
 
-    public String mostraSaldo(){
-        return "Saldo conta do(a) " + this.contas[0].getC() + ": " + contas[0].getSaldo();
+    public String mostraSaldo(long id, ContaCorrenteDAO contas){
+        ContaCorrente c = contas.buscaPorId(id);
+        
+        return "Saldo conta do(a) " + c.getC().getNome() + ": " + c.getSaldo();
     }
     
-    public boolean transfere(ContaCorrente destino, double valor){
-        boolean retirou = this.sacar(valor);
+    public boolean transfere(ContaCorrenteDAO contas, double valor, long idOrigem, long idDestino){ 
+        ContaCorrente origem = contas.buscaPorId(idOrigem);
+        boolean retirou = contas.sacar(origem, valor);
         if(retirou == false){
         return false;
         }else{
-            destino.depositar(valor);
+            contas.depositar(idDestino, valor, contas);
             return true;
         }
     }
@@ -92,17 +127,22 @@ public class ContaCorrenteDAO {
     }
     
     void pagamento(){
-        //transferir para a conta do administrador?
+        // pagamento da mensalidade;
     }    
     
-     public void mostrarTodos() {
+      public void mostrarTodos() {
         boolean temConta = false;
+        StringBuilder builder = new StringBuilder("");
+        
         for (ContaCorrente c : contas) {
             if (c != null) {
-                JOptionPane.showMessageDialog(null, c);
+                builder.append(c.toString());
                 temConta = true;
             }
         }
+        
+        JOptionPane.showMessageDialog(null,builder.toString(),"Contas",JOptionPane.INFORMATION_MESSAGE);
+        
         if (!temConta) {
             System.out.println("Não existe conta cadastrada");
         }

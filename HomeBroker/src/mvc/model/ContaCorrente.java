@@ -4,17 +4,8 @@
  */
 package mvc.model;
 
-import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.Month;
-import java.time.MonthDay;
-import java.time.Period;
-import java.time.Year;
-import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
+
 
 /**
  *
@@ -41,6 +32,9 @@ public class ContaCorrente{
         return saldo;
     }
 
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
     public LocalDate getDataCriacao() {
         return dataCriacao;
     }
@@ -49,9 +43,6 @@ public class ContaCorrente{
         return dataModificacao;
     }
 
-    public void setSaldo(double saldo) {
-        this.saldo = saldo;
-    }
 
     public void setDataCriacao(LocalDate dataCriacao) {
         this.dataCriacao = dataCriacao;
@@ -68,6 +59,37 @@ public class ContaCorrente{
     public void setC(Cliente c) {
         this.c = c;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 97 * hash + (int) (this.id ^ (this.id >>> 32));
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ContaCorrente other = (ContaCorrente) obj;
+        return this.id == other.id;
+    }
+    
+    
+    
+    @Override
+    public String toString() {
+	return "\nID = " + id + "\nData de Criacao = " + dataCriacao + 
+	"\nData de Modificacao = " + dataModificacao + c.toString();
+}
+
 
    
 
