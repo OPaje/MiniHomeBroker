@@ -4,17 +4,7 @@
  */
 package mvc.model;
 
-import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.Month;
-import java.time.MonthDay;
-import java.time.Period;
-import java.time.Year;
-import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import javax.swing.JOptionPane;
 
 /**
@@ -53,14 +43,12 @@ public class ContaCorrenteDAO {
         this.adicionaConta(c3);
         
         ContaCorrente c4 = new ContaCorrente();
-        c4.setC(cliente[2]);
+        c4.setC(cliente[3]);
         c4.setSaldo(20000); // ao criar uma conta nova o cliente recebe 20 mil;
         c4.setDataCriacao(LocalDate.now());
         c4.setDataModificacao(LocalDate.now());
         this.adicionaConta(c4);
-        
-        
-        
+     
     }
     
     public boolean adicionaConta(ContaCorrente c) {
@@ -73,7 +61,6 @@ public class ContaCorrenteDAO {
         }
     }
     
-    // apagar essa função
      public ContaCorrente buscaPorId(long id) {
         for (ContaCorrente c : contas) {
             if (c != null && c.getId() == id) {
@@ -113,17 +100,8 @@ public class ContaCorrenteDAO {
     public boolean transfere(ContaCorrenteDAO contas, double valor, long idOrigem, long idDestino){ 
         ContaCorrente origem = contas.buscaPorId(idOrigem);
         boolean retirou = contas.sacar(origem, valor);
-        if(retirou == false){
-        return false;
-        }else{
-            contas.depositar(idDestino, valor, contas);
-            return true;
-        }
-    }
-
-    
-    void extrato(){
         
+        return retirou && contas.depositar(idDestino, valor, contas);
     }
     
     void pagamento(){
@@ -134,9 +112,9 @@ public class ContaCorrenteDAO {
         boolean temConta = false;
         StringBuilder builder = new StringBuilder("");
         
-        for (ContaCorrente c : contas) {
-            if (c != null) {
-                builder.append(c.toString());
+        for (int i=1; i<contas.length; i++) {
+            if (contas[i] != null) {
+                builder.append(contas[i].toString());
                 temConta = true;
             }
         }

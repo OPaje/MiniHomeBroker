@@ -5,12 +5,6 @@
 package mvc.model;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.Month;
-import java.time.MonthDay;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 
 /**
  *
@@ -112,7 +106,7 @@ public class Cliente {
     @Override
     public String toString() {
         return "\nCliente id = " + id + "\nTipo de Usuario = " + tipoUsuario + "\nNome = " + nome + "\nCPF = " + cpf + "\nLogin = " + login + "\nEndereco = " + endereco + 
-                "\nTelefone = " + telefone + "\nData de Criação = " + dataCriacao + "\nData de Modificacao = " + dataModificacao + '}';
+                "\nTelefone = " + telefone + "\nData de Criação = " + dataCriacao + "\nData de Modificacao = " + dataModificacao;
     }
 
     @Override

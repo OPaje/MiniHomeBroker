@@ -28,10 +28,7 @@ public class GUI {
         
         String cpf = JOptionPane.showInputDialog(null, "Informe o seu CPF: ");
         c.setCpf(cpf);
-        
-        String tipoUsuario = JOptionPane.showInputDialog(null, "Informe o tipo. 1 para cliente 0 para Administrador: ");
-        int tipo = Integer.parseInt(tipoUsuario);
-        c.setTipoUsuario(tipo);
+        c.setTipoUsuario(1);
         
         String login = JOptionPane.showInputDialog(null, "Informe o seu login: ");
         c.setLogin(login);
@@ -195,8 +192,11 @@ public class GUI {
         builder.append("\n3- Saque");
         builder.append("\n4- Transferência");
         builder.append("\n5- Extrato");
-        builder.append("\n6- Comprar Ativo");
-        builder.append("\n7- Vender Ativo");
+        builder.append("\n6- Mostrar Ativos");
+        builder.append("\n7- Comprar Ativo");
+        builder.append("\n8- Vender Ativo");
+        builder.append("\n9- Meus Ativo");
+        builder.append("\n10- Editar conta");
         builder.append("\n0- Sair");
         
         String op = JOptionPane.showInputDialog(null, builder.toString());
@@ -209,11 +209,28 @@ public class GUI {
         StringBuilder builder = new StringBuilder("");
         builder.append("\n1- Pagar dividendos");
         builder.append("\n2- Cadastrar ativo");
-        builder.append("\n3- Passar o tempo");
+        builder.append("\n3- Editar ativo");
+        builder.append("\n4- Passar o tempo");
         builder.append("\n0- Sair");
         
         String op = JOptionPane.showInputDialog(null, builder.toString());
         
         return Integer.parseInt(op);
+    }
+    
+    public double retornarValor(){
+        String valor = JOptionPane.showInputDialog(null, "Informe o valor: ");
+        
+        return Double.parseDouble(valor);
+    }
+    
+    public long perguntarId(){
+        String idTransfere = JOptionPane.showInputDialog(null, "Informe o ID da conta: ");
+        
+        return Long.parseLong(idTransfere);
+    }
+    
+    public String perguntarNome(){
+        return JOptionPane.showInputDialog(null, "Informe o nome: ");
     }
 }

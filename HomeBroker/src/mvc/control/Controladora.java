@@ -45,7 +45,6 @@ public class Controladora {
                     } else {
                         JOptionPane.showMessageDialog(null, "Cliente não cadastrado", "Cadastro de Cliente", JOptionPane.INFORMATION_MESSAGE);
                     }
-                    
                     break;
                     
                 case 2:
@@ -54,15 +53,121 @@ public class Controladora {
                     
                     String senha = JOptionPane.showInputDialog(null, "Informe sua senha: ");
                     
-                    Cliente cliente = clienteDAO.buscarPorLoginESenha(login, senha);
+                    Cliente cliente = clienteDAO.buscarPorLoginESenha(login, senha); // cliente do login
+                    ContaCorrente conta = contaCorrenteDAO.buscaPorId(cliente.getId()); // conta do login
                     
                     if(cliente != null){
                         if(cliente.getTipoUsuario() == 0){
-                            gui.menuADM();
-                            // fazer o switch case
+                            int escolha = 0;
+                            do{
+                                escolha = gui.menuADM();
+                                
+                                switch (escolha) {
+                                    case 1:
+                                        System.out.println("Pagar dividendos");
+                                        break;
+                                        
+                                    case 2:
+                                        Ativo a = gui.criarAtivo();
+
+                                        if (ativoDAO.adicionaAtivo(a)) {
+                                            JOptionPane.showMessageDialog(null, "Ativo cadastrado", "Cadastro de Ativo", JOptionPane.INFORMATION_MESSAGE);
+
+                                        } else {
+                                            JOptionPane.showMessageDialog(null, "Ativo não cadastrado", "Cadastro de Ativo", JOptionPane.INFORMATION_MESSAGE);
+                                        }
+                                        break;
+                                        
+                                    case 3:
+                                        ativoDAO.mostrarTodos();
+                                        
+                                        String pegaId = JOptionPane.showInputDialog(null, "Informe o ID do ativo: ");
+                                        long idAtivo = Long.parseLong(pegaId);
+
+                                        String novoTicker = JOptionPane.showInputDialog(null, "Informe o novo ticker do ativo: ");
+
+                                        String novoNome = JOptionPane.showInputDialog(null, "Informe o novo nome da empresa: ");
+
+                                        if (ativoDAO.alterarTicker(idAtivo, novoTicker) && ativoDAO.alterarNomeEmpresa(novoNome, idAtivo)) {
+                                            JOptionPane.showMessageDialog(null, "Ticker alterado", "Alterar Ticker", JOptionPane.INFORMATION_MESSAGE);
+
+                                        } else {
+                                            JOptionPane.showMessageDialog(null, "Ticker não alterado", "Alterar Ticker", JOptionPane.INFORMATION_MESSAGE);
+                                        }
+                                        break;
+                                        
+                                    case 4:
+                                        System.out.println("Passar o tempo");
+                                        break;
+
+                                }
+                                
+                            }while(escolha > 0 && escolha < 5);
                         }else{
-                            gui.menuCliente();
-                            // fazer o switch case
+                            int decisao = 0;
+                            do{
+                                decisao = gui.menuCliente();
+                                
+                                switch (decisao) {
+                                    case 1:
+                                        contaCorrenteDAO.depositar(conta.getId(), gui.retornarValor(), contaCorrenteDAO);
+                                        
+                                        break;
+                                        
+                                    case 2:
+                                        JOptionPane.showMessageDialog(null, contaCorrenteDAO.mostraSaldo(conta.getId(), contaCorrenteDAO), "Saldo", JOptionPane.INFORMATION_MESSAGE);
+  
+                                        break;
+                                        
+                                    case 3:
+                                        //ContaCorrente contaSaque = contaCorrenteDAO.buscaPorId(cliente.getId());
+                    
+                                        if (contaCorrenteDAO.sacar(conta, gui.retornarValor())) {
+                                            JOptionPane.showMessageDialog(null,"Saque evetuado com sucesso" , "Saque", JOptionPane.INFORMATION_MESSAGE);
+
+                                        } else {
+                                            JOptionPane.showMessageDialog(null, "Não foi possível fazer o saque", "Saque", 0);
+                                        }
+
+                                        break;
+                                        
+                                    case 4: // arrumar o transfere
+                                        if(contaCorrenteDAO.transfere(contaCorrenteDAO, gui.retornarValor(), conta.getId(), gui.perguntarId())){
+                                            JOptionPane.showMessageDialog(null,"Transferência evetuada com sucesso" , "Transferência", JOptionPane.INFORMATION_MESSAGE);
+
+                                        }else{
+                                            JOptionPane.showMessageDialog(null, "Não foi possível fazer a transferência", "Transferência", 0);
+                                        }
+
+                                        break;
+                                        
+                                    case 5:
+                                        // extrato
+                                        break;
+                                    
+                                    case 6:
+                                        ativoDAO.mostrarTodos();
+                                        break;
+                                    
+                                    case 7:
+                                        // comprar ativos
+                                        break;
+                                        
+                                    case 8:
+                                        // vender ativos
+                                        break;
+                                        
+                                    case 9:
+                                        // meus ativos
+                                        break;
+                                    
+                                    case 10:
+                                        clienteDAO.alterarNome(cliente.getNome(), gui.perguntarNome());
+                                        break;
+                                }
+                                
+                            }while(decisao > 0 && decisao < 11);
+                            
                         }
                     }else{
                         JOptionPane.showMessageDialog(null, "Login e/ou senha inválidos", "Login", JOptionPane.INFORMATION_MESSAGE);

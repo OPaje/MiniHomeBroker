@@ -45,7 +45,7 @@ public class ClienteDAO {
         c3.setNome("Stheffany");
         c3.setCpf("000000003");
         c3.setTipoUsuario(1); // normal
-        c3.setLogin("Stheffany");
+        c3.setLogin("Sthe");
         c3.setSenha("qwer");
         c3.setDataCriacao(LocalDate.now());
         c3.setDataModificacao(LocalDate.now());
@@ -104,6 +104,7 @@ public class ClienteDAO {
         Cliente c = this.buscaPorNome(nome);
         if(c != null){
             c.setNome(novoNome);
+            c.setDataModificacao(LocalDate.now());
             return true;
         }else{
             return false;
