@@ -99,9 +99,14 @@ public class ContaCorrenteDAO {
     
     public boolean transfere(ContaCorrenteDAO contas, double valor, long idOrigem, long idDestino){ 
         ContaCorrente origem = contas.buscaPorId(idOrigem);
-        if(contas.depositar(idDestino, valor, contas)){
-            contas.sacar(origem, valor);
-            return true;
+        
+        if(contas.sacar(origem, valor)){
+            if(contas.depositar(idDestino, valor, contas)){
+                return true;
+            }else{
+                origem.setSaldo(origem.getSaldo() + valor);
+                return false;
+            }
             
         }else{
             return false;
