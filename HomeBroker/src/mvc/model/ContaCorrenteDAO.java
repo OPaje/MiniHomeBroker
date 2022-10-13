@@ -99,13 +99,18 @@ public class ContaCorrenteDAO {
     
     public boolean transfere(ContaCorrenteDAO contas, double valor, long idOrigem, long idDestino){ 
         ContaCorrente origem = contas.buscaPorId(idOrigem);
-        boolean retirou = contas.sacar(origem, valor);
-        
-        return retirou && contas.depositar(idDestino, valor, contas);
+        if(contas.depositar(idDestino, valor, contas)){
+            contas.sacar(origem, valor);
+            return true;
+            
+        }else{
+            return false;
+        }
     }
     
     void pagamento(){
         // pagamento da mensalidade;
+        // pagamento de dividendos
     }    
     
       public void mostrarTodos() {
