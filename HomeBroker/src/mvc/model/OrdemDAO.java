@@ -13,14 +13,18 @@ import javax.swing.JOptionPane;
  */
 public class OrdemDAO {
     Ordem[] ordens = new Ordem[10];
+
+    public Ordem[] getOrdens() {
+        return ordens;
+    }   
     
     public OrdemDAO(AtivoDAO ativos, ContaCorrenteDAO contas){
         
         Ordem o1 = new Ordem();
-        o1.setConta(contas.buscaPorId(1));
-        o1.setEstadoOrdem("Venda");
+        o1.setConta(contas.buscaPorId(2));
+        o1.setTipoOrdem("Venda");
         o1.setTicker(ativos.buscaPorTicker("NTCO3"));
-        o1.setQuantidade(20);
+        o1.setQuantidade(40);
         o1.setValor(10);
         o1.setValorTotal(o1.getValor() * o1.getQuantidade());
         o1.setDataCriacao(LocalDate.now());
@@ -28,15 +32,26 @@ public class OrdemDAO {
         this.adiciona(o1);
         
         Ordem o2 = new Ordem();
-        o2.setConta(contas.buscaPorId(1));
-        o2.setEstadoOrdem("Compra");
+        o2.setConta(contas.buscaPorId(3));
+        o2.setTipoOrdem("Compra");
         o2.setTicker(ativos.buscaPorTicker("NTCO3"));
         o2.setQuantidade(20);
         o2.setValor(10);
-        o2.setValorTotal(o1.getValor() * o1.getQuantidade());
+        o2.setValorTotal(o2.getValor() * o2.getQuantidade());
         o2.setDataCriacao(LocalDate.now());
         o2.setDataModificacao(LocalDate.now());
         this.adiciona(o2);
+        
+        Ordem o3 = new Ordem();
+        o3.setConta(contas.buscaPorId(3));
+        o3.setTipoOrdem("Compra");
+        o3.setTicker(ativos.buscaPorTicker("NTCO3"));
+        o3.setQuantidade(20);
+        o3.setValor(10);
+        o3.setValorTotal(o3.getValor() * o3.getQuantidade());
+        o3.setDataCriacao(LocalDate.now());
+        o3.setDataModificacao(LocalDate.now());
+        this.adiciona(o3);
     }
     
     public boolean adiciona(Ordem o) {
@@ -65,6 +80,17 @@ public class OrdemDAO {
         if (!temOrdem) {
             System.out.println("Não existe ordem feita");
         }
+    }
+    
+    public boolean removerPorId(long id) {
+        for (int i = 0; i < ordens.length; i++) {
+            if (ordens[i] != null && ordens[i].getId() == id) {
+                ordens[i] = null;
+                return true;
+            }
+        }
+        return false;
+
     }
     
     private int proximaPosicaoLivre() {

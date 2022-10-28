@@ -121,7 +121,7 @@ public class GUI {
         o.setValorTotal(qtd1 * valor);
         
         // chamar método transfere
-        // mandando para a conta do adm
+        // mandando para a conta do adm quando for ordem 0
         //contas.transfere(contas.buscaPorId(1), o.getValorTotal()); // adcionar como parâmetro a conta de origem
         
         if(o.getTicker().getTotalAtivos() < qtd1){
@@ -175,7 +175,7 @@ public class GUI {
        StringBuilder builder = new StringBuilder("");
        
        builder.append("SEJA BEM VINDO AO HOME BROKER\n\n");
-       builder.append("\n1- Cadastrar cliente");
+       builder.append("\n1- Fazer cadastro na plataforma");
        builder.append("\n2- Fazer login");
        builder.append("\n0- Sair");
        
@@ -210,7 +210,8 @@ public class GUI {
         builder.append("\n1- Pagar dividendos");
         builder.append("\n2- Cadastrar ativo");
         builder.append("\n3- Editar ativo");
-        builder.append("\n4- Passar o tempo");
+        builder.append("\n4- Executar ordens");
+        builder.append("\n5- Passar o tempo");
         builder.append("\n0- Sair");
         
         String op = JOptionPane.showInputDialog(null, builder.toString());
@@ -218,7 +219,7 @@ public class GUI {
         return Integer.parseInt(op);
     }
     
-    public double retornarValor(){
+    public double perguntarValor(){
         String valor = JOptionPane.showInputDialog(null, "Informe o valor: ");
         
         return Double.parseDouble(valor);

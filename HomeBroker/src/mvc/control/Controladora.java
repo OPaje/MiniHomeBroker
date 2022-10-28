@@ -4,6 +4,7 @@
  */
 package mvc.control;
 
+import java.time.LocalDate;
 import javax.swing.JOptionPane;
 import mvc.model.Ativo;
 import mvc.model.AtivoDAO;
@@ -13,6 +14,8 @@ import mvc.model.ContaCorrente;
 import mvc.model.ContaCorrenteDAO;
 import mvc.model.Ordem;
 import mvc.model.OrdemDAO;
+import mvc.model.OrdemExecucao;
+import mvc.model.OrdemExecucaoDAO;
 import mvc.view.GUI;
 
 /**
@@ -24,6 +27,7 @@ public class Controladora {
     AtivoDAO ativoDAO = new AtivoDAO();
     ContaCorrenteDAO contaCorrenteDAO = new ContaCorrenteDAO(clienteDAO.getClientes()); // passando como parãmetro o vetor com os clientes
     OrdemDAO ordemDAO = new OrdemDAO(ativoDAO, contaCorrenteDAO);
+    OrdemExecucaoDAO ordemExecucaoDAO = new OrdemExecucaoDAO();
     GUI gui = new GUI();
     
     public static void main(String[] args) {
@@ -95,14 +99,25 @@ public class Controladora {
                                             JOptionPane.showMessageDialog(null, "Ticker não alterado", "Alterar Ticker", JOptionPane.INFORMATION_MESSAGE);
                                         }
                                         break;
+                                    
+                                    case 4:                                     
+                                        ordemExecucaoDAO.executarOrdem(ordemDAO, contaCorrenteDAO);
+                                        OrdemExecucao[] ordensExecutadas = ordemExecucaoDAO.getOrdensExecucao();
                                         
-                                    case 4:
+                                        JOptionPane.showMessageDialog(null, ordensExecutadas[0].toString(), "Ordens Executadas", JOptionPane.INFORMATION_MESSAGE);
+                                        JOptionPane.showMessageDialog(null, ordensExecutadas[1].toString(), "Ordens Executadas", JOptionPane.INFORMATION_MESSAGE);
+                                  
+                                        break;
+
+
+                                        
+                                    case 5:
                                         System.out.println("Passar o tempo");
                                         break;
 
                                 }
                                 
-                            }while(escolha > 0 && escolha < 5);
+                            }while(escolha > 0 && escolha < 6);
                         }else{
                             int decisao = 0;
                             do{
@@ -110,7 +125,7 @@ public class Controladora {
                                 
                                 switch (decisao) {
                                     case 1:
-                                        contaCorrenteDAO.depositar(conta.getId(), gui.retornarValor(), contaCorrenteDAO);
+                                        contaCorrenteDAO.depositar(conta.getId(), gui.perguntarValor(), contaCorrenteDAO);
                                         
                                         break;
                                         
@@ -122,7 +137,7 @@ public class Controladora {
                                     case 3:
                                         //ContaCorrente contaSaque = contaCorrenteDAO.buscaPorId(cliente.getId());
                     
-                                        if (contaCorrenteDAO.sacar(conta, gui.retornarValor())) {
+                                        if (contaCorrenteDAO.sacar(conta, gui.perguntarValor())) {
                                             JOptionPane.showMessageDialog(null,"Saque evetuado com sucesso" , "Saque", JOptionPane.INFORMATION_MESSAGE);
 
                                         } else {
@@ -131,8 +146,8 @@ public class Controladora {
 
                                         break;
                                         
-                                    case 4: // arrumar o transfere
-                                        if(contaCorrenteDAO.transfere(contaCorrenteDAO, gui.retornarValor(), conta.getId(), gui.perguntarId())){
+                                    case 4: 
+                                        if(contaCorrenteDAO.transfere(contaCorrenteDAO, gui.perguntarValor(), conta.getId(), gui.perguntarId())){
                                             JOptionPane.showMessageDialog(null,"Transferência evetuada com sucesso" , "Transferência", JOptionPane.INFORMATION_MESSAGE);
 
                                         }else{
@@ -163,6 +178,8 @@ public class Controladora {
                                     
                                     case 10:
                                         clienteDAO.alterarNome(cliente.getNome(), gui.perguntarNome());
+                                        conta.setDataModificacao(LocalDate.now());
+                                        
                                         break;
                                 }
                                 
