@@ -71,7 +71,7 @@ public class OrdemExecucaoDAO {
                 for(int j=0; j<ordensCompra.length; j++){
                     if(ordensCompra[j] != null){
                         if(ordensVenda[i].getTicker().equals(ordensCompra[j].getTicker())){
-                            if(ordensVenda[i].getValor()== ordensCompra[j].getValor()){ // usei o valor pq senão for igual não há acordo
+                            if(ordensVenda[i].getValor()== ordensCompra[j].getValor()){ // usei o valor pq senão for igual não há acordo, mudar depois
                                 if(ordensVenda[i].getQuantidade() == 0){ // pode ser mudado para cima?
                                     ordensCompra[j].setEstadoOrdem("Não");
 
@@ -87,16 +87,14 @@ public class OrdemExecucaoDAO {
                                     o.setContaVenda(ordensVenda[i].getConta());
                                     o.setDataCriacao(LocalDate.now());
                                     o.setDataModificacao(LocalDate.now());
-                                    
-                                    
-                                    
+  
                                     this.adiciona(o);
 
                                     conta.transfere(conta, ordensCompra[j].getValorTotal(), ordensCompra[j].getConta().getId(), ordensVenda[i].getConta().getId());
                                     
                                     ordens.removerPorId(ordensVenda[i].getId());
                                     ordens.removerPorId(o.getOrdem().getId()); // outro jeito de fazer
-                                    // esse if tá funcionando
+                  
                                 }else if(ordensVenda[i].getQuantidade() < ordensCompra[j].getQuantidade()){
                                     OrdemExecucao o = new OrdemExecucao();
                                     ordensCompra[j].setEstadoOrdem("Parcial");
@@ -143,6 +141,75 @@ public class OrdemExecucaoDAO {
                 
             }
             
+        }
+    }
+    
+    public void executarOrdem0(OrdemDAO ordens, ContaCorrenteDAO conta){
+        Ordem[] todas = ordens.getOrdens();
+        for(int i=0; i<todas.length; i++){
+            if(todas[i] != null){
+                if(todas[i].getTipoOrdem().equals("Ordem 0")){
+                    if(todas[i].getTicker().getTotalAtivos() == 0){
+                        todas[i].setEstadoOrdem("Não");
+                    }else{
+                        if(todas[i].getTicker().getTotalAtivos() < todas[i].getQuantidade()){
+                            double valor = todas[i].getValorTotal() * 0.9; // 10% de desconto
+                            OrdemExecucao o = new OrdemExecucao();
+                            todas[i].setEstadoOrdem("Parcial");
+                            
+                            o.setContaCompra(todas[i].getConta());
+                            o.setContaVenda(conta.buscaPorId(1)); // conta do ADM
+                            o.setOrdem(todas[i]);
+                            o.setQuantidade(todas[i].getTicker().getTotalAtivos());
+                            o.setDataCriacao(LocalDate.now());
+                            o.setDataModificacao(LocalDate.now());
+                            this.adiciona(o);
+                            
+                            conta.transfere(conta, valor, todas[i].getConta().getId(), 1);
+                            
+                            todas[i].getTicker().setTotalAtivos(0);
+                            
+                        }else{
+                            if(todas[i].getTicker().getTotalAtivos() == todas[i].getQuantidade()){
+                                double valor = todas[i].getValorTotal() * 0.9; // 10% de desconto
+                                OrdemExecucao o = new OrdemExecucao();
+                                todas[i].setEstadoOrdem("Total");
+
+                                o.setContaCompra(todas[i].getConta());
+                                o.setContaVenda(conta.buscaPorId(1)); // conta do ADM
+                                o.setOrdem(todas[i]);
+                                o.setQuantidade(todas[i].getTicker().getTotalAtivos());
+                                o.setDataCriacao(LocalDate.now());
+                                o.setDataModificacao(LocalDate.now());
+                                this.adiciona(o);
+
+                                conta.transfere(conta, valor, todas[i].getConta().getId(), 1);
+
+                                todas[i].getTicker().setTotalAtivos(0);
+                                
+                            }else if(todas[i].getTicker().getTotalAtivos() > todas[i].getQuantidade()){
+                                double valor = todas[i].getValorTotal() * 0.9; // 10% de desconto
+                                OrdemExecucao o = new OrdemExecucao();
+                                todas[i].setEstadoOrdem("Total");
+
+                                o.setContaCompra(todas[i].getConta());
+                                o.setContaVenda(conta.buscaPorId(1)); // conta do ADM
+                                o.setOrdem(todas[i]);
+                                o.setQuantidade(todas[i].getTicker().getTotalAtivos());
+                                o.setDataCriacao(LocalDate.now());
+                                o.setDataModificacao(LocalDate.now());
+                                this.adiciona(o);
+
+                                conta.transfere(conta, valor, todas[i].getConta().getId(), 1);
+
+                                todas[i].getTicker().setTotalAtivos(todas[i].getTicker().getTotalAtivos() - todas[i].getQuantidade());
+                            }
+                        }
+                        
+                    }
+                    
+                }
+            }
         }
     }
     

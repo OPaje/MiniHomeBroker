@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
  * @author jeanc
  */
 public class OrdemDAO {
-    Ordem[] ordens = new Ordem[10];
+    private Ordem[] ordens = new Ordem[10];
 
     public Ordem[] getOrdens() {
         return ordens;

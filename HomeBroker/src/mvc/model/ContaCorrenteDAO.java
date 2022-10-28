@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
  */
 public class ContaCorrenteDAO {
     
-    ContaCorrente[] contas = new ContaCorrente[5];
+    private ContaCorrente[] contas = new ContaCorrente[5];
 
     public ContaCorrente[] getContaCorrente() {
         return contas;
@@ -113,9 +113,10 @@ public class ContaCorrenteDAO {
         }
     }
     
-    void pagamento(){
-        // pagamento da mensalidade;
-        // pagamento de dividendos
+    public boolean pagarDividendos(double valor, int quantidade, long id){
+        double dividendo = valor * quantidade;
+        
+        return this.transfere(this, dividendo, 1, id);
     }    
     
       public void mostrarTodos() {

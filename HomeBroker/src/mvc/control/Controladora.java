@@ -12,6 +12,8 @@ import mvc.model.Cliente;
 import mvc.model.ClienteDAO;
 import mvc.model.ContaCorrente;
 import mvc.model.ContaCorrenteDAO;
+import mvc.model.MeusAtivos;
+import mvc.model.MeusAtivosDAO;
 import mvc.model.Ordem;
 import mvc.model.OrdemDAO;
 import mvc.model.OrdemExecucao;
@@ -28,6 +30,7 @@ public class Controladora {
     ContaCorrenteDAO contaCorrenteDAO = new ContaCorrenteDAO(clienteDAO.getClientes()); // passando como parãmetro o vetor com os clientes
     OrdemDAO ordemDAO = new OrdemDAO(ativoDAO, contaCorrenteDAO);
     OrdemExecucaoDAO ordemExecucaoDAO = new OrdemExecucaoDAO();
+    MeusAtivosDAO meusAtivosDAO = new MeusAtivosDAO(ativoDAO, contaCorrenteDAO);
     GUI gui = new GUI();
     
     public static void main(String[] args) {
@@ -58,9 +61,9 @@ public class Controladora {
                     String senha = JOptionPane.showInputDialog(null, "Informe sua senha: ");
                     
                     Cliente cliente = clienteDAO.buscarPorLoginESenha(login, senha); // cliente do login
-                    ContaCorrente conta = contaCorrenteDAO.buscaPorId(cliente.getId()); // conta do login
                     
                     if(cliente != null){
+                        ContaCorrente conta = contaCorrenteDAO.buscaPorId(cliente.getId()); // conta do login
                         if(cliente.getTipoUsuario() == 0){
                             int escolha = 0;
                             do{
@@ -68,7 +71,7 @@ public class Controladora {
                                 
                                 switch (escolha) {
                                     case 1:
-                                        System.out.println("Pagar dividendos");
+                                        contaCorrenteDAO.pagarDividendos(gui.perguntarValor(), quantidade, gui.perguntarId()); // pegar a quantidade nos meus ativos
                                         break;
                                         
                                     case 2:
@@ -102,10 +105,15 @@ public class Controladora {
                                     
                                     case 4:                                     
                                         ordemExecucaoDAO.executarOrdem(ordemDAO, contaCorrenteDAO);
+                                        ordemExecucaoDAO.executarOrdem0(ordemDAO, contaCorrenteDAO);
                                         OrdemExecucao[] ordensExecutadas = ordemExecucaoDAO.getOrdensExecucao();
                                         
-                                        JOptionPane.showMessageDialog(null, ordensExecutadas[0].toString(), "Ordens Executadas", JOptionPane.INFORMATION_MESSAGE);
-                                        JOptionPane.showMessageDialog(null, ordensExecutadas[1].toString(), "Ordens Executadas", JOptionPane.INFORMATION_MESSAGE);
+//                                        for(int i=0; i<ordensExecutadas.length; i++){
+//                                            MeusAtivos
+//                                        }
+//                                        
+//                                        JOptionPane.showMessageDialog(null, ordensExecutadas[0].toString(), "Ordens Executadas", JOptionPane.INFORMATION_MESSAGE);
+//                                        JOptionPane.showMessageDialog(null, ordensExecutadas[1].toString(), "Ordens Executadas", JOptionPane.INFORMATION_MESSAGE);
                                   
                                         break;
 
@@ -134,9 +142,7 @@ public class Controladora {
   
                                         break;
                                         
-                                    case 3:
-                                        //ContaCorrente contaSaque = contaCorrenteDAO.buscaPorId(cliente.getId());
-                    
+                                    case 3:        
                                         if (contaCorrenteDAO.sacar(conta, gui.perguntarValor())) {
                                             JOptionPane.showMessageDialog(null,"Saque evetuado com sucesso" , "Saque", JOptionPane.INFORMATION_MESSAGE);
 
@@ -165,7 +171,7 @@ public class Controladora {
                                         break;
                                     
                                     case 7:
-                                        // comprar ativos
+                                        gui.criarOrdemCompra(ativoDAO, contaCorrenteDAO);
                                         break;
                                         
                                     case 8:
@@ -174,6 +180,10 @@ public class Controladora {
                                         
                                     case 9:
                                         // meus ativos
+                                        MeusAtivos[] a = meusAtivosDAO.getMeusAtivos();
+                                         JOptionPane.showMessageDialog(null,a[0].toString() , "Meus Ativos", JOptionPane.INFORMATION_MESSAGE);
+                                         
+
                                         break;
                                     
                                     case 10:
