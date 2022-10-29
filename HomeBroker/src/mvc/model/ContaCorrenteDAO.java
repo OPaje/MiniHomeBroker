@@ -82,11 +82,12 @@ public class ContaCorrenteDAO {
         }
     }
 
-    public boolean sacar(ContaCorrente conta, double valor){
+    public boolean sacar(ContaCorrente conta, double valor, MovimentaContaDAO m){
         if(conta.getSaldo() < valor){
             return false;
         }else{
             conta.setSaldo(conta.getSaldo() - valor);
+            m.criarMovimento("Débito", "Saque", valor, conta);
             return true;
         }
     }
@@ -97,10 +98,10 @@ public class ContaCorrenteDAO {
         return "Saldo conta do(a) " + c.getC().getNome() + ": " + c.getSaldo();
     }
     
-    public boolean transfere(ContaCorrenteDAO contas, double valor, long idOrigem, long idDestino){ 
+    public boolean transfere(ContaCorrenteDAO contas, double valor, long idOrigem, long idDestino, MovimentaContaDAO m){ 
         ContaCorrente origem = contas.buscaPorId(idOrigem);
         
-        if(contas.sacar(origem, valor)){
+        if(contas.sacar(origem, valor, m)){
             if(contas.depositar(idDestino, valor, contas)){
                 return true;
             }else{
@@ -113,11 +114,42 @@ public class ContaCorrenteDAO {
         }
     }
     
-    public boolean pagarDividendos(double valor, int quantidade, long id){
+    public boolean pagarDividendos(double valor, int quantidade, long id, MovimentaContaDAO m){
         double dividendo = valor * quantidade;
         
-        return this.transfere(this, dividendo, 1, id);
+        return this.transfere(this, dividendo, 1, id, m);
     }    
+    
+    public void pagarMensalidade(LocalDate data, MovimentaContaDAO m){
+        if(data.getDayOfMonth() > 14){
+            for(int i=1; i<contas.length; i++){
+                if(contas[i] != null){
+                    this.transfere(this, 20,contas[i].getId(), 1, m);   
+                    
+                }
+                
+            }
+        }
+    }
+    
+    public String gerarExtrato(long id, MovimentaContaDAO m){
+        MovimentaConta[] movi = m.getMovimentos();
+        ContaCorrente c = this.buscaPorId(id);
+        StringBuilder builder = new StringBuilder("");
+        
+        for (int i = 0; i < movi.length; i++) {
+            if(movi[i] != null){
+                if(movi[i].getConta().getId() == id){
+                    //builder.append(movi[i].getDescricao()).append(movi[i].getValor()).append("\n");
+                    builder.append(movi[i].toString());
+                }
+            }
+            
+        }
+        builder.append("\n");
+        builder.append("Saldo Disponível: ").append(c.getSaldo());
+        return builder.toString();
+    }
     
       public void mostrarTodos() {
         boolean temConta = false;

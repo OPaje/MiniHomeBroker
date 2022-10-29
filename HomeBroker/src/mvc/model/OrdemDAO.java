@@ -82,6 +82,24 @@ public class OrdemDAO {
         }
     }
     
+    public String bookOfertas(Ativo ativo){
+        boolean temOrdem = false;
+        StringBuilder builder = new StringBuilder("");
+        
+        for (Ordem o : ordens) {
+            if (o != null && o.getTicker().equals(ativo) && !"Ordem 0".equals(o.getTipoOrdem())) {
+                builder.append("Ativo: ").append(o.getTicker().getTicker()).append(" Valor: ").append(o.getValor()).append(" Tipo: ").append(o.getTipoOrdem()).append("\n\n");
+                temOrdem = true;
+            }
+        }
+                
+        if (!temOrdem) {
+            return "Não existe ordem feita";
+        }else{
+            return builder.toString();
+        }
+    }
+    
     public boolean removerPorId(long id) {
         for (int i = 0; i < ordens.length; i++) {
             if (ordens[i] != null && ordens[i].getId() == id) {

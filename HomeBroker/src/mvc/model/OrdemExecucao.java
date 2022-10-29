@@ -13,7 +13,8 @@ import java.time.LocalDate;
 public class OrdemExecucao {
     private long id;
     private static long serial = 0;
-    private Ordem ordem;
+    private Ordem ordemCompra;
+    private Ordem ordemVenda;
     private ContaCorrente contaCompra;
     private ContaCorrente contaVenda;
     private int quantidade;
@@ -29,14 +30,22 @@ public class OrdemExecucao {
         return id;
     }
 
-    public Ordem getOrdem() {
-        return ordem;
+    public Ordem getOrdemCompra() {
+        return ordemCompra;
     }
 
-    public void setOrdem(Ordem ordem) {
-        this.ordem = ordem;
+    public void setOrdemCompra(Ordem ordemCompra) {
+        this.ordemCompra = ordemCompra;
     }
 
+    public Ordem getOrdemVenda() {
+        return ordemVenda;
+    }
+
+    public void setOrdemVenda(Ordem ordemVenda) {
+        this.ordemVenda = ordemVenda;
+    }
+    
     public ContaCorrente getContaCompra() {
         return contaCompra;
     }
@@ -101,7 +110,7 @@ public class OrdemExecucao {
 
     @Override
     public String toString() {
-        return "\nID = " + id + "\nOrdem = " + ordem + "\nConta que comprou = " + contaCompra + "\nConta que vendeu = " + contaVenda + 
+        return "\nID = " + id + "\nOrdem = " + ordemCompra + "\nConta que comprou = " + contaCompra + "\nConta que vendeu = " + contaVenda + 
                 "\nQuantidade = " + quantidade + "\nData de criacao = " + dataCriacao + "\nData de Modificacao=" + dataModificacao;
     }
     

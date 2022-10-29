@@ -25,15 +25,6 @@ public class MeusAtivos {
     public long getId() {
         return id;
     }
-    
-    
-    public int getQtdAtivos() {
-        return qtdAtivos;
-    }
-
-    public void setQtdAtivos(int qtdAtivos) {
-        this.qtdAtivos = qtdAtivos;
-    }
 
     public double getValorPago() {
         return valorPago;
@@ -50,6 +41,14 @@ public class MeusAtivos {
     public void setCotacao(double cotacao) {
         this.cotacao = cotacao;
     }
+    
+    public int getQtdAtivos() {
+        return qtdAtivos;
+    }
+
+    public void setQtdAtivos(int qtdAtivos) {
+        this.qtdAtivos = qtdAtivos;
+    }
 
     public double getTotalDinheiroAtivos() {
         return totalDinheiroAtivos;
@@ -59,26 +58,25 @@ public class MeusAtivos {
         this.totalDinheiroAtivos = totalDinheiroAtivos;
     }
 
-    public Ativo getAtivos() {
+    public Ativo getAtivo() {
         return ativo;
     }
 
-    public void setAtivos(Ativo ativos) {
-        this.ativo = ativos;
+    public void setAtivo(Ativo ativo) {
+        this.ativo = ativo;
     }
 
-    public ContaCorrente getContas() {
+    public ContaCorrente getConta() {
         return conta;
     }
 
-    public void setContas(ContaCorrente contas) {
-        this.conta = contas;
+    public void setConta(ContaCorrente conta) {
+        this.conta = conta;
     }
-
+    
     @Override
     public String toString() {
-        return  "id=" + id + "\nqtdAtivos=" + qtdAtivos + "\nvalorPago=" + valorPago + "\ncotacao=" + cotacao + "\ntotalDinheiroAtivos=" + totalDinheiroAtivos + 
-                "\nativo=" + ativo.getTicker() + "\nconta=" + conta.getC().getNome();
+        return  "id=" + id + "\nqtdAtivos=" + qtdAtivos + "\ntotalDinheiroAtivos=" + totalDinheiroAtivos + "\nativo=" + ativo.getTicker();
     }
 
     

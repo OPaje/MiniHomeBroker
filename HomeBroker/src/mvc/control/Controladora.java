@@ -14,6 +14,8 @@ import mvc.model.ContaCorrente;
 import mvc.model.ContaCorrenteDAO;
 import mvc.model.MeusAtivos;
 import mvc.model.MeusAtivosDAO;
+import mvc.model.MovimentaConta;
+import mvc.model.MovimentaContaDAO;
 import mvc.model.Ordem;
 import mvc.model.OrdemDAO;
 import mvc.model.OrdemExecucao;
@@ -30,9 +32,13 @@ public class Controladora {
     ContaCorrenteDAO contaCorrenteDAO = new ContaCorrenteDAO(clienteDAO.getClientes()); // passando como parãmetro o vetor com os clientes
     OrdemDAO ordemDAO = new OrdemDAO(ativoDAO, contaCorrenteDAO);
     OrdemExecucaoDAO ordemExecucaoDAO = new OrdemExecucaoDAO();
+    MovimentaContaDAO movimentaContaDAO = new MovimentaContaDAO();
     MeusAtivosDAO meusAtivosDAO = new MeusAtivosDAO(ativoDAO, contaCorrenteDAO);
     GUI gui = new GUI();
+    public LocalDate data = LocalDate.of(2022, 10, 15);
+    public LocalDate dataAtualizavel = LocalDate.of(2022, 10, 15);
     
+   
     public static void main(String[] args) {
         new Controladora();
     }
@@ -71,7 +77,7 @@ public class Controladora {
                                 
                                 switch (escolha) {
                                     case 1:
-                                        contaCorrenteDAO.pagarDividendos(gui.perguntarValor(), quantidade, gui.perguntarId()); // pegar a quantidade nos meus ativos
+                                        //contaCorrenteDAO.pagarDividendos(gui.perguntarValor(), quantidade, gui.perguntarId()); // pegar a quantidade nos meus ativos
                                         break;
                                         
                                     case 2:
@@ -104,8 +110,8 @@ public class Controladora {
                                         break;
                                     
                                     case 4:                                     
-                                        ordemExecucaoDAO.executarOrdem(ordemDAO, contaCorrenteDAO);
-                                        ordemExecucaoDAO.executarOrdem0(ordemDAO, contaCorrenteDAO);
+                                        ordemExecucaoDAO.executarOrdem(ordemDAO, contaCorrenteDAO, movimentaContaDAO, meusAtivosDAO);
+                                        //ordemExecucaoDAO.executarOrdem0(ordemDAO, contaCorrenteDAO, movimentaContaDAO);
                                         OrdemExecucao[] ordensExecutadas = ordemExecucaoDAO.getOrdensExecucao();
                                         
 //                                        for(int i=0; i<ordensExecutadas.length; i++){
@@ -120,12 +126,18 @@ public class Controladora {
 
                                         
                                     case 5:
-                                        System.out.println("Passar o tempo");
+                                        JOptionPane.showMessageDialog(null, data, "Data", JOptionPane.INFORMATION_MESSAGE);
+                                        break;
+                                        
+                                    case 6: 
+                                        data = dataAtualizavel.plusDays(31);
+                                        JOptionPane.showMessageDialog(null, data, "Data", JOptionPane.INFORMATION_MESSAGE);
+                                        contaCorrenteDAO.pagarMensalidade(data, movimentaContaDAO);
                                         break;
 
                                 }
                                 
-                            }while(escolha > 0 && escolha < 6);
+                            }while(escolha > 0 && escolha < 7);
                         }else{
                             int decisao = 0;
                             do{
@@ -143,7 +155,7 @@ public class Controladora {
                                         break;
                                         
                                     case 3:        
-                                        if (contaCorrenteDAO.sacar(conta, gui.perguntarValor())) {
+                                        if (contaCorrenteDAO.sacar(conta, gui.perguntarValor(), movimentaContaDAO)) {
                                             JOptionPane.showMessageDialog(null,"Saque evetuado com sucesso" , "Saque", JOptionPane.INFORMATION_MESSAGE);
 
                                         } else {
@@ -153,7 +165,7 @@ public class Controladora {
                                         break;
                                         
                                     case 4: 
-                                        if(contaCorrenteDAO.transfere(contaCorrenteDAO, gui.perguntarValor(), conta.getId(), gui.perguntarId())){
+                                        if(contaCorrenteDAO.transfere(contaCorrenteDAO, gui.perguntarValor(), conta.getId(), gui.perguntarId(), movimentaContaDAO)){
                                             JOptionPane.showMessageDialog(null,"Transferência evetuada com sucesso" , "Transferência", JOptionPane.INFORMATION_MESSAGE);
 
                                         }else{
@@ -163,7 +175,11 @@ public class Controladora {
                                         break;
                                         
                                     case 5:
-                                        // extrato
+//                                        MovimentaConta[] movimentos = movimentaContaDAO.getMovimentos();
+//                                        JOptionPane.showMessageDialog(null, movimentos[0], "Movimentos", 0);
+                                        JOptionPane.showMessageDialog(null,contaCorrenteDAO.gerarExtrato(conta.getId(), movimentaContaDAO) , "Extrato", JOptionPane.INFORMATION_MESSAGE);
+                                        
+                                        
                                         break;
                                     
                                     case 6:
@@ -175,15 +191,21 @@ public class Controladora {
                                         break;
                                         
                                     case 8:
-                                        // vender ativos
+                                        gui.criarOrdemVenda(ativoDAO, contaCorrenteDAO);
                                         break;
                                         
                                     case 9:
-                                        // meus ativos
-                                        MeusAtivos[] a = meusAtivosDAO.getMeusAtivos();
-                                         JOptionPane.showMessageDialog(null,a[0].toString() , "Meus Ativos", JOptionPane.INFORMATION_MESSAGE);
-                                         
-
+                                        MeusAtivos[] meus = meusAtivosDAO.getMeusAtivos();
+                                        
+                                        for (int i = 0; i < meus.length; i++) {
+                                            if(meus[i] != null){
+                                                if(meus[i].getConta().getId() == conta.getId()){
+                                                    JOptionPane.showMessageDialog(null, meus[i].toString(), "Meus Ativos", JOptionPane.INFORMATION_MESSAGE);
+                                                }
+                                            }
+                                            
+                                        }
+                                        
                                         break;
                                     
                                     case 10:
@@ -191,9 +213,37 @@ public class Controladora {
                                         conta.setDataModificacao(LocalDate.now());
                                         
                                         break;
+                                        
+                                    case 11: 
+                                        // mostra data
+                                        JOptionPane.showMessageDialog(null, data, "Data", JOptionPane.INFORMATION_MESSAGE);
+                                        break;
+                                        
+                                    case 12:
+                                        ordemExecucaoDAO.mostraUltimaNegociacao();
+                                        break;
+                                        
+                                    case 13:
+                                        Ativo ativo;
+                                        do{
+                                            String ticker = JOptionPane.showInputDialog(null, "Informe o ticker do ativo: ");
+                                            ativo = ativoDAO.buscaPorTicker(ticker);
+
+                                            if(ativo == null){
+                                                JOptionPane.showMessageDialog(null, "Ticker Inválido", "Erro", 0);
+                                            }
+
+                                        }while(ativo == null);
+                                        JOptionPane.showMessageDialog(null, ordemDAO.bookOfertas(ativo), "Book de Ofertas", JOptionPane.INFORMATION_MESSAGE);
+                                        
+                                        break;
+                                        
+                                    case 14:
+                                        gui.criarOrdem0(ativoDAO, contaCorrenteDAO, meusAtivosDAO, movimentaContaDAO);
+                                        break;
                                 }
                                 
-                            }while(decisao > 0 && decisao < 11);
+                            }while(decisao > 0 && decisao < 15);
                             
                         }
                     }else{

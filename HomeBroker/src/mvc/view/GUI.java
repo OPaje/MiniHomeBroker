@@ -11,6 +11,9 @@ import mvc.model.AtivoDAO;
 import mvc.model.Cliente;
 import mvc.model.ContaCorrente;
 import mvc.model.ContaCorrenteDAO;
+import mvc.model.MeusAtivos;
+import mvc.model.MeusAtivosDAO;
+import mvc.model.MovimentaContaDAO;
 import mvc.model.Ordem;
 
 /**
@@ -174,31 +177,64 @@ public class GUI {
         return o;
     }
     
-    public int menu(){
+    public void criarOrdem0(AtivoDAO ativos, ContaCorrenteDAO contas, MeusAtivosDAO meusAtivos, MovimentaContaDAO m){
+        Ativo a;
+        ContaCorrente c;
+        MeusAtivos meu = new MeusAtivos();
         
-        StringBuilder builder = new StringBuilder("");
+        do{
+            String id = JOptionPane.showInputDialog(null, "Informe o id da sua conta: ");
+            long idConta = Long.parseLong(id);
+            c = (contas.buscaPorId(idConta));
+            
+            if(c == null){
+                JOptionPane.showMessageDialog(null, "ID Inválido", "Erro", 0);
+            }
+            
+        }while(c == null);
+
         
-        builder.append("SEJA BEM VINDO AO MEU PROGRAMA\n\n");
-        builder.append("\n1- Listar usuários");
-        builder.append("\n2 - Depositar");
-        builder.append("\n3 - Saque");
-        builder.append("\n4 - Mostra saldo");
-        builder.append("\n5 - Transfere");
-        builder.append("\n6 - Extrato");
-        builder.append("\n7 - Mostrar meus ativos");
-        builder.append("\n8 - Mostrar ativos");
-        builder.append("\n9 - Comprar ativos");
-        builder.append("\n10 - Vender ativos");
-        builder.append("\n11 - Mostrar contas");
-        builder.append("\n12 - Editar ativo");
-        builder.append("\n13 - Cadastrar cliente");
-        builder.append("\n14 - Cadastrar ativo");
-        builder.append("\n Qual sua opção? \n\n");
+        do{
+            String ticker = JOptionPane.showInputDialog(null, "Informe o ticker do ativo: ");
+            a = (ativos.buscaPorTicker(ticker));
+            
+            if(a == null){
+                JOptionPane.showMessageDialog(null, "Ticker Inválido", "Erro", 0);
+            }
+            
+        }while(a == null);
         
-        String op = JOptionPane.showInputDialog(null, builder.toString());
-        int x = 0;
-        x = Integer.parseInt(op);
-        return x;
+        if(a.getTotalAtivos() == 0){
+            JOptionPane.showMessageDialog(null, "O ticker não possui ativos a venda", "Erro", 0);
+        }else{
+            String qtd = JOptionPane.showInputDialog(null, "Informe a quantidade de ativos: ");
+            int qtd1 = Integer.parseInt(qtd);
+            if(a.getTotalAtivos() >= qtd1){
+                meu.setAtivo(a);
+                meu.setConta(c);
+                meu.setCotacao(10);
+                meu.setQtdAtivos(qtd1);
+                double valor = 10; // valor padrão
+                meu.setValorPago(valor);
+                meu.setTotalDinheiroAtivos(qtd1 * valor);
+                meusAtivos.adicionaMeusAtivos(meu);
+                contas.transfere(contas, valor * qtd1, c.getId(), 1, m);
+                
+            }else{
+                meu.setAtivo(a);
+                meu.setConta(c);
+                meu.setCotacao(10);
+                meu.setQtdAtivos(a.getTotalAtivos());
+                double valor = 10; // valor padrão
+                meu.setValorPago(valor);
+                meu.setTotalDinheiroAtivos(a.getTotalAtivos() * valor);
+                meusAtivos.adicionaMeusAtivos(meu);
+                
+                contas.transfere(contas, a.getTotalAtivos()* valor, c.getId(), 1, m);
+            }
+            
+        }
+
     }
     
     public int menuInicial(){
@@ -224,10 +260,14 @@ public class GUI {
         builder.append("\n4- Transferência");
         builder.append("\n5- Extrato");
         builder.append("\n6- Mostrar Ativos");
-        builder.append("\n7- Comprar Ativo");
-        builder.append("\n8- Vender Ativo");
-        builder.append("\n9- Meus Ativo");
+        builder.append("\n7- Comprar Ativos");
+        builder.append("\n8- Vender Ativos");
+        builder.append("\n9- Meus Ativos");
         builder.append("\n10- Editar conta");
+        builder.append("\n11 - Mostrar data");
+        builder.append("\n12 - Mostrar última negociação");
+        builder.append("\n13 - Mostrar book de ofertas");
+        builder.append("\n14 - Ordem 0");
         builder.append("\n0- Sair");
         
         String op = JOptionPane.showInputDialog(null, builder.toString());
@@ -242,7 +282,8 @@ public class GUI {
         builder.append("\n2- Cadastrar ativo");
         builder.append("\n3- Editar ativo");
         builder.append("\n4- Executar ordens");
-        builder.append("\n5- Passar o tempo");
+        builder.append("\n5 - Mostrar data");
+        builder.append("\n6- Passar o tempo");
         builder.append("\n0- Sair");
         
         String op = JOptionPane.showInputDialog(null, builder.toString());
