@@ -15,17 +15,6 @@ public class MeusAtivosDAO {
         return meusAtivos;
     }
 
-    public MeusAtivosDAO(AtivoDAO ativos, ContaCorrenteDAO contas) {
-        MeusAtivos a = new MeusAtivos();
-        a.setAtivo(ativos.buscaPorTicker("NTCO3"));
-        a.setConta(contas.buscaPorId(2));
-        a.setQtdAtivos(40);
-        a.setValorPago(10);
-        a.setTotalDinheiroAtivos(a.getQtdAtivos() * a.getValorPago());
-        a.setCotacao(10);
-        this.adicionaMeusAtivos(a);     
-    }
- 
     public boolean adicionaMeusAtivos(MeusAtivos a) {
        int proximaPosicaoLivre = this.proximaPosicaoLivre();
        if (proximaPosicaoLivre != -1) {
@@ -44,6 +33,7 @@ public class MeusAtivosDAO {
                 if(todas[i].getOrdemCompra().getEstadoOrdem().equals("Total")){
                     MeusAtivos a = new MeusAtivos();
                     MeusAtivos a1 = new MeusAtivos();
+                    // verificar se essa conta já tem Meus Ativos
                     //conta compra
                     a.setAtivo(todas[i].getOrdemCompra().getTicker());
                     a.setConta(todas[i].getContaCompra());
@@ -56,7 +46,7 @@ public class MeusAtivosDAO {
                     //conta venda  independe se foi parcial ou não
                     a1.setAtivo(todas[i].getOrdemVenda().getTicker());
                     a1.setConta(todas[i].getContaVenda());
-                    a1.setQtdAtivos(todas[i].getOrdemVenda().getQuantidade() - todas[i].getQuantidade());
+                    a1.setQtdAtivos(0);
                     a1.setTotalDinheiroAtivos(0);
                     a1.setCotacao(10);
                     a1.setValorPago(0);
@@ -70,7 +60,7 @@ public class MeusAtivosDAO {
                     a.setAtivo(todas[i].getOrdemCompra().getTicker());
                     a.setConta(todas[i].getContaCompra());
                     a.setQtdAtivos(todas[i].getQuantidade());
-                    a.setTotalDinheiroAtivos(todas[i].getOrdemCompra().getValorTotal());
+                    a.setTotalDinheiroAtivos(todas[i].getOrdemCompra().getValor() * todas[i].getQuantidade());
                     a.setCotacao(10);
                     a.setValorPago(todas[i].getOrdemCompra().getValor());
                     this.adicionaMeusAtivos(a);

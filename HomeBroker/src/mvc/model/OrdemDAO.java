@@ -46,7 +46,7 @@ public class OrdemDAO {
         o3.setConta(contas.buscaPorId(3));
         o3.setTipoOrdem("Compra");
         o3.setTicker(ativos.buscaPorTicker("NTCO3"));
-        o3.setQuantidade(20);
+        o3.setQuantidade(30);
         o3.setValor(10);
         o3.setValorTotal(o3.getValor() * o3.getQuantidade());
         o3.setDataCriacao(LocalDate.now());
@@ -73,12 +73,12 @@ public class OrdemDAO {
                 builder.append(o.toString());
                 temOrdem = true;
             }
-        }
-        
-        JOptionPane.showMessageDialog(null,builder.toString(),"Ordens",JOptionPane.INFORMATION_MESSAGE);
+        }      
         
         if (!temOrdem) {
-            System.out.println("Não existe ordem feita");
+            JOptionPane.showMessageDialog(null,"Não existe ordem feita","Ordens",JOptionPane.INFORMATION_MESSAGE);
+        }else{
+            JOptionPane.showMessageDialog(null,builder.toString(),"Ordens",JOptionPane.INFORMATION_MESSAGE);
         }
     }
     

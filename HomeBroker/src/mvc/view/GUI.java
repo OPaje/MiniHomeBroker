@@ -177,7 +177,7 @@ public class GUI {
         return o;
     }
     
-    public void criarOrdem0(AtivoDAO ativos, ContaCorrenteDAO contas, MeusAtivosDAO meusAtivos, MovimentaContaDAO m){
+    public void criarOrdem0(AtivoDAO ativos, ContaCorrenteDAO contas, MeusAtivosDAO meusAtivos, MovimentaContaDAO movimenta){
         Ativo a;
         ContaCorrente c;
         MeusAtivos meu = new MeusAtivos();
@@ -218,7 +218,8 @@ public class GUI {
                 meu.setValorPago(valor);
                 meu.setTotalDinheiroAtivos(qtd1 * valor);
                 meusAtivos.adicionaMeusAtivos(meu);
-                contas.transfere(contas, valor * qtd1, c.getId(), 1, m);
+                contas.transfere(contas, valor * qtd1, c.getId(), 1);
+                movimenta.criarMovimento("Débito", "Negociação de Ativos", meu.getTotalDinheiroAtivos(), c);
                 
             }else{
                 meu.setAtivo(a);
@@ -230,7 +231,8 @@ public class GUI {
                 meu.setTotalDinheiroAtivos(a.getTotalAtivos() * valor);
                 meusAtivos.adicionaMeusAtivos(meu);
                 
-                contas.transfere(contas, a.getTotalAtivos()* valor, c.getId(), 1, m);
+                contas.transfere(contas, a.getTotalAtivos()* valor, c.getId(), 1);
+                movimenta.criarMovimento("Débito", "Negociação de Ativos", meu.getTotalDinheiroAtivos(), c);
             }
             
         }
@@ -282,8 +284,9 @@ public class GUI {
         builder.append("\n2- Cadastrar ativo");
         builder.append("\n3- Editar ativo");
         builder.append("\n4- Executar ordens");
-        builder.append("\n5 - Mostrar data");
+        builder.append("\n5- Mostrar data");
         builder.append("\n6- Passar o tempo");
+        builder.append("\n7- Mostrar Ordens");
         builder.append("\n0- Sair");
         
         String op = JOptionPane.showInputDialog(null, builder.toString());

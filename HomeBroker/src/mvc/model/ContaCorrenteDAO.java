@@ -82,12 +82,12 @@ public class ContaCorrenteDAO {
         }
     }
 
-    public boolean sacar(ContaCorrente conta, double valor, MovimentaContaDAO m){
+    public boolean sacar(ContaCorrente conta, double valor){
         if(conta.getSaldo() < valor){
             return false;
         }else{
             conta.setSaldo(conta.getSaldo() - valor);
-            m.criarMovimento("Débito", "Saque", valor, conta);
+            //m.criarMovimento("Débito", "Saque", valor, conta);
             return true;
         }
     }
@@ -98,10 +98,10 @@ public class ContaCorrenteDAO {
         return "Saldo conta do(a) " + c.getC().getNome() + ": " + c.getSaldo();
     }
     
-    public boolean transfere(ContaCorrenteDAO contas, double valor, long idOrigem, long idDestino, MovimentaContaDAO m){ 
+    public boolean transfere(ContaCorrenteDAO contas, double valor, long idOrigem, long idDestino){ 
         ContaCorrente origem = contas.buscaPorId(idOrigem);
         
-        if(contas.sacar(origem, valor, m)){
+        if(contas.sacar(origem, valor)){
             if(contas.depositar(idDestino, valor, contas)){
                 return true;
             }else{
@@ -114,17 +114,17 @@ public class ContaCorrenteDAO {
         }
     }
     
-    public boolean pagarDividendos(double valor, int quantidade, long id, MovimentaContaDAO m){
+    public boolean pagarDividendos(double valor, int quantidade, long id){
         double dividendo = valor * quantidade;
         
-        return this.transfere(this, dividendo, 1, id, m);
+        return this.transfere(this, dividendo, 1, id);
     }    
     
-    public void pagarMensalidade(LocalDate data, MovimentaContaDAO m){
+    public void pagarMensalidade(LocalDate data){
         if(data.getDayOfMonth() > 14){
             for(int i=1; i<contas.length; i++){
                 if(contas[i] != null){
-                    this.transfere(this, 20,contas[i].getId(), 1, m);   
+                    this.transfere(this, 20,contas[i].getId(), 1);   
                     
                 }
                 
@@ -132,7 +132,7 @@ public class ContaCorrenteDAO {
         }
     }
     
-    public String gerarExtrato(long id, MovimentaContaDAO m){
+    public String gerarExtrato(long id, MovimentaContaDAO m, double valor){
         MovimentaConta[] movi = m.getMovimentos();
         ContaCorrente c = this.buscaPorId(id);
         StringBuilder builder = new StringBuilder("");
@@ -147,7 +147,7 @@ public class ContaCorrenteDAO {
             
         }
         builder.append("\n");
-        builder.append("Saldo Disponível: ").append(c.getSaldo());
+        builder.append("Saldo Disponível: ").append(c.getSaldo() - valor); // menos o valor alocados em ativos
         return builder.toString();
     }
     

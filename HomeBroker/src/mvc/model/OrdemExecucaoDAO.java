@@ -18,33 +18,8 @@ public class OrdemExecucaoDAO {
         return ordensExecucao;
     }
     
-//    public Ordem[] procurarVenda(Ordem[] ordens){
-//        Ordem[] ordemVenda = new Ordem[10];
-// 
-//        
-//        for(int i=0; i<ordens.length; i++){
-//            if(ordens[i].getTipoOrdem().equals("Venda") && ordens[i] != null){
-//                ordemVenda[i] = ordens[i];
-//                
-//            }
-//        }
-//        return ordemVenda;
-//    }
-//    
-//    public Ordem[] procurarCompra(Ordem[] ordens){
-//        //Ordem[] todas = ordens.getOrdens();
-//        Ordem[] ordemCompra = new Ordem[10];
-//       
-//        for(int i=0; i<ordens.length; i++){
-//            if(ordens[i].getTipoOrdem().equals("Compra")){
-//                ordemCompra[i] = ordens[i];
-//                
-//            }
-//        }
-//        return ordemCompra;
-//    }
-    
-    public void executarOrdem(OrdemDAO ordens, ContaCorrenteDAO conta, MovimentaContaDAO m, MeusAtivosDAO meusAtivos){
+    public void executarOrdem(OrdemDAO ordens, ContaCorrenteDAO conta, MovimentaContaDAO m, MeusAtivosDAO meusAtivos, MovimentaContaDAO movimenta){
+        int k = 0;
         Ordem[] todas = ordens.getOrdens();
         Ordem[] ordensVenda = new Ordem[10];
         Ordem[] ordensCompra = new Ordem[10];
@@ -52,15 +27,18 @@ public class OrdemExecucaoDAO {
         for(int i=0; i<todas.length; i++){
             if(todas[i] != null){
                 if(todas[i].getTipoOrdem().equals("Compra")){
-                    ordensCompra[i] = todas[i]; // não tá inserindo nas posições de forma sequencial, arrumar isso
+                    ordensCompra[k] = todas[i];
+                    k++;
                 }
             }
         }
         
+        k = 0;
          for(int i=0; i<todas.length; i++){
              if(todas[i] != null){
                 if(todas[i].getTipoOrdem().equals("Venda")){
-                    ordensVenda[i] = todas[i];
+                    ordensVenda[k] = todas[i];
+                    k++;
                 }
              }
         }
@@ -71,7 +49,7 @@ public class OrdemExecucaoDAO {
                 for(int j=0; j<ordensCompra.length; j++){
                     if(ordensCompra[j] != null){
                         if(ordensVenda[i].getTicker().equals(ordensCompra[j].getTicker())){
-                            if(ordensVenda[i].getValor()== ordensCompra[j].getValor()){ // usei o valor pq senão for igual não há acordo, mudar depois
+                            if(ordensVenda[i].getValor()== ordensCompra[j].getValor()){
                                 if(ordensVenda[i].getQuantidade() == 0){ 
                                     ordensCompra[j].setEstadoOrdem("Não");
 
@@ -93,16 +71,13 @@ public class OrdemExecucaoDAO {
 
                                     this.adiciona(o);
 
-                                    conta.transfere(conta, ordensCompra[j].getValorTotal(), ordensCompra[j].getConta().getId(), ordensVenda[i].getConta().getId(), m);
+                                    conta.transfere(conta, ordensCompra[j].getValorTotal(), ordensCompra[j].getConta().getId(), ordensVenda[i].getConta().getId());
                                     
-                                    //criando meus ativos conta compra
-                                   
-                                    
-                                    //criando meus ativos conta venda
-                                    
-     
+                                    movimenta.criarMovimento("Débito", "Negociação de Ativos", ordensCompra[j].getValorTotal(), ordensCompra[j].getConta()); // movimento conta compra
+                                    movimenta.criarMovimento("Débito", "Negociação de Ativos", ordensCompra[i].getValorTotal(), ordensVenda[i].getConta()); // movimento conta venda
+
                                     ordens.removerPorId(ordensVenda[i].getId());
-                                    ordens.removerPorId(ordensCompra[j].getId()); // outro jeito de fazer
+                                    ordens.removerPorId(ordensCompra[j].getId()); 
                   
                                 }else if(ordensVenda[i].getQuantidade() < ordensCompra[j].getQuantidade()){
                                     OrdemExecucao o = new OrdemExecucao();
@@ -120,9 +95,14 @@ public class OrdemExecucaoDAO {
 
                                     this.adiciona(o);
                                     
-                                    conta.transfere(conta, ordensVenda[i].getValorTotal(), ordensCompra[j].getConta().getId(), ordensVenda[i].getConta().getId(), m);
+                                    conta.transfere(conta, o.getQuantidade() * ordensCompra[j].getValor(), ordensCompra[j].getConta().getId(), ordensVenda[i].getConta().getId());
+                                    
+                                    movimenta.criarMovimento("Débito", "Negociação de Ativos", ordensCompra[i].getValorTotal(), ordensCompra[j].getConta()); // movimento conta compra
+                                    movimenta.criarMovimento("Débito", "Negociação de Ativos", ordensCompra[i].getValorTotal(), ordensVenda[i].getConta()); // movimento conta venda
+
                                     
                                     ordens.removerPorId(ordensVenda[i].getId());
+                                    ordens.removerPorId(ordensCompra[j].getId()); 
 
                                 }else if(ordensVenda[i].getQuantidade() > ordensCompra[j].getQuantidade()){
                                     OrdemExecucao o = new OrdemExecucao();
@@ -140,8 +120,12 @@ public class OrdemExecucaoDAO {
 
                                     this.adiciona(o);
                                     
-                                    conta.transfere(conta, ordensCompra[j].getValorTotal(), ordensCompra[j].getConta().getId(), ordensVenda[i].getConta().getId(), m);
+                                    conta.transfere(conta, ordensCompra[j].getValorTotal(), ordensCompra[j].getConta().getId(), ordensVenda[i].getConta().getId());
                                     
+                                    movimenta.criarMovimento("Débito", "Negociação de Ativos", ordensCompra[j].getValorTotal(), ordensCompra[j].getConta()); // movimento conta compra
+                                    movimenta.criarMovimento("Débito", "Negociação de Ativos", ordensCompra[j].getValorTotal(), ordensVenda[i].getConta()); // movimento conta venda
+
+                                    ordens.removerPorId(ordensVenda[i].getId());
                                     ordens.removerPorId(ordensCompra[j].getId());
                                 }
                             }
@@ -154,75 +138,6 @@ public class OrdemExecucaoDAO {
             
         }
     }
-    
-//    public void executarOrdem0(OrdemDAO ordens, ContaCorrenteDAO conta, MovimentaContaDAO m){
-//        Ordem[] todas = ordens.getOrdens();
-//        for(int i=0; i<todas.length; i++){
-//            if(todas[i] != null){
-//                if(todas[i].getTipoOrdem().equals("Ordem 0")){
-//                    if(todas[i].getTicker().getTotalAtivos() == 0){
-//                        todas[i].setEstadoOrdem("Não");
-//                    }else{
-//                        if(todas[i].getTicker().getTotalAtivos() < todas[i].getQuantidade()){
-//                            double valor = todas[i].getValorTotal() * 0.9; // 10% de desconto
-//                            OrdemExecucao o = new OrdemExecucao();
-//                            todas[i].setEstadoOrdem("Parcial");
-//                            
-//                            o.setContaCompra(todas[i].getConta());
-//                            o.setContaVenda(conta.buscaPorId(1)); // conta do ADM
-//                            o.setOrdem(todas[i]);
-//                            o.setQuantidade(todas[i].getTicker().getTotalAtivos());
-//                            o.setDataCriacao(LocalDate.now());
-//                            o.setDataModificacao(LocalDate.now());
-//                            this.adiciona(o);
-//                            
-//                            conta.transfere(conta, valor, todas[i].getConta().getId(), 1, m);
-//                            
-//                            todas[i].getTicker().setTotalAtivos(0);
-//                            
-//                        }else{
-//                            if(todas[i].getTicker().getTotalAtivos() == todas[i].getQuantidade()){
-//                                double valor = todas[i].getValorTotal() * 0.9; // 10% de desconto
-//                                OrdemExecucao o = new OrdemExecucao();
-//                                todas[i].setEstadoOrdem("Total");
-//
-//                                o.setContaCompra(todas[i].getConta());
-//                                o.setContaVenda(conta.buscaPorId(1)); // conta do ADM
-//                                o.setOrdem(todas[i]);
-//                                o.setQuantidade(todas[i].getTicker().getTotalAtivos());
-//                                o.setDataCriacao(LocalDate.now());
-//                                o.setDataModificacao(LocalDate.now());
-//                                this.adiciona(o);
-//
-//                                conta.transfere(conta, valor, todas[i].getConta().getId(), 1, m);
-//
-//                                todas[i].getTicker().setTotalAtivos(0);
-//                                
-//                            }else if(todas[i].getTicker().getTotalAtivos() > todas[i].getQuantidade()){
-//                                double valor = todas[i].getValorTotal() * 0.9; // 10% de desconto
-//                                OrdemExecucao o = new OrdemExecucao();
-//                                todas[i].setEstadoOrdem("Total");
-//
-//                                o.setContaCompra(todas[i].getConta());
-//                                o.setContaVenda(conta.buscaPorId(1)); // conta do ADM
-//                                o.setOrdem(todas[i]);
-//                                o.setQuantidade(todas[i].getTicker().getTotalAtivos());
-//                                o.setDataCriacao(LocalDate.now());
-//                                o.setDataModificacao(LocalDate.now());
-//                                this.adiciona(o);
-//
-//                                conta.transfere(conta, valor, todas[i].getConta().getId(), 1, m);
-//
-//                                todas[i].getTicker().setTotalAtivos(todas[i].getTicker().getTotalAtivos() - todas[i].getQuantidade());
-//                            }
-//                        }
-//                        
-//                    }
-//                    
-//                }
-//            }
-//        }
-//    }
     
     public boolean adiciona(OrdemExecucao o) {
         int proximaPosicaoLivre = this.proximaPosicaoLivre();

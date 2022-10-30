@@ -33,7 +33,7 @@ public class Controladora {
     OrdemDAO ordemDAO = new OrdemDAO(ativoDAO, contaCorrenteDAO);
     OrdemExecucaoDAO ordemExecucaoDAO = new OrdemExecucaoDAO();
     MovimentaContaDAO movimentaContaDAO = new MovimentaContaDAO();
-    MeusAtivosDAO meusAtivosDAO = new MeusAtivosDAO(ativoDAO, contaCorrenteDAO);
+    MeusAtivosDAO meusAtivosDAO = new MeusAtivosDAO();
     GUI gui = new GUI();
     public LocalDate data = LocalDate.of(2022, 10, 15);
     public LocalDate dataAtualizavel = LocalDate.of(2022, 10, 15);
@@ -110,17 +110,8 @@ public class Controladora {
                                         break;
                                     
                                     case 4:                                     
-                                        ordemExecucaoDAO.executarOrdem(ordemDAO, contaCorrenteDAO, movimentaContaDAO, meusAtivosDAO);
-                                        //ordemExecucaoDAO.executarOrdem0(ordemDAO, contaCorrenteDAO, movimentaContaDAO);
-                                        OrdemExecucao[] ordensExecutadas = ordemExecucaoDAO.getOrdensExecucao();
-                                        
-//                                        for(int i=0; i<ordensExecutadas.length; i++){
-//                                            MeusAtivos
-//                                        }
-//                                        
-//                                        JOptionPane.showMessageDialog(null, ordensExecutadas[0].toString(), "Ordens Executadas", JOptionPane.INFORMATION_MESSAGE);
-//                                        JOptionPane.showMessageDialog(null, ordensExecutadas[1].toString(), "Ordens Executadas", JOptionPane.INFORMATION_MESSAGE);
-                                  
+                                        ordemExecucaoDAO.executarOrdem(ordemDAO, contaCorrenteDAO, movimentaContaDAO, meusAtivosDAO, movimentaContaDAO);
+                                        meusAtivosDAO.organizaMeusAtivos(ordemExecucaoDAO);
                                         break;
 
 
@@ -132,54 +123,56 @@ public class Controladora {
                                     case 6: 
                                         data = dataAtualizavel.plusDays(31);
                                         JOptionPane.showMessageDialog(null, data, "Data", JOptionPane.INFORMATION_MESSAGE);
-                                        contaCorrenteDAO.pagarMensalidade(data, movimentaContaDAO);
+                                        contaCorrenteDAO.pagarMensalidade(data);
+                                        break;
+                                        
+                                    case 7: 
+                                        ordemDAO.mostrarTodos();
                                         break;
 
                                 }
                                 
-                            }while(escolha > 0 && escolha < 7);
+                            }while(escolha > 0 && escolha < 8);
                         }else{
                             int decisao = 0;
+                            double valorTotalAtivos = 0;
                             do{
                                 decisao = gui.menuCliente();
                                 
                                 switch (decisao) {
                                     case 1:
                                         contaCorrenteDAO.depositar(conta.getId(), gui.perguntarValor(), contaCorrenteDAO);
-                                        
                                         break;
                                         
                                     case 2:
-                                        JOptionPane.showMessageDialog(null, contaCorrenteDAO.mostraSaldo(conta.getId(), contaCorrenteDAO), "Saldo", JOptionPane.INFORMATION_MESSAGE);
-  
+                                        JOptionPane.showMessageDialog(null, contaCorrenteDAO.mostraSaldo(conta.getId(), contaCorrenteDAO), "Saldo", JOptionPane.INFORMATION_MESSAGE); 
                                         break;
                                         
-                                    case 3:        
-                                        if (contaCorrenteDAO.sacar(conta, gui.perguntarValor(), movimentaContaDAO)) {
+                                    case 3:  
+                                        double valor = gui.perguntarValor();
+                                        if (contaCorrenteDAO.sacar(conta, valor)) {
                                             JOptionPane.showMessageDialog(null,"Saque evetuado com sucesso" , "Saque", JOptionPane.INFORMATION_MESSAGE);
+                                            movimentaContaDAO.criarMovimento("Débito", "Saque", valor, conta);
 
                                         } else {
                                             JOptionPane.showMessageDialog(null, "Não foi possível fazer o saque", "Saque", 0);
                                         }
-
                                         break;
                                         
                                     case 4: 
-                                        if(contaCorrenteDAO.transfere(contaCorrenteDAO, gui.perguntarValor(), conta.getId(), gui.perguntarId(), movimentaContaDAO)){
+                                        double valorTransferencia = gui.perguntarValor();
+                                        if(contaCorrenteDAO.transfere(contaCorrenteDAO, valorTransferencia, conta.getId(), gui.perguntarId())){
                                             JOptionPane.showMessageDialog(null,"Transferência evetuada com sucesso" , "Transferência", JOptionPane.INFORMATION_MESSAGE);
+                                            movimentaContaDAO.criarMovimento("Débito", "Tranferência", valorTransferencia, conta);
 
                                         }else{
                                             JOptionPane.showMessageDialog(null, "Não foi possível fazer a transferência", "Transferência", 0);
                                         }
-
                                         break;
                                         
                                     case 5:
-//                                        MovimentaConta[] movimentos = movimentaContaDAO.getMovimentos();
-//                                        JOptionPane.showMessageDialog(null, movimentos[0], "Movimentos", 0);
-                                        JOptionPane.showMessageDialog(null,contaCorrenteDAO.gerarExtrato(conta.getId(), movimentaContaDAO) , "Extrato", JOptionPane.INFORMATION_MESSAGE);
-                                        
-                                        
+                                        JOptionPane.showMessageDialog(null,contaCorrenteDAO.gerarExtrato(conta.getId(), movimentaContaDAO, valorTotalAtivos) , "Extrato", 
+                                                                      JOptionPane.INFORMATION_MESSAGE);      
                                         break;
                                     
                                     case 6:
@@ -196,17 +189,28 @@ public class Controladora {
                                         
                                     case 9:
                                         MeusAtivos[] meus = meusAtivosDAO.getMeusAtivos();
+                                        int qtdTotalAtivos = 0;
+                                        StringBuilder builder = new StringBuilder("");
                                         
                                         for (int i = 0; i < meus.length; i++) {
                                             if(meus[i] != null){
                                                 if(meus[i].getConta().getId() == conta.getId()){
-                                                    JOptionPane.showMessageDialog(null, meus[i].toString(), "Meus Ativos", JOptionPane.INFORMATION_MESSAGE);
+                                                    valorTotalAtivos += meus[i].getTotalDinheiroAtivos();
+                                                    qtdTotalAtivos += meus[i].getQtdAtivos();
                                                 }
                                             }
                                             
                                         }
                                         
+                                        builder.append("\nTotal de Ativos: ").append(qtdTotalAtivos).append("\n");
+                                        builder.append("Dinheiro Total em Ativos: ").append(valorTotalAtivos);
+                                        
+                                        JOptionPane.showMessageDialog(null, builder.toString(), "Meus Ativos", JOptionPane.INFORMATION_MESSAGE);
+                                        
+                                        valorTotalAtivos = 0.0;
+                                        
                                         break;
+
                                     
                                     case 10:
                                         clienteDAO.alterarNome(cliente.getNome(), gui.perguntarNome());
