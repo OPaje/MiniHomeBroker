@@ -14,11 +14,8 @@ import mvc.model.ContaCorrente;
 import mvc.model.ContaCorrenteDAO;
 import mvc.model.MeusAtivos;
 import mvc.model.MeusAtivosDAO;
-import mvc.model.MovimentaConta;
 import mvc.model.MovimentaContaDAO;
-import mvc.model.Ordem;
 import mvc.model.OrdemDAO;
-import mvc.model.OrdemExecucao;
 import mvc.model.OrdemExecucaoDAO;
 import mvc.view.GUI;
 
@@ -77,7 +74,7 @@ public class Controladora {
                                 
                                 switch (escolha) {
                                     case 1:
-                                        //contaCorrenteDAO.pagarDividendos(gui.perguntarValor(), quantidade, gui.perguntarId()); // pegar a quantidade nos meus ativos
+                                        //contaCorrenteDAO.pagarDividendos(contaCorrenteDAO, gui.perguntarValor(), quantidade, gui.perguntarId()); // pegar a quantidade nos meus ativos
                                         break;
                                         
                                     case 2:

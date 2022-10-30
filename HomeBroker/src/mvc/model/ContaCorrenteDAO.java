@@ -87,7 +87,6 @@ public class ContaCorrenteDAO {
             return false;
         }else{
             conta.setSaldo(conta.getSaldo() - valor);
-            //m.criarMovimento("Débito", "Saque", valor, conta);
             return true;
         }
     }
@@ -114,10 +113,10 @@ public class ContaCorrenteDAO {
         }
     }
     
-    public boolean pagarDividendos(double valor, int quantidade, long id){
+    public boolean pagarDividendos(ContaCorrenteDAO contas, double valor, int quantidade, long id){
         double dividendo = valor * quantidade;
         
-        return this.transfere(this, dividendo, 1, id);
+        return this.transfere(contas, dividendo, 1, id);
     }    
     
     public void pagarMensalidade(LocalDate data){
@@ -139,8 +138,7 @@ public class ContaCorrenteDAO {
         
         for (int i = 0; i < movi.length; i++) {
             if(movi[i] != null){
-                if(movi[i].getConta().getId() == id){
-                    //builder.append(movi[i].getDescricao()).append(movi[i].getValor()).append("\n");
+                if(movi[i].getConta().getId() == id){                  
                     builder.append(movi[i].toString());
                 }
             }

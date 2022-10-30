@@ -18,7 +18,7 @@ import mvc.model.Ordem;
 
 /**
  *
- * @author jeanc
+ * @author Stheffany
  */
 public class GUI {
     
@@ -106,14 +106,6 @@ public class GUI {
             
         }while(o.getTicker() == null);
         
-        // acho que não precisa desse mais
-//        if(o.getTicker().getTotalAtivos() == 0){
-//            o.setEstadoOrdem("Não");
-//            JOptionPane.showMessageDialog(null, "O ticker não possui ativos a venda", "Erro", 0);
-//            return null;
-//        }
-        
-        // fazer a verificação da quantidade
         String qtd = JOptionPane.showInputDialog(null, "Informe a quantidade de ativos: ");
         int qtd1 = Integer.parseInt(qtd);
         o.setQuantidade(qtd1);
@@ -154,13 +146,6 @@ public class GUI {
             }
             
         }while(o.getTicker() == null);
-        
-        // acho que não precisa desse mais
-//        if(o.getTicker().getTotalAtivos() == 0){
-//            o.setEstadoOrdem("Não");
-//            JOptionPane.showMessageDialog(null, "O ticker não possui ativos a venda", "Erro", 0);
-//            return null;
-//        }
 
         String qtd = JOptionPane.showInputDialog(null, "Informe a quantidade de ativos: ");
         int qtd1 = Integer.parseInt(qtd);
