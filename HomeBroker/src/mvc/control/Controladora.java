@@ -120,7 +120,7 @@ public class Controladora {
                                     case 6: 
                                         data = dataAtualizavel.plusDays(31);
                                         JOptionPane.showMessageDialog(null, data, "Data", JOptionPane.INFORMATION_MESSAGE);
-                                        contaCorrenteDAO.pagarMensalidade(data);
+                                        contaCorrenteDAO.pagarMensalidade(data, movimentaContaDAO);
                                         break;
                                         
                                     case 7: 

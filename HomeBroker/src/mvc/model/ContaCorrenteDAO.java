@@ -119,11 +119,12 @@ public class ContaCorrenteDAO {
         return this.transfere(contas, dividendo, 1, id);
     }    
     
-    public void pagarMensalidade(LocalDate data){
+    public void pagarMensalidade(LocalDate data, MovimentaContaDAO movimenta){
         if(data.getDayOfMonth() > 14){
             for(int i=1; i<contas.length; i++){
                 if(contas[i] != null){
-                    this.transfere(this, 20,contas[i].getId(), 1);   
+                    this.transfere(this, 20,contas[i].getId(), 1);  
+                    movimenta.criarMovimento("Débito", "Pagamento Mensalidade", 20, contas[i]);
                     
                 }
                 
