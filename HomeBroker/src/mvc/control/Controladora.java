@@ -177,11 +177,11 @@ public class Controladora {
                                         break;
                                     
                                     case 7:
-                                        gui.criarOrdemCompra(ativoDAO, contaCorrenteDAO);
+                                        ordemDAO.adiciona(gui.criarOrdemCompra(ativoDAO, contaCorrenteDAO));
                                         break;
                                         
                                     case 8:
-                                        gui.criarOrdemVenda(ativoDAO, contaCorrenteDAO);
+                                        ordemDAO.adiciona(gui.criarOrdemVenda(ativoDAO, contaCorrenteDAO));                                      
                                         break;
                                         
                                     case 9:
