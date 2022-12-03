@@ -51,6 +51,8 @@ public class ContaCorrenteDAO {
      
     }
     
+    
+    //verifica uma posição livre para adicionar uma nova conta ao vetor de contas
     public boolean adicionaConta(ContaCorrente c) {
         int proximaPosicaoLivre = this.proximaPosicaoLivre();
         if (proximaPosicaoLivre != -1) {
@@ -61,6 +63,7 @@ public class ContaCorrenteDAO {
         }
     }
     
+    // função para buscar por id no momento de realizar operações na conta
      public ContaCorrente buscaPorId(long id) {
         for (ContaCorrente c : contas) {
             if (c != null && c.getId() == id) {
@@ -94,7 +97,8 @@ public class ContaCorrenteDAO {
     public String mostraSaldo(long id, ContaCorrenteDAO contas){
         ContaCorrente c = contas.buscaPorId(id);
         
-        return "Saldo conta do(a) " + c.getC().getNome() + ": " + c.getSaldo();
+        return "Id da conta: " + c.getId() + 
+                "Saldo conta do(a) " + c.getC().getNome() + ": " + c.getSaldo();
     }
     
     public boolean transfere(ContaCorrenteDAO contas, double valor, long idOrigem, long idDestino){ 

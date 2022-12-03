@@ -12,17 +12,12 @@ import java.time.LocalDate;
  */
 public class MovimentaConta {
      private long id;
-     private static long serial;
      private ContaCorrente conta; 
      private String tipoMovimento;
      private String descricao;
      private double valor;
      private LocalDate dataCriacao;
      private LocalDate dataModificacao;
-
-    public MovimentaConta() {
-        this.id = ++MovimentaConta.serial;
-    }
 
     public long getId() {
         return id;

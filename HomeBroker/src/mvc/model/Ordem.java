@@ -13,7 +13,6 @@ import java.time.LocalDate;
  */
 public class Ordem {
     private long id;
-    private static long serialOrdem = 0;
     private int quantidade;
     private double valor;
     private double valorTotal;
@@ -23,10 +22,6 @@ public class Ordem {
     private Ativo ticker;
     private LocalDate dataCriacao;
     private LocalDate dataModificacao;
-    
-    public Ordem(){
-        this.id = ++Ordem.serialOrdem;
-    }
 
     public long getId() {
         return id;

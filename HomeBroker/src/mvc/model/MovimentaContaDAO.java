@@ -16,7 +16,8 @@ public class MovimentaContaDAO {
     public MovimentaConta[] getMovimentos() {
         return movimentos;
     }
- 
+    
+    //informações para o crud de movimentação de conta (facilita na emissão do extrato)
     public void criarMovimento(String tipo, String descricao, double valor, ContaCorrente conta){
         MovimentaConta movimenta = new MovimentaConta();
         movimenta.setConta(conta);
@@ -29,6 +30,7 @@ public class MovimentaContaDAO {
         this.adicionaMovimento(movimenta);
     }
     
+    //procura uma posição livre no vetor de movimentação
      public boolean adicionaMovimento(MovimentaConta m) {
         int proximaPosicaoLivre = this.proximaPosicaoLivre();
         if (proximaPosicaoLivre != -1) {

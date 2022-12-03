@@ -47,7 +47,7 @@ public class AtivoDAO {
         this.adicionaAtivo(a3);
         
     }
-    
+        //procura uma próxima posição livre para inserir o ativo, em caso positivo insere o ativo e retorna true, caso contrário retorna false
         public boolean adicionaAtivo(Ativo a) {
         int proximaPosicaoLivre = this.proximaPosicaoLivre();
         if (proximaPosicaoLivre != -1) {
@@ -77,7 +77,7 @@ public class AtivoDAO {
         return null;
 
     }
-        
+
         public void mostrarTodos() {
         boolean temAtivo = false;
         StringBuilder builder = new StringBuilder("");
@@ -96,7 +96,7 @@ public class AtivoDAO {
         }
     }
 
-     public boolean alterarTicker(long id, String novoTicker){
+    public boolean alterarTicker(long id, String novoTicker){
         Ativo a = this.buscaPorId(id);
         if(a != null){
             a.setTicker(novoTicker);

@@ -17,12 +17,6 @@ public class ContaCorrente{
     private LocalDate dataCriacao;
     private LocalDate dataModificacao;    
     private Cliente c;
-    
-    private static long serialContaCorrente;
-    
-    public ContaCorrente(){
-        this.id = ++ContaCorrente.serialContaCorrente;
-    }
             
     public long getId() {
         return id;
@@ -55,7 +49,8 @@ public class ContaCorrente{
     public Cliente getC() {
         return c;
     }
-
+    
+    //recebe um parâmetro do tipo Cliente
     public void setC(Cliente c) {
         this.c = c;
     }
@@ -82,8 +77,7 @@ public class ContaCorrente{
         return this.id == other.id;
     }
     
-    
-    
+
     @Override
     public String toString() {
 	return "\nID Conta = " + id + "\nData de Criacao = " + dataCriacao + 

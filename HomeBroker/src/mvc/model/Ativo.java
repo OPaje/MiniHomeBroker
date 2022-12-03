@@ -17,18 +17,12 @@ import java.time.temporal.ChronoUnit;
  */
 public class Ativo {
     private long id;
-    private static long serialAtivo = 0;
     private int totalAtivos;
     private double precoInicial;
     private String nomeEmpresa;
     private String ticker;       
     private LocalDate dataCriacao;
     private LocalDate dataModficacao;
-    
-    
-    public Ativo(){
-        id = ++Ativo.serialAtivo;
-    }
 
     public long getId() {
         return id;
@@ -94,7 +88,7 @@ public class Ativo {
         hash = 53 * hash + (int) (this.id ^ (this.id >>> 32));
         return hash;
     }
-
+    
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

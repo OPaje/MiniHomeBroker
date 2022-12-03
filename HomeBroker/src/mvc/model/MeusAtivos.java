@@ -10,7 +10,6 @@ package mvc.model;
  */
 public class MeusAtivos {
     private long id;
-    private static long serial;
     private int qtdAtivos;
     private double valorPago;
     private double cotacao;
@@ -18,9 +17,6 @@ public class MeusAtivos {
     private Ativo ativo;
     private ContaCorrente conta;
     
-    public MeusAtivos(){
-        id = ++MeusAtivos.serial;
-    }
 
     public long getId() {
         return id;

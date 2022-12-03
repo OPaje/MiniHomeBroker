@@ -12,7 +12,6 @@ import java.time.LocalDate;
  */
 public class OrdemExecucao {
     private long id;
-    private static long serial = 0;
     private Ordem ordemCompra;
     private Ordem ordemVenda;
     private ContaCorrente contaCompra;
@@ -20,11 +19,6 @@ public class OrdemExecucao {
     private int quantidade;
     private LocalDate dataCriacao;
     private LocalDate dataModificacao;
-
-    public OrdemExecucao() {
-        
-        this.id = ++serial;
-    }
 
     public long getId() {
         return id;

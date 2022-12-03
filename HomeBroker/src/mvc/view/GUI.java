@@ -57,6 +57,7 @@ public class GUI {
         return conta;
     }
     
+    //tela só aparece p administrador
     public Ativo criarAtivo(){
         Ativo a = new Ativo();
         

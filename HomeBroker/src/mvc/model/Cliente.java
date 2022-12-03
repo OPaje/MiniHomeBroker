@@ -12,7 +12,6 @@ import java.time.LocalDate;
  */
 public class Cliente {
     private long id;
-    private static long serialCliente = 0;
     private int tipoUsuario;
     private String nome;
     private String cpf;
@@ -22,10 +21,6 @@ public class Cliente {
     private String telefone;
     private LocalDate dataCriacao;
     private LocalDate dataModificacao;
-    
-    public Cliente(){
-        this.id = ++Cliente.serialCliente;
-    }
 
     public long getId() {
         return id;
