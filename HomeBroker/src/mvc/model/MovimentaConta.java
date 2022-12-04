@@ -23,6 +23,10 @@ public class MovimentaConta {
         return id;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public ContaCorrente getConta() {
         return conta;
     }
@@ -97,8 +101,5 @@ public class MovimentaConta {
     public String toString() {
         return "\nTipo Movimento = " + tipoMovimento + " Descricao = " + descricao + " Valor = " + valor;
     }
-    
-    
-     
-     
+   
 }

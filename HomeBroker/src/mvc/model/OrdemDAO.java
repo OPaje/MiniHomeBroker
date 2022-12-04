@@ -21,7 +21,7 @@ public class OrdemDAO {
     public OrdemDAO(AtivoDAO ativos, ContaCorrenteDAO contas){
         
         Ordem o1 = new Ordem();
-        o1.setConta(contas.buscaPorId(2));
+        o1.setConta(contas.buscaPorID(2));
         o1.setTipoOrdem("Venda");
         o1.setTicker(ativos.buscaPorTicker("NTCO3"));
         o1.setQuantidade(40);
@@ -32,7 +32,7 @@ public class OrdemDAO {
         this.adiciona(o1);
         
         Ordem o2 = new Ordem();
-        o2.setConta(contas.buscaPorId(3));
+        o2.setConta(contas.buscaPorID(3));
         o2.setTipoOrdem("Compra");
         o2.setTicker(ativos.buscaPorTicker("NTCO3"));
         o2.setQuantidade(20);
@@ -43,7 +43,7 @@ public class OrdemDAO {
         this.adiciona(o2);
         
         Ordem o3 = new Ordem();
-        o3.setConta(contas.buscaPorId(3));
+        o3.setConta(contas.buscaPorID(3));
         o3.setTipoOrdem("Compra");
         o3.setTicker(ativos.buscaPorTicker("NTCO3"));
         o3.setQuantidade(30);

@@ -4,6 +4,7 @@
  */
 package mvc.view;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import javax.swing.JOptionPane;
 import mvc.model.Ativo;
@@ -87,7 +88,7 @@ public class GUI {
         do{
             String id = JOptionPane.showInputDialog(null, "Informe o id da sua conta: ");
             long idConta = Long.parseLong(id);
-            o.setConta(contas.buscaPorId(idConta));
+            o.setConta(contas.buscaPorID(idConta));
             
             if(o.getConta() == null){
                 JOptionPane.showMessageDialog(null, "ID Inválido", "Erro", 0);
@@ -128,7 +129,7 @@ public class GUI {
         do{
             String id = JOptionPane.showInputDialog(null, "Informe o id da sua conta: ");
             long idConta = Long.parseLong(id);
-            o.setConta(contas.buscaPorId(idConta));
+            o.setConta(contas.buscaPorID(idConta));
             
             if(o.getConta() == null){
                 JOptionPane.showMessageDialog(null, "ID Inválido", "Erro", 0);
@@ -163,15 +164,16 @@ public class GUI {
         return o;
     }
     
-    public void criarOrdem0(AtivoDAO ativos, ContaCorrenteDAO contas, MeusAtivosDAO meusAtivos, MovimentaContaDAO movimenta){
+    public void criarOrdem0(AtivoDAO ativos, ContaCorrenteDAO contas, MeusAtivosDAO meusAtivos, MovimentaContaDAO movimenta) throws SQLException{
         Ativo a;
         ContaCorrente c;
         MeusAtivos meu = new MeusAtivos();
+        long idConta;
         
         do{
             String id = JOptionPane.showInputDialog(null, "Informe o id da sua conta: ");
-            long idConta = Long.parseLong(id);
-            c = (contas.buscaPorId(idConta));
+            idConta = Long.parseLong(id);
+            c = (contas.buscaPorID(idConta));
             
             if(c == null){
                 JOptionPane.showMessageDialog(null, "ID Inválido", "Erro", 0);
@@ -205,7 +207,7 @@ public class GUI {
                 meu.setTotalDinheiroAtivos(qtd1 * valor);
                 meusAtivos.adicionaMeusAtivos(meu);
                 contas.transfere(contas, valor * qtd1, c.getId(), 1);
-                movimenta.criarMovimento("Débito", "Negociação de Ativos", meu.getTotalDinheiroAtivos(), c);
+                movimenta.novaMovimentacao("Débito", "Negociação de Ativos", meu.getTotalDinheiroAtivos(), LocalDate.now(), LocalDate.now(), idConta);
                 
             }else{
                 meu.setAtivo(a);
@@ -218,7 +220,7 @@ public class GUI {
                 meusAtivos.adicionaMeusAtivos(meu);
                 
                 contas.transfere(contas, a.getTotalAtivos()* valor, c.getId(), 1);
-                movimenta.criarMovimento("Débito", "Negociação de Ativos", meu.getTotalDinheiroAtivos(), c);
+                movimenta.novaMovimentacao("Débito", "Negociação de Ativos", meu.getTotalDinheiroAtivos(), LocalDate.now(), LocalDate.now(), idConta);
             }
             
         }

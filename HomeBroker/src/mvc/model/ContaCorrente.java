@@ -17,7 +17,11 @@ public class ContaCorrente{
     private LocalDate dataCriacao;
     private LocalDate dataModificacao;    
     private Cliente c;
-            
+     
+    public void setId(long id) {
+        this.id = id;
+    }
+    
     public long getId() {
         return id;
     }
@@ -37,7 +41,6 @@ public class ContaCorrente{
         return dataModificacao;
     }
 
-
     public void setDataCriacao(LocalDate dataCriacao) {
         this.dataCriacao = dataCriacao;
     }
@@ -50,8 +53,12 @@ public class ContaCorrente{
         return c;
     }
     
-    //recebe um parâmetro do tipo Cliente
     public void setC(Cliente c) {
+        this.c = c;
+    }
+    
+    //recebe um parâmetro do tipo Cliente
+    public void setCliente(Cliente c) {
         this.c = c;
     }
     
@@ -81,14 +88,6 @@ public class ContaCorrente{
     @Override
     public String toString() {
 	return "\nID Conta = " + id + "\nData de Criacao = " + dataCriacao + 
-	"\nData de Modificacao = " + dataModificacao + c.toString();
-}
-
-
-   
-
-    
-    
-    
-    
+	"\nData de Modificacao = " + dataModificacao;
+    }   
 }
