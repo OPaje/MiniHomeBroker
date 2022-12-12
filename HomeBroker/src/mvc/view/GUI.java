@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import mvc.model.Ativo;
 import mvc.model.AtivoDAO;
 import mvc.model.Cliente;
+import mvc.model.ClienteDAO;
 import mvc.model.ContaCorrente;
 import mvc.model.ContaCorrenteDAO;
 import mvc.model.MeusAtivos;
@@ -23,9 +24,11 @@ import mvc.model.Ordem;
  */
 public class GUI {
     
-    public ContaCorrente criarCliente(){
+    public ContaCorrente criarCliente() throws SQLException{
         Cliente c = new Cliente();
+        ClienteDAO cdao = new ClienteDAO();
         ContaCorrente conta = new ContaCorrente();
+        ContaCorrenteDAO ccdao = new ContaCorrenteDAO();
         
         String nome = JOptionPane.showInputDialog(null, "Informe o seu nome: ");
         c.setNome(nome);
@@ -49,12 +52,19 @@ public class GUI {
         c.setDataCriacao(LocalDate.now());
         c.setDataModificacao(LocalDate.now());
         
+        long i = cdao.inserir(c);
+        conta.setSaldo(500000); // ao criar uma nova conta a bolsa ganha 500 mil
+        conta.setDataCriacao(LocalDate.now());
+        conta.setDataModificacao(LocalDate.now());
+        conta.setC(c);
+        ccdao.inserir(conta, i);
+        
         // vinculando o cliente com a conta
         conta.setC(c);
         conta.setSaldo(20000);
         conta.setDataCriacao(LocalDate.now());
         conta.setDataModificacao(LocalDate.now());
-        
+
         return conta;
     }
     
@@ -88,7 +98,7 @@ public class GUI {
         do{
             String id = JOptionPane.showInputDialog(null, "Informe o id da sua conta: ");
             long idConta = Long.parseLong(id);
-            o.setConta(contas.buscaPorID(idConta));
+            o.setConta(contas.buscaPorId(idConta));
             
             if(o.getConta() == null){
                 JOptionPane.showMessageDialog(null, "ID Inválido", "Erro", 0);
@@ -111,8 +121,7 @@ public class GUI {
         String qtd = JOptionPane.showInputDialog(null, "Informe a quantidade de ativos: ");
         int qtd1 = Integer.parseInt(qtd);
         o.setQuantidade(qtd1);
-        
-        
+
         double valor = 10;
         o.setValor(valor);
         o.setValorTotal(qtd1 * valor);
@@ -129,7 +138,7 @@ public class GUI {
         do{
             String id = JOptionPane.showInputDialog(null, "Informe o id da sua conta: ");
             long idConta = Long.parseLong(id);
-            o.setConta(contas.buscaPorID(idConta));
+            o.setConta(contas.buscaPorId(idConta));
             
             if(o.getConta() == null){
                 JOptionPane.showMessageDialog(null, "ID Inválido", "Erro", 0);
@@ -173,7 +182,7 @@ public class GUI {
         do{
             String id = JOptionPane.showInputDialog(null, "Informe o id da sua conta: ");
             idConta = Long.parseLong(id);
-            c = (contas.buscaPorID(idConta));
+            c = (contas.buscaPorId(idConta));
             
             if(c == null){
                 JOptionPane.showMessageDialog(null, "ID Inválido", "Erro", 0);

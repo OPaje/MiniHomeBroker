@@ -87,7 +87,8 @@ public class ContaCorrente{
 
     @Override
     public String toString() {
-	return "\nID Conta = " + id + "\nData de Criacao = " + dataCriacao + 
+	return "\nID Conta = " + id + "\nData de Criacao = " + dataCriacao + "\nSaldo = " + saldo +
 	"\nData de Modificacao = " + dataModificacao;
     }   
+
 }

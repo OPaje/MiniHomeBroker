@@ -70,27 +70,7 @@ public class ClienteDAO {
 //        c4.setDataModificacao(LocalDate.now());
 //        this.adiciona(c4);
 //    }
-    
-    public boolean adiciona(Cliente c) {
-        int proximaPosicaoLivre = this.proximaPosicaoLivre();
-        if (proximaPosicaoLivre != -1) {
-            clientes[proximaPosicaoLivre] = c;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public boolean ehVazio() {
-        for (Cliente cliente : clientes) {
-            if (cliente != null) {
-                return false;
-            }
-        }
-        return true;
-
-    }
-
+   
    public void mostrarTodos() {
         boolean temCliente = false;
         StringBuilder builder = new StringBuilder("");
@@ -103,13 +83,12 @@ public class ClienteDAO {
         }
         
         JOptionPane.showMessageDialog(null,builder.toString(),"Clientes",JOptionPane.INFORMATION_MESSAGE);
-        
         if (!temCliente) {
             System.out.println("Não existe cliente cadastrado");
         }
     }
 
-     public boolean alterarNome(String nome, String novoNome){
+    public boolean alterarNome(String nome, String novoNome){
         Cliente c = this.buscaPorNome(nome);
         if(c != null){
             c.setNome(novoNome);
@@ -127,59 +106,46 @@ public class ClienteDAO {
             }
         }
         return null;
-
     }
     
-    public Cliente buscaPorId(long id) {
-        for (Cliente c : clientes) {
-            if (c != null && c.getId() == id) {
-                return c;
-            }
-        }
-        return null;
-
+    private PreparedStatement criaConsulta(Connection con, String login, String senha) throws SQLException {
+        String sql = "select * from cliente where login = ? and senha = ?";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setString(1, login);
+        ps.setString(2, senha);
+        return ps;
     }
     
     public Cliente buscarPorLoginESenha(String login, String senha) {
-        for (Cliente c : clientes) {
-            if (c != null && (c.getLogin().equals(login) && c.getSenha().equals(senha))) {
-                return c;
-            }
+        try (Connection connection = new ConnectionFactory().getConnection();
+        PreparedStatement ps = criaConsulta(connection, login, senha);
+        ResultSet rs = ps.executeQuery()) {            
+        while (rs.next()) {                   
+                Cliente elemento = new Cliente();
+                elemento.setId(rs.getLong("idcliente"));
+                elemento.setTipoUsuario(rs.getInt("tipo_usuario"));
+                elemento.setNome(rs.getString("nome_cliente"));
+                elemento.setCpf(rs.getString("cpf"));
+                elemento.setLogin(rs.getString("login"));
+                elemento.setSenha(rs.getString("senha"));
+                elemento.setEndereco(rs.getString("endereco"));
+                elemento.setTelefone(rs.getString("telefone"));
+
+                Date currentDate = rs.getDate("data_criacao_cliente");
+                LocalDate dataCriacao = currentDate.toLocalDate();
+                elemento.setDataCriacao(dataCriacao);
+
+                Date currentDateMod = rs.getDate("data_modificacao_cliente");
+                LocalDate dataMod = currentDateMod.toLocalDate();
+                elemento.setDataModificacao(dataMod);                  
+            return elemento;
+        }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
         return null;
     }
-
-    public boolean remover(String cpf) {
-        for (int i = 0; i < clientes.length; i++) {
-            if (clientes[i] != null && clientes[i].getCpf().equals(cpf)) {
-                clientes[i] = null;
-                return true;
-            }
-        }
-        return false;
-
-    }
     
-    public boolean removerPorId(long id) {
-        for (int i = 0; i < clientes.length; i++) {
-            if (clientes[i] != null && clientes[i].getId() == id) {
-                clientes[i] = null;
-                return true;
-            }
-        }
-        return false;
-
-    }
-
-    private int proximaPosicaoLivre() {
-        for (int i = 0; i < clientes.length; i++) {
-            if (clientes[i] == null) {
-                return i;
-            }
-
-        }
-        return -1;
-    }
         
         public long inserir(Cliente c) throws SQLException{
             String sql = "insert into cliente(tipo_usuario, nome_cliente, cpf, login, senha, endereco, "
@@ -285,8 +251,7 @@ public class ClienteDAO {
         public Cliente buscaPorID(long code) {
         try (Connection connection = new ConnectionFactory().getConnection();
             PreparedStatement ps = createPreparedStatement(connection, code);
-            ResultSet rs = ps.executeQuery()) {
-            
+            ResultSet rs = ps.executeQuery()) {            
             while (rs.next()) {                   
                     Cliente elemento = new Cliente();
                     elemento.setId(rs.getLong("idcliente"));

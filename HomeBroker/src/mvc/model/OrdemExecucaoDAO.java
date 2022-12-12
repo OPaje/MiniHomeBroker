@@ -70,11 +70,9 @@ public class OrdemExecucaoDAO {
                                     o.setDataModificacao(LocalDate.now());
 
                                     this.adiciona(o);
-
                                     conta.transfere(conta, ordensCompra[j].getValorTotal(), ordensCompra[j].getConta().getId(), ordensVenda[i].getConta().getId());
-                                    
-                                    movimenta.criarMovimento("Débito", "Negociação de Ativos", ordensCompra[j].getValorTotal(), ordensCompra[j].getConta()); // movimento conta compra
-                                    movimenta.criarMovimento("Débito", "Negociação de Ativos", ordensCompra[i].getValorTotal(), ordensVenda[i].getConta()); // movimento conta venda
+                                    movimenta.novaMovimentacao("Débito", "Negociação de Ativos", ordensCompra[j].getValorTotal(), LocalDate.now(), LocalDate.now(), ordensCompra[j].getConta()); // movimento conta compra
+                                    movimenta.novaMovimentacao("Débito", "Negociação de Ativos", ordensCompra[i].getValorTotal(), LocalDate.now(), LocalDate.now(), ordensVenda[i].getConta()); // movimento conta venda
 
                                     ordens.removerPorId(ordensVenda[i].getId());
                                     ordens.removerPorId(ordensCompra[j].getId()); 
@@ -97,8 +95,8 @@ public class OrdemExecucaoDAO {
                                     
                                     conta.transfere(conta, o.getQuantidade() * ordensCompra[j].getValor(), ordensCompra[j].getConta().getId(), ordensVenda[i].getConta().getId());
                                     
-                                    movimenta.criarMovimento("Débito", "Negociação de Ativos", ordensCompra[i].getValorTotal(), ordensCompra[j].getConta()); // movimento conta compra
-                                    movimenta.criarMovimento("Débito", "Negociação de Ativos", ordensCompra[i].getValorTotal(), ordensVenda[i].getConta()); // movimento conta venda
+                                    movimenta.novaMovimentacao("Débito", "Negociação de Ativos", ordensCompra[j].getValorTotal(), LocalDate.now(), LocalDate.now(), ordensCompra[j].getConta()); // movimento conta compra
+                                    movimenta.novaMovimentacao("Débito", "Negociação de Ativos", ordensCompra[i].getValorTotal(), LocalDate.now(), LocalDate.now(), ordensVenda[i].getConta()); // movimento conta venda
 
                                     
                                     ordens.removerPorId(ordensVenda[i].getId());
@@ -122,8 +120,8 @@ public class OrdemExecucaoDAO {
                                     
                                     conta.transfere(conta, ordensCompra[j].getValorTotal(), ordensCompra[j].getConta().getId(), ordensVenda[i].getConta().getId());
                                     
-                                    movimenta.criarMovimento("Débito", "Negociação de Ativos", ordensCompra[j].getValorTotal(), ordensCompra[j].getConta()); // movimento conta compra
-                                    movimenta.criarMovimento("Débito", "Negociação de Ativos", ordensCompra[j].getValorTotal(), ordensVenda[i].getConta()); // movimento conta venda
+                                    movimenta.novaMovimentacao("Débito", "Negociação de Ativos", ordensCompra[j].getValorTotal(), LocalDate.now(), LocalDate.now(), ordensCompra[j].getConta()); // movimento conta compra
+                                    movimenta.novaMovimentacao("Débito", "Negociação de Ativos", ordensCompra[i].getValorTotal(), LocalDate.now(), LocalDate.now(), ordensVenda[i].getConta()); // movimento conta venda
 
                                     ordens.removerPorId(ordensVenda[i].getId());
                                     ordens.removerPorId(ordensCompra[j].getId());

@@ -4,6 +4,7 @@
  */
 package mvc.control;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import javax.swing.JOptionPane;
 import mvc.model.Ativo;
@@ -26,7 +27,7 @@ import mvc.view.GUI;
 public class Controladora {
     ClienteDAO clienteDAO = new ClienteDAO();
     AtivoDAO ativoDAO = new AtivoDAO();
-    ContaCorrenteDAO contaCorrenteDAO = new ContaCorrenteDAO(clienteDAO.getClientes()); // passando como parãmetro o vetor com os clientes
+    ContaCorrenteDAO contaCorrenteDAO = new ContaCorrenteDAO(); // passando como parâmetro o vetor com os clientes
     OrdemDAO ordemDAO = new OrdemDAO(ativoDAO, contaCorrenteDAO);
     OrdemExecucaoDAO ordemExecucaoDAO = new OrdemExecucaoDAO();
     MovimentaContaDAO movimentaContaDAO = new MovimentaContaDAO();
@@ -36,11 +37,11 @@ public class Controladora {
     public LocalDate dataAtualizavel = LocalDate.of(2022, 10, 15);
     
    
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         new Controladora();
     }
     
-    public Controladora() {
+    public Controladora() throws SQLException {
         
         int opcao = 0;
         do {
@@ -48,30 +49,24 @@ public class Controladora {
             switch (opcao) {
                 case 1:
                     ContaCorrente c = gui.criarCliente();
-                    clienteDAO.adiciona(c.getC()); // adcionando também ao vetor de clientes
-                    if (contaCorrenteDAO.adicionaConta(c)) {
+                    if (c.getC() != null) {
                         JOptionPane.showMessageDialog(null, "Cliente cadastrado", "Cadastro de Cliente", JOptionPane.INFORMATION_MESSAGE);
-
                     } else {
                         JOptionPane.showMessageDialog(null, "Cliente não cadastrado", "Cadastro de Cliente", JOptionPane.INFORMATION_MESSAGE);
                     }
                     break;
                     
-                case 2:
-                    
-                    String login = JOptionPane.showInputDialog(null, "Informe o login: ");
-                    
-                    String senha = JOptionPane.showInputDialog(null, "Informe sua senha: ");
-                    
+                case 2:                    
+                    String login = JOptionPane.showInputDialog(null, "Informe o login: ");                   
+                    String senha = JOptionPane.showInputDialog(null, "Informe sua senha: ");                   
                     Cliente cliente = clienteDAO.buscarPorLoginESenha(login, senha); // cliente do login
                     
                     if(cliente != null){
-                        ContaCorrente conta = contaCorrenteDAO.buscaPorId(cliente.getId()); // conta do login
+                        ContaCorrente conta = contaCorrenteDAO.buscaPorIdCliente(cliente.getId()); // conta do login
                         if(cliente.getTipoUsuario() == 0){
                             int escolha = 0;
                             do{
-                                escolha = gui.menuADM();
-                                
+                                escolha = gui.menuADM();                                
                                 switch (escolha) {
                                     case 1:
                                         //contaCorrenteDAO.pagarDividendos(contaCorrenteDAO, gui.perguntarValor(), quantidade, gui.perguntarId()); // pegar a quantidade nos meus ativos
@@ -110,8 +105,6 @@ public class Controladora {
                                         ordemExecucaoDAO.executarOrdem(ordemDAO, contaCorrenteDAO, movimentaContaDAO, meusAtivosDAO, movimentaContaDAO);
                                         meusAtivosDAO.organizaMeusAtivos(ordemExecucaoDAO);
                                         break;
-
-
                                         
                                     case 5:
                                         JOptionPane.showMessageDialog(null, data, "Data", JOptionPane.INFORMATION_MESSAGE);
@@ -138,7 +131,7 @@ public class Controladora {
                                 
                                 switch (decisao) {
                                     case 1:
-                                        contaCorrenteDAO.depositar(conta.getId(), gui.perguntarValor(), contaCorrenteDAO);
+                                        contaCorrenteDAO.depositar(conta.getId(), gui.perguntarValor(), conta);
                                         break;
                                         
                                     case 2:
@@ -147,9 +140,9 @@ public class Controladora {
                                         
                                     case 3:  
                                         double valor = gui.perguntarValor();
-                                        if (contaCorrenteDAO.sacar(conta, valor)) {
+                                        if (contaCorrenteDAO.sacar(conta.getId(), valor, conta)) {
                                             JOptionPane.showMessageDialog(null,"Saque evetuado com sucesso" , "Saque", JOptionPane.INFORMATION_MESSAGE);
-                                            movimentaContaDAO.criarMovimento("Débito", "Saque", valor, conta);
+                                            movimentaContaDAO.novaMovimentacao("Débito", "Saque", valor, LocalDate.now(), LocalDate.now(), conta.getId());
 
                                         } else {
                                             JOptionPane.showMessageDialog(null, "Não foi possível fazer o saque", "Saque", 0);
@@ -160,7 +153,7 @@ public class Controladora {
                                         double valorTransferencia = gui.perguntarValor();
                                         if(contaCorrenteDAO.transfere(contaCorrenteDAO, valorTransferencia, conta.getId(), gui.perguntarId())){
                                             JOptionPane.showMessageDialog(null,"Transferência evetuada com sucesso" , "Transferência", JOptionPane.INFORMATION_MESSAGE);
-                                            movimentaContaDAO.criarMovimento("Débito", "Tranferência", valorTransferencia, conta);
+                                            movimentaContaDAO.novaMovimentacao("Débito", "Tranferência", valorTransferencia, LocalDate.now(), LocalDate.now(), conta.getId());
 
                                         }else{
                                             JOptionPane.showMessageDialog(null, "Não foi possível fazer a transferência", "Transferência", 0);
@@ -168,8 +161,7 @@ public class Controladora {
                                         break;
                                         
                                     case 5:
-                                        JOptionPane.showMessageDialog(null,contaCorrenteDAO.gerarExtrato(conta.getId(), movimentaContaDAO, valorTotalAtivos) , "Extrato", 
-                                                                      JOptionPane.INFORMATION_MESSAGE);      
+                                        //JOptionPane.showMessageDialog(null,contaCorrenteDAO.gerarExtrato(conta.getId(), movimentaContaDAO, valorTotalAtivos) , "Extrato", JOptionPane.INFORMATION_MESSAGE);      
                                         break;
                                     
                                     case 6:
@@ -195,8 +187,7 @@ public class Controladora {
                                                     valorTotalAtivos += meus[i].getTotalDinheiroAtivos();
                                                     qtdTotalAtivos += meus[i].getQtdAtivos();
                                                 }
-                                            }
-                                            
+                                            }                                            
                                         }
                                         
                                         builder.append("\nTotal de Ativos: ").append(qtdTotalAtivos).append("\n");
@@ -242,10 +233,8 @@ public class Controladora {
                                     case 14:
                                         gui.criarOrdem0(ativoDAO, contaCorrenteDAO, meusAtivosDAO, movimentaContaDAO);
                                         break;
-                                }
-                                
-                            }while(decisao > 0 && decisao < 15);
-                            
+                                }                                
+                            }while(decisao > 0 && decisao < 15);                            
                         }
                     }else{
                         JOptionPane.showMessageDialog(null, "Login e/ou senha inválidos", "Login", JOptionPane.INFORMATION_MESSAGE);
