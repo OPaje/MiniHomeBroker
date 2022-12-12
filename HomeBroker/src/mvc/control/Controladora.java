@@ -5,6 +5,7 @@
 package mvc.control;
 
 import java.time.LocalDate;
+import java.util.List;
 import javax.swing.JOptionPane;
 import mvc.model.Ativo;
 import mvc.model.AtivoDAO;
@@ -79,31 +80,21 @@ public class Controladora {
                                         
                                     case 2:
                                         Ativo a = gui.criarAtivo();
-
-                                        if (ativoDAO.adicionaAtivo(a)) {
-                                            JOptionPane.showMessageDialog(null, "Ativo cadastrado", "Cadastro de Ativo", JOptionPane.INFORMATION_MESSAGE);
-
-                                        } else {
-                                            JOptionPane.showMessageDialog(null, "Ativo não cadastrado", "Cadastro de Ativo", JOptionPane.INFORMATION_MESSAGE);
-                                        }
-                                        break;
-                                        
+                                        ativoDAO.adicionaAtivo(a);
+                                      break;
                                     case 3:
-                                        ativoDAO.mostrarTodos();
+                                        List<Ativo> ativos = null;
+                                        ativos = ativoDAO.lista(null);
+                                        JOptionPane.showMessageDialog(null, ativos.toString(), "Ativos", 0);
                                         
                                         String pegaId = JOptionPane.showInputDialog(null, "Informe o ID do ativo: ");
                                         long idAtivo = Long.parseLong(pegaId);
 
-                                        String novoTicker = JOptionPane.showInputDialog(null, "Informe o novo ticker do ativo: ");
-
                                         String novoNome = JOptionPane.showInputDialog(null, "Informe o novo nome da empresa: ");
-
-                                        if (ativoDAO.alterarTicker(idAtivo, novoTicker) && ativoDAO.alterarNomeEmpresa(novoNome, idAtivo)) {
-                                            JOptionPane.showMessageDialog(null, "Ticker alterado", "Alterar Ticker", JOptionPane.INFORMATION_MESSAGE);
-
-                                        } else {
-                                            JOptionPane.showMessageDialog(null, "Ticker não alterado", "Alterar Ticker", JOptionPane.INFORMATION_MESSAGE);
-                                        }
+                                        // cuidar depois das exceções
+                                        ativoDAO.altera(idAtivo, novoNome);
+                                        
+                                        
                                         break;
                                     
                                     case 4:                                     
@@ -173,7 +164,9 @@ public class Controladora {
                                         break;
                                     
                                     case 6:
-                                        ativoDAO.mostrarTodos();
+                                        List<Ativo> ativos = null;
+                                        ativos = ativoDAO.lista(null);
+                                        JOptionPane.showMessageDialog(null, ativos.toString(), "Ativos", 0);
                                         break;
                                     
                                     case 7:

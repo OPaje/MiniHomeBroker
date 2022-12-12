@@ -43,7 +43,7 @@ public class ContaCorrenteDAO {
         this.adicionaConta(c3);
         
         ContaCorrente c4 = new ContaCorrente();
-        c4.setC(cliente[3]);
+        c4.setC(cliente[0]);
         c4.setSaldo(20000); // ao criar uma conta nova o cliente recebe 20 mil;
         c4.setDataCriacao(LocalDate.now());
         c4.setDataModificacao(LocalDate.now());
