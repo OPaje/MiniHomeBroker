@@ -124,6 +124,21 @@ public class ContaCorrenteDAO {
         }
     }
     
+    public String gerarExtrato(long id, MovimentaContaDAO m, double valor) throws SQLException{
+        ContaCorrente c = this.buscaPorId(id);
+        System.out.println(c);
+        StringBuilder builder = new StringBuilder("");      
+        List<MovimentaConta> lista = m.getLista(id);
+        for (MovimentaConta mov : lista){
+            builder.append(mov.toString());
+            System.out.println(mov);
+        }
+        System.out.println(c.getSaldo() - valor);
+        builder.append("\n");
+        builder.append("Saldo Disponível: ").append(c.getSaldo() - valor); // menos o valor alocados em ativos
+        return builder.toString();
+    }
+    
 //    public String gerarExtrato(long id, MovimentaContaDAO m, double valor){
 //        MovimentaConta[] movi = m.getMovimentos();
 //        ContaCorrente c = this.buscaPorID(id);

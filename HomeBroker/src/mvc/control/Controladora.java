@@ -161,7 +161,7 @@ public class Controladora {
                                         break;
                                         
                                     case 5:
-                                        //JOptionPane.showMessageDialog(null,contaCorrenteDAO.gerarExtrato(conta.getId(), movimentaContaDAO, valorTotalAtivos) , "Extrato", JOptionPane.INFORMATION_MESSAGE);      
+                                        JOptionPane.showMessageDialog(null,contaCorrenteDAO.gerarExtrato(conta.getId(), movimentaContaDAO, valorTotalAtivos) , "Extrato", JOptionPane.INFORMATION_MESSAGE);      
                                         break;
                                     
                                     case 6:

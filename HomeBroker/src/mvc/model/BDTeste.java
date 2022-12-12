@@ -133,9 +133,7 @@ public class BDTeste {
 //        }else{
 //            System.out.println("Erro");
 //        }
-
-            
-        
+        ccdao.gerarExtrato(35, mdao, 100000);
         return conta;
     }
          

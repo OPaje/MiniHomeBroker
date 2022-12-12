@@ -19,6 +19,7 @@ import java.util.List;
  * @author Stheffany
  */
 public class MovimentaContaDAO {
+        
     private PreparedStatement createPreparedStatement(Connection con, long id) throws SQLException {
         String sql = "select * from mov_conta where idmovimento = ?";
         PreparedStatement ps = con.prepareStatement(sql);
@@ -91,10 +92,11 @@ public class MovimentaContaDAO {
             }
         }
         
-        public List<MovimentaConta> getLista() throws SQLException {
-            String sql = "select * from mov_conta";
+        public List<MovimentaConta> getLista(long id) throws SQLException {
+            String sql = "select * from mov_conta where mov_conta_ccorrente = ?";
             try (Connection connection = new ConnectionFactory().getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setLong(1, id);
                 List<MovimentaConta> movimentos = new ArrayList<MovimentaConta>();
                 ResultSet rs = stmt.executeQuery();
                 while (rs.next()) {
