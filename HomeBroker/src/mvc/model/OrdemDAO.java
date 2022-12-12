@@ -25,41 +25,41 @@ public class OrdemDAO {
         return ordens;
     }   
     
-//    public OrdemDAO(AtivoDAO ativos, ContaCorrenteDAO contas){
-//        
-//        Ordem o1 = new Ordem();
-//        o1.setConta(contas.buscaPorId(2));
-//        o1.setTipoOrdem("Venda");
-//        o1.setTicker(ativos.buscaPorTicker("NTCO3"));
-//        o1.setQuantidade(40);
-//        o1.setValor(10);
-//        o1.setValorTotal(o1.getValor() * o1.getQuantidade());
-//        o1.setDataCriacao(LocalDate.now());
-//        o1.setDataModificacao(LocalDate.now());
-//        this.adiciona(o1);
-//        
-//        Ordem o2 = new Ordem();
-//        o2.setConta(contas.buscaPorId(3));
-//        o2.setTipoOrdem("Compra");
-//        o2.setTicker(ativos.buscaPorTicker("NTCO3"));
-//        o2.setQuantidade(20);
-//        o2.setValor(10);
-//        o2.setValorTotal(o2.getValor() * o2.getQuantidade());
-//        o2.setDataCriacao(LocalDate.now());
-//        o2.setDataModificacao(LocalDate.now());
-//        this.adiciona(o2);
-//        
-//        Ordem o3 = new Ordem();
-//        o3.setConta(contas.buscaPorId(3));
-//        o3.setTipoOrdem("Compra");
-//        o3.setTicker(ativos.buscaPorTicker("NTCO3"));
-//        o3.setQuantidade(30);
-//        o3.setValor(10);
-//        o3.setValorTotal(o3.getValor() * o3.getQuantidade());
-//        o3.setDataCriacao(LocalDate.now());
-//        o3.setDataModificacao(LocalDate.now());
-//        this.adiciona(o3);
-//    }
+    public OrdemDAO(AtivoDAO ativos, ContaCorrenteDAO contas){
+        
+        Ordem o1 = new Ordem();
+        o1.setConta(contas.buscaPorIdCliente(2));
+        o1.setTipoOrdem("Venda");
+        o1.setTicker(ativos.buscaPorTicker("NTCO3"));
+        o1.setQuantidade(40);
+        o1.setValor(10);
+        o1.setValorTotal(o1.getValor() * o1.getQuantidade());
+        o1.setDataCriacao(LocalDate.now());
+        o1.setDataModificacao(LocalDate.now());
+        this.adicionaOrdem(o1);
+        
+        Ordem o2 = new Ordem();
+        o2.setConta(contas.buscaPorIdCliente(3));
+        o2.setTipoOrdem("Compra");
+        o2.setTicker(ativos.buscaPorTicker("NTCO3"));
+        o2.setQuantidade(20);
+        o2.setValor(10);
+        o2.setValorTotal(o2.getValor() * o2.getQuantidade());
+        o2.setDataCriacao(LocalDate.now());
+        o2.setDataModificacao(LocalDate.now());
+        this.adicionaOrdem(o2);
+        
+        Ordem o3 = new Ordem();
+        o3.setConta(contas.buscaPorIdCliente(3));
+        o3.setTipoOrdem("Compra");
+        o3.setTicker(ativos.buscaPorTicker("NTCO3"));
+        o3.setQuantidade(30);
+        o3.setValor(10);
+        o3.setValorTotal(o3.getValor() * o3.getQuantidade());
+        o3.setDataCriacao(LocalDate.now());
+        o3.setDataModificacao(LocalDate.now());
+        this.adicionaOrdem(o3);
+    }
     
         public Ordem adicionaOrdem(Ordem elemento) {
         String sql = "insert into ordem "
