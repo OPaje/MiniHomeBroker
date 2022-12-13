@@ -29,7 +29,7 @@ public class Controladora {
     ClienteDAO clienteDAO = new ClienteDAO();
     AtivoDAO ativoDAO = new AtivoDAO();
     ContaCorrenteDAO contaCorrenteDAO = new ContaCorrenteDAO(); // passando como parâmetro o vetor com os clientes
-    OrdemDAO ordemDAO = new OrdemDAO(ativoDAO, contaCorrenteDAO);
+    OrdemDAO ordemDAO = new OrdemDAO();
     OrdemExecucaoDAO ordemExecucaoDAO = new OrdemExecucaoDAO();
     MovimentaContaDAO movimentaContaDAO = new MovimentaContaDAO();
     MeusAtivosDAO meusAtivosDAO = new MeusAtivosDAO();
@@ -162,11 +162,11 @@ public class Controladora {
                                         break;
                                     
                                     case 7:
-                                        ordemDAO.adiciona(gui.criarOrdemCompra(ativoDAO, contaCorrenteDAO));
+                                        ordemDAO.adicionaOrdem(gui.criarOrdemCompra(ativoDAO, contaCorrenteDAO));
                                         break;
                                         
                                     case 8:
-                                        ordemDAO.adiciona(gui.criarOrdemVenda(ativoDAO, contaCorrenteDAO));                                      
+                                        ordemDAO.adicionaOrdem(gui.criarOrdemVenda(ativoDAO, contaCorrenteDAO));                                      
                                         break;
                                         
                                     case 9:
@@ -205,21 +205,12 @@ public class Controladora {
                                         break;
                                         
                                     case 12:
-                                        ordemExecucaoDAO.mostraUltimaNegociacao();
+                                        ordemExecucaoDAO.mostraUltimaNegociacao();  // sempre que uma ordem é executada guardar ela em algum lugar
                                         break;
                                         
                                     case 13:
-                                        Ativo ativo;
-                                        do{
-                                            String ticker = JOptionPane.showInputDialog(null, "Informe o ticker do ativo: ");
-                                            ativo = ativoDAO.buscaPorTicker(ticker);
 
-                                            if(ativo == null){
-                                                JOptionPane.showMessageDialog(null, "Ticker Inválido", "Erro", 0);
-                                            }
-
-                                        }while(ativo == null);
-                                        JOptionPane.showMessageDialog(null, ordemDAO.bookOfertas(ativo), "Book de Ofertas", JOptionPane.INFORMATION_MESSAGE);
+                                        JOptionPane.showMessageDialog(null, ordemDAO.bookOfertas(gui.perguntarId()), "Book de Ofertas", JOptionPane.INFORMATION_MESSAGE);
                                         
                                         break;
                                         

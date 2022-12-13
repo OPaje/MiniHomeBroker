@@ -98,7 +98,7 @@ public class GUI {
         do{
             String id = JOptionPane.showInputDialog(null, "Informe o id da sua conta: ");
             long idConta = Long.parseLong(id);
-            o.setConta(contas.buscaPorId(idConta));
+            o.setConta(contas.buscaPorIdCliente(idConta));
             
             if(o.getConta() == null){
                 JOptionPane.showMessageDialog(null, "ID Inválido", "Erro", 0);
@@ -122,7 +122,7 @@ public class GUI {
         int qtd1 = Integer.parseInt(qtd);
         o.setQuantidade(qtd1);
 
-        double valor = 10;
+        double valor = 10; // valor padrão dos ativos
         o.setValor(valor);
         o.setValorTotal(qtd1 * valor);
 
@@ -298,7 +298,7 @@ public class GUI {
     }
     
     public long perguntarId(){
-        String idTransfere = JOptionPane.showInputDialog(null, "Informe o ID da conta: ");
+        String idTransfere = JOptionPane.showInputDialog(null, "Informe o ID: ");
         
         return Long.parseLong(idTransfere);
     }

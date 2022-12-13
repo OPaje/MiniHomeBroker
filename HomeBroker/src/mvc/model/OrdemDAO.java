@@ -19,47 +19,43 @@ import javax.swing.JOptionPane;
  * @author jeanc
  */
 public class OrdemDAO {
-    private Ordem[] ordens = new Ordem[10];
-
-    public Ordem[] getOrdens() {
-        return ordens;
-    }   
     
-    public OrdemDAO(AtivoDAO ativos, ContaCorrenteDAO contas){
-        
-        Ordem o1 = new Ordem();
-        o1.setConta(contas.buscaPorIdCliente(2));
-        o1.setTipoOrdem("Venda");
-        o1.setTicker(ativos.buscaPorTicker("NTCO3"));
-        o1.setQuantidade(40);
-        o1.setValor(10);
-        o1.setValorTotal(o1.getValor() * o1.getQuantidade());
-        o1.setDataCriacao(LocalDate.now());
-        o1.setDataModificacao(LocalDate.now());
-        this.adicionaOrdem(o1);
-        
-        Ordem o2 = new Ordem();
-        o2.setConta(contas.buscaPorIdCliente(3));
-        o2.setTipoOrdem("Compra");
-        o2.setTicker(ativos.buscaPorTicker("NTCO3"));
-        o2.setQuantidade(20);
-        o2.setValor(10);
-        o2.setValorTotal(o2.getValor() * o2.getQuantidade());
-        o2.setDataCriacao(LocalDate.now());
-        o2.setDataModificacao(LocalDate.now());
-        this.adicionaOrdem(o2);
-        
-        Ordem o3 = new Ordem();
-        o3.setConta(contas.buscaPorIdCliente(3));
-        o3.setTipoOrdem("Compra");
-        o3.setTicker(ativos.buscaPorTicker("NTCO3"));
-        o3.setQuantidade(30);
-        o3.setValor(10);
-        o3.setValorTotal(o3.getValor() * o3.getQuantidade());
-        o3.setDataCriacao(LocalDate.now());
-        o3.setDataModificacao(LocalDate.now());
-        this.adicionaOrdem(o3);
-    }
+    
+//    public OrdemDAO(AtivoDAO ativos, ContaCorrenteDAO contas){
+//        
+//        Ordem o1 = new Ordem();
+//        o1.setConta(contas.buscaPorIdCliente(2));
+//        o1.setTipoOrdem("Venda");
+//        o1.setTicker(ativos.buscaPorTicker("NTCO3"));
+//        o1.setQuantidade(40);
+//        o1.setValor(10);
+//        o1.setValorTotal(o1.getValor() * o1.getQuantidade());
+//        o1.setDataCriacao(LocalDate.now());
+//        o1.setDataModificacao(LocalDate.now());
+//        this.adicionaOrdem(o1);
+//        
+//        Ordem o2 = new Ordem();
+//        o2.setConta(contas.buscaPorIdCliente(3));
+//        o2.setTipoOrdem("Compra");
+//        o2.setTicker(ativos.buscaPorTicker("NTCO3"));
+//        o2.setQuantidade(20);
+//        o2.setValor(10);
+//        o2.setValorTotal(o2.getValor() * o2.getQuantidade());
+//        o2.setDataCriacao(LocalDate.now());
+//        o2.setDataModificacao(LocalDate.now());
+//        this.adicionaOrdem(o2);
+//        
+//        Ordem o3 = new Ordem();
+//        o3.setConta(contas.buscaPorIdCliente(3));
+//        o3.setTipoOrdem("Compra");
+//        o3.setTicker(ativos.buscaPorTicker("NTCO3"));
+//        o3.setQuantidade(30);
+//        o3.setValor(10);
+//        o3.setValorTotal(o3.getValor() * o3.getQuantidade());
+//        o3.setDataCriacao(LocalDate.now());
+//        o3.setDataModificacao(LocalDate.now());
+//        this.adicionaOrdem(o3);
+//    }
     
         public Ordem adicionaOrdem(Ordem elemento) {
         String sql = "insert into ordem "
@@ -89,7 +85,7 @@ public class OrdemDAO {
         
         public List<Ordem> lista(Ordem elemento) {
         String sql = "select * from ordem";
-        //ContaCorrenteDAO contaCorrenteDAO = new ContaCorrenteDAO(cliente);
+        ContaCorrenteDAO contaCorrenteDAO = new ContaCorrenteDAO();
         AtivoDAO ativoDAO = new AtivoDAO();
         List<Ordem> ordens = new ArrayList<>();
 
@@ -111,8 +107,8 @@ public class OrdemDAO {
                 long idAtivo = rs.getLong("ordem_ativo");
                 long idConta = rs.getLong("ordem_ccorrente");
                 
-                ContaCorrente conta = null; // esperar a função da stheffany
-                Ativo a = ativoDAO.buscaPorID(idAtivo);
+                ContaCorrente conta = contaCorrenteDAO.buscaPorId(idConta);
+                Ativo ativo = ativoDAO.buscaPorID(idAtivo);
 
                 Ordem ordem = new Ordem();
                 ordem.setId(id); 
@@ -123,7 +119,7 @@ public class OrdemDAO {
                 ordem.setEstadoOrdem(estadoOrdem);
                 ordem.setDataCriacao(dataCriacao);
                 ordem.setDataModificacao(dataModificacao);
-                ordem.setTicker(a);
+                ordem.setTicker(ativo);
                 ordem.setConta(conta);
                 ordens.add(ordem);
             }
@@ -133,6 +129,50 @@ public class OrdemDAO {
 
         // itera no ResultSet
         return ordens;
+    }
+        
+    public Ordem buscaPorID(long code) {
+            ContaCorrenteDAO contaCorrenteDAO = new ContaCorrenteDAO();
+            AtivoDAO ativoDAO = new AtivoDAO();
+        try (Connection connection = new ConnectionFactory().getConnection();
+            PreparedStatement ps = createPreparedStatement(connection, code);
+            ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Long id = rs.getLong("idordem");
+                int quantidade = rs.getInt("qtde_ordem");
+                double valor = rs.getDouble("valor_ordem");
+                double valorTotal = rs.getDouble("valor_total_ordem");
+                String tipo = rs.getString("tipo_ordem");
+                String estadoOrdem = rs.getString("estado_ordem");
+                Date currenteDate = rs.getDate("data_criacao_ordem");
+                LocalDate dataCriacao = currenteDate.toLocalDate();
+                Date currenteMod = rs.getDate("data_modificacao_ordem");
+                LocalDate dataModificacao = currenteMod.toLocalDate();
+                long idAtivo = rs.getLong("ordem_ativo");
+                long idConta = rs.getLong("ordem_ccorrente");
+                
+                ContaCorrente conta = contaCorrenteDAO.buscaPorId(idConta);
+                Ativo ativo = ativoDAO.buscaPorID(idAtivo);
+
+                Ordem ordem = new Ordem();
+                ordem.setId(id); 
+                ordem.setQuantidade(quantidade);
+                ordem.setValor(valor);
+                ordem.setValorTotal(valorTotal);
+                ordem.setTipoOrdem(tipo);
+                ordem.setEstadoOrdem(estadoOrdem);
+                ordem.setDataCriacao(dataCriacao);
+                ordem.setDataModificacao(dataModificacao);
+                ordem.setTicker(ativo);
+                ordem.setConta(conta);
+  
+                return ordem;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
     }
      public void exclui(long id) {
         String sql = "delete from ordem where idordem = ?";
@@ -151,71 +191,86 @@ public class OrdemDAO {
 
     }
     
-//    public boolean adiciona(Ordem o) {
-//        int proximaPosicaoLivre = this.proximaPosicaoLivre();
-//        if (proximaPosicaoLivre != -1) {
-//            ordens[proximaPosicaoLivre] = o;
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
+    public void mostrarTodos() {
+        List<Ordem> ordens = null;
+        ordens = this.lista(null);
+        StringBuilder builder = new StringBuilder("");
+        
+        for (Ordem o : ordens) {
+             builder.append(o.toString());            
+        }      
+       
+        JOptionPane.showMessageDialog(null,builder.toString(),"Ordens",JOptionPane.INFORMATION_MESSAGE);
+        
+    }
 //    
-//    public void mostrarTodos() {
+//    public String bookOfertas(Ativo ativo){  // fazer um join para trazer todas as ordens de um ativo
 //        boolean temOrdem = false;
 //        StringBuilder builder = new StringBuilder("");
 //        
 //        for (Ordem o : ordens) {
-//            if (o != null) {
-//                builder.append(o.toString());
+//            if (o != null && o.getTicker().equals(ativo) && !"Ordem 0".equals(o.getTipoOrdem())) {
+//                builder.append("Ativo: ").append(o.getTicker().getTicker()).append(" Valor: ").append(o.getValor()).append(" Tipo: ").append(o.getTipoOrdem()).append("\n\n");
 //                temOrdem = true;
 //            }
-//        }      
-//        
+//        }
+//                
 //        if (!temOrdem) {
-//            JOptionPane.showMessageDialog(null,"Não existe ordem feita","Ordens",JOptionPane.INFORMATION_MESSAGE);
+//            return "Não existe ordem feita";
 //        }else{
-//            JOptionPane.showMessageDialog(null,builder.toString(),"Ordens",JOptionPane.INFORMATION_MESSAGE);
+//            return builder.toString();
 //        }
 //    }
-//    
-    public String bookOfertas(Ativo ativo){  // fazer um join para trazer todas as ordens de um ativo
-        boolean temOrdem = false;
+    
+    
+    public String bookOfertas(long id) throws SQLException{  // fazer um join para trazer todas as ordens de um ativo
+        AtivoDAO ativoDAO = new AtivoDAO();
+        List<Ordem> ordens = new ArrayList<>();
+
         StringBuilder builder = new StringBuilder("");
         
-        for (Ordem o : ordens) {
-            if (o != null && o.getTicker().equals(ativo) && !"Ordem 0".equals(o.getTipoOrdem())) {
-                builder.append("Ativo: ").append(o.getTicker().getTicker()).append(" Valor: ").append(o.getValor()).append(" Tipo: ").append(o.getTipoOrdem()).append("\n\n");
-                temOrdem = true;
+        try (Connection connection = new ConnectionFactory().getConnection();
+            PreparedStatement ps = createPreparedStatementBookOfertas(connection, id);
+            ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                
+                int quantidade = rs.getInt("qtde_ordem");
+                double valor = rs.getDouble("valor_ordem");
+                String tipo = rs.getString("tipo_ordem");
+                long idAtivo = rs.getLong("ordem_ativo");
+                
+                Ativo ativo = ativoDAO.buscaPorID(idAtivo);
+
+                Ordem ordem = new Ordem();
+                ordem.setQuantidade(quantidade);
+                ordem.setValor(valor);
+                ordem.setTipoOrdem(tipo);
+                ordem.setTicker(ativo);
+                ordens.add(ordem);
             }
         }
-                
-        if (!temOrdem) {
-            return "Não existe ordem feita";
-        }else{
-            return builder.toString();
+        for (Ordem o : ordens) {
+             builder.append("Ativo: ").append(o.getTicker().getTicker()).append(" Valor: ").append(o.getValor()).append(" Tipo: ").append(o.getTipoOrdem()).append("\n\n"); 
         }
+ 
+        return builder.toString();
+ 
     }
-//    
-//    public boolean removerPorId(long id) {
-//        for (int i = 0; i < ordens.length; i++) {
-//            if (ordens[i] != null && ordens[i].getId() == id) {
-//                ordens[i] = null;
-//                return true;
-//            }
-//        }
-//        return false;
-//
-//    }
-//    
-//    private int proximaPosicaoLivre() {
-//        for (int i = 0; i < ordens.length; i++) {
-//            if (ordens[i] == null) {
-//                return i;
-//            }
-//
-//        }
-//        return -1;
-//
-//    }
+    
+    
+    private PreparedStatement createPreparedStatement(Connection con, long id) throws SQLException {
+        String sql = "select * from ordem where idordem = ?";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setLong(1, id);
+        return ps;
+    }
+    
+       private PreparedStatement createPreparedStatementBookOfertas(Connection con, long id) throws SQLException {
+        String sql = "SELECT ordem_ativo, qtde_ordem, valor_ordem, tipo_ordem FROM ordem WHERE ordem_ativo = ?";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setLong(1, id);
+        return ps;
+    }
+
 }

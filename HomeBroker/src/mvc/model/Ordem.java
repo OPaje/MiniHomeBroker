@@ -106,9 +106,9 @@ public class Ordem {
     @Override
     public String toString() {
         return "\n\nid: " + id + "\nQuantidade: " + quantidade + "\nTipo da Ordem: " + tipoOrdem + "\nEstado da Ordem: " + estadoOrdem + "\nValor: " + valor + 
-                "\nValor Total: " + valorTotal + "\nConta: " + conta.getC().getNome() + "\nTicker: " + ticker.getTicker() +"\nNome da empresa: " + ticker.getNomeEmpresa() +
-                "\nData de Criacao:" + dataCriacao + 
-                "\nData de Modificacao: " + dataModificacao;
+                "\nValor Total: " + valorTotal + "\nConta ID: " + conta.getId() + "\nTicker: " + ticker.getTicker() +
+                "\nData de Criacao Ordem:" + dataCriacao + 
+                "\nData de Modificacao Ordem: " + dataModificacao;
     }
 
     @Override
