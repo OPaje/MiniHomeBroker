@@ -93,7 +93,7 @@ public class Controladora {
                                         break;
                                     
                                     case 4:                                     
-                                        ordemExecucaoDAO.executarOrdem(ordemDAO, contaCorrenteDAO, movimentaContaDAO, meusAtivosDAO, movimentaContaDAO);
+                                        ordemExecucaoDAO.executarOrdem(ordemDAO, contaCorrenteDAO, movimentaContaDAO);
                                         meusAtivosDAO.organizaMeusAtivos(ordemExecucaoDAO);
                                         break;
                                         

@@ -83,7 +83,7 @@ public class OrdemDAO {
         return elemento;
     }
         
-        public List<Ordem> lista(Ordem elemento) {
+    public List<Ordem> lista(Ordem elemento) {
         String sql = "select * from ordem";
         ContaCorrenteDAO contaCorrenteDAO = new ContaCorrenteDAO();
         AtivoDAO ativoDAO = new AtivoDAO();
