@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -59,11 +60,12 @@ public class BDTeste {
 //            System.out.println(cli);
 //        }
         //busca ccorrente
-//        ContaCorrenteDAO cdao = new ContaCorrenteDAO();
-//        List<ContaCorrente> lista = cdao.getLista();
-//        for (ContaCorrente c : lista){
-//            System.out.println(c);
-//        }
+        ContaCorrenteDAO cdao = new ContaCorrenteDAO();
+        List<ContaCorrente> lista = new ArrayList<>();
+        lista = cdao.getLista();
+        for (ContaCorrente c : lista){
+            System.out.println(c.getC().getTipoUsuario());
+        }
         //delete ccorrente
 //        ContaCorrenteDAO cdao = new ContaCorrenteDAO();
 //        cdao.remover(9);
@@ -71,7 +73,7 @@ public class BDTeste {
 //        for (ContaCorrente cli : lista){
 //            System.out.println(cli);
 //        }
-        ContaCorrente c = BDTeste.criarCliente();
+        //ContaCorrente c = BDTeste.criarCliente();
     }
     
     public static ContaCorrente criarCliente() throws SQLException{

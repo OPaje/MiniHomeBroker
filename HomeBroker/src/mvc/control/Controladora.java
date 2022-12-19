@@ -71,7 +71,7 @@ public class Controladora {
                                 switch (escolha) {
                                     case 1:
                                         String ticker = JOptionPane.showInputDialog(null, "Informe o nome do ticker: ");
-                                        contaCorrenteDAO.pagarDividendos(contaCorrenteDAO, ticker, gui.perguntarValor(), gui.perguntarId()); // pegar a quantidade nos meus ativos
+                                        contaCorrenteDAO.pagarDividendos(contaCorrenteDAO, ticker, gui.perguntarValor(), gui.perguntarId(), conta.getId()); // pegar a quantidade nos meus ativos
                                         break;
                                         
                                     case 2:
@@ -107,7 +107,7 @@ public class Controladora {
                                     case 6: 
                                         data = dataAtualizavel.plusDays(31);
                                         JOptionPane.showMessageDialog(null, data, "Data", JOptionPane.INFORMATION_MESSAGE);
-                                        contaCorrenteDAO.pagarMensalidade(data, movimentaContaDAO);
+                                        contaCorrenteDAO.pagarMensalidade(data, movimentaContaDAO, conta.getId());
                                         break;
                                         
                                     case 7: 

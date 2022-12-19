@@ -111,7 +111,7 @@ public class ContaCorrenteDAO {
 //        return this.transfere(contas, dividendo, 1, id);
 //    }  
     
-    public void pagarDividendos(ContaCorrenteDAO cdao, String ticker, double valor, long id) throws SQLException{
+    public void pagarDividendos(ContaCorrenteDAO cdao, String ticker, double valor, long id, long idAdm) throws SQLException{
         //importante saber a quantidade de ativos
         MeusAtivosDAO meusAtivosDAO = new MeusAtivosDAO();
         List<MeusAtivos> meus = meusAtivosDAO.buscaPorID(id);
@@ -124,16 +124,16 @@ public class ContaCorrenteDAO {
             }
         }        
         System.out.println(qtdAtivos);
-        cdao.transfere(cdao, dividendos, 36, id); 
+        cdao.transfere(cdao, dividendos, idAdm, id); 
     }
     
-    public void pagarMensalidade(LocalDate data, MovimentaContaDAO movimenta) throws SQLException{
+    public void pagarMensalidade(LocalDate data, MovimentaContaDAO movimenta, long idAdm) throws SQLException{
         if(data.getDayOfMonth() > 14){
             ContaCorrenteDAO cdao = new ContaCorrenteDAO();
             List<ContaCorrente> lista = cdao.getLista();
             for (ContaCorrente ccorrente : lista){
-                if(ccorrente.getId() != 36){ //verifica se a conta que vai pagar a mensalidade é a do administrador
-                    cdao.transfere(cdao, 20, ccorrente.getId(), 36);
+                if(ccorrente.getC().getTipoUsuario() != 0){ //verifica se a conta que vai pagar a mensalidade é a do administrador
+                    cdao.transfere(cdao, 20, ccorrente.getId(), idAdm);
                     movimenta.novaMovimentacao("Débito", "Pagamento Mensalidade", 20, LocalDate.now(), LocalDate.now(), ccorrente.getId());
                 }
             } 
@@ -145,7 +145,7 @@ public class ContaCorrenteDAO {
         List<MeusAtivos> meus = meusAtivosDAO.buscaPorID(id); 
         double valorAtivos = 0;
         for(MeusAtivos a : meus){
-            valorAtivos = a.getValorPago();
+            valorAtivos += a.getTotalDinheiroAtivos();
         }
         ContaCorrente c = this.buscaPorId(id);
         StringBuilder builder = new StringBuilder("");      
@@ -260,6 +260,7 @@ public class ContaCorrenteDAO {
     }
 
     public List<ContaCorrente> getLista() throws SQLException {
+        ClienteDAO clienteDAO = new ClienteDAO();
         String sql = "select * from ccorrente";
         try (Connection connection = new ConnectionFactory().getConnection();
             PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -277,7 +278,10 @@ public class ContaCorrenteDAO {
 
                 Date currentDateMod = rs.getDate("data_modificacao_ccorrente");
                 LocalDate dataMod = currentDateMod.toLocalDate();
-                elemento.setDataModificacao(dataMod);                  
+                elemento.setDataModificacao(dataMod);   
+                
+                Cliente cliente = clienteDAO.buscaPorID(rs.getLong("ccorrente_cliente"));
+                elemento.setC(cliente);
 
                 contas.add(elemento);
             }
