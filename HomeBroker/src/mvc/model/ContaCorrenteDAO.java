@@ -109,33 +109,48 @@ public class ContaCorrenteDAO {
 //        double dividendo = valor * quantidade;
 //        
 //        return this.transfere(contas, dividendo, 1, id);
-//    }    
+//    }  
+    
+    public void pagarDividendos(ContaCorrenteDAO cdao, String ticker, double valor, long id) throws SQLException{
+        //importante saber a quantidade de ativos
+        MeusAtivosDAO meusAtivosDAO = new MeusAtivosDAO();
+        List<MeusAtivos> meus = meusAtivosDAO.buscaPorID(id);
+        int qtdAtivos = 0;  
+        double dividendos = 0;
+        for(MeusAtivos a : meus){
+            if(a.getAtivo().getTicker().equals(ticker)){
+                qtdAtivos += a.getQtdAtivos();
+                dividendos = qtdAtivos * valor;
+            }
+        }        
+        System.out.println(qtdAtivos);
+        cdao.transfere(cdao, dividendos, 36, id); 
+    }
     
     public void pagarMensalidade(LocalDate data, MovimentaContaDAO movimenta) throws SQLException{
         if(data.getDayOfMonth() > 14){
             ContaCorrenteDAO cdao = new ContaCorrenteDAO();
             List<ContaCorrente> lista = cdao.getLista();
             for (ContaCorrente ccorrente : lista){
-            if(ccorrente.getId() != 36){ //verifica se a conta que vai pagar a mensalidade é a do administrador
-                cdao.transfere(cdao, 20, ccorrente.getId(), 36);
-                movimenta.novaMovimentacao("Débito", "Pagamento Mensalidade", 20, LocalDate.now(), LocalDate.now(), ccorrente.getId());
-            }
+                if(ccorrente.getId() != 36){ //verifica se a conta que vai pagar a mensalidade é a do administrador
+                    cdao.transfere(cdao, 20, ccorrente.getId(), 36);
+                    movimenta.novaMovimentacao("Débito", "Pagamento Mensalidade", 20, LocalDate.now(), LocalDate.now(), ccorrente.getId());
+                }
             } 
         }
     }
     
-    public String gerarExtrato(long id, MovimentaContaDAO m, double valor) throws SQLException{
-        ContaCorrente c = this.buscaPorId(id);
-        System.out.println(c);
-        StringBuilder builder = new StringBuilder("");      
-        List<MovimentaConta> lista = m.getLista(id);
-        for (MovimentaConta mov : lista){
-            builder.append(mov.toString());
-            System.out.println(mov);
+    public String gerarExtrato(long id, MovimentaContaDAO m) throws SQLException{
+         MeusAtivosDAO meusAtivosDAO = new MeusAtivosDAO();
+        List<MeusAtivos> meus = meusAtivosDAO.buscaPorID(id); 
+        double valorAtivos = 0;
+        for(MeusAtivos a : meus){
+            valorAtivos = a.getValorPago();
         }
-        System.out.println(c.getSaldo() - valor);
+        ContaCorrente c = this.buscaPorId(id);
+        StringBuilder builder = new StringBuilder("");      
         builder.append("\n");
-        builder.append("Saldo Disponível: ").append(c.getSaldo() - valor); // menos o valor alocados em ativos
+        builder.append("Saldo Disponível: ").append(c.getSaldo() - valorAtivos); // menos o valor alocados em ativos
         return builder.toString();
     }
     

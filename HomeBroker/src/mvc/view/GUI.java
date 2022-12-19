@@ -305,7 +305,15 @@ public class GUI {
         return Long.parseLong(idTransfere);
     }
     
-    public String perguntarNome(){
-        return JOptionPane.showInputDialog(null, "Informe o nome: ");
+    public String perguntarLogin(){
+        return JOptionPane.showInputDialog(null, "Informe o login: ");
+    }
+    
+    public String perguntarSenha(){
+        return JOptionPane.showInputDialog(null, "Informe sua senha: ");
+    }
+    
+    public String perguntarSenhaNova(){
+        return JOptionPane.showInputDialog(null, "Informe a nova senha: ");
     }
 }

@@ -344,15 +344,19 @@ public class OrdemExecucaoDAO {
     }
     
     public void mostraUltimaNegociacao(){
-        List<OrdemExecucao> ordens = this.lista(null);
-        String ativo = ordens.get(-1).getOrdemCompra().getTicker().getTicker(); // o primeiro ticker retorna o ativo
-        double valor = ordens.get(-1).getOrdemCompra().getValor();
         StringBuilder builder = new StringBuilder("");
-        
-        builder.append("\nAtivo: ").append(ativo).append("  Valor: ").append(valor);
-        //builder.append("\nValor: ").append(valor);
-        
-        JOptionPane.showMessageDialog(null,builder.toString(),"Última Negociação",JOptionPane.INFORMATION_MESSAGE);
+        try{
+            List<OrdemExecucao> ordens = this.lista(null);
+            String ativo = ordens.get(-1).getOrdemCompra().getTicker().getTicker(); // o primeiro ticker retorna o ativo
+            double valor = ordens.get(-1).getOrdemCompra().getValor();
+
+            builder.append("\nAtivo: ").append(ativo).append("  Valor: ").append(valor);
+            //builder.append("\nValor: ").append(valor);
+
+            JOptionPane.showMessageDialog(null,builder.toString(),"Última Negociação",JOptionPane.INFORMATION_MESSAGE);
+        }catch(IndexOutOfBoundsException erro){
+            JOptionPane.showMessageDialog(null,"Nenhuma negociação foi realizada até o momento","Erro",JOptionPane.INFORMATION_MESSAGE);
+        }
     }
     
 }
