@@ -57,7 +57,7 @@ public class OrdemDAO {
 //        this.adicionaOrdem(o3);
 //    }
     
-        public Ordem adicionaOrdem(Ordem elemento) {
+        public Ordem adicionaOrdem(Ordem elemento) throws SQLException{
         String sql = "insert into ordem "
                 + "(qtde_ordem,valor_ordem,valor_total_ordem,tipo_ordem,estado_ordem,data_criacao_ordem,data_modificacao_ordem, "
                 + "ordem_ccorrente, ordem_ativo)" + " values (?,?,?,?,?,?,?,?,?)";
@@ -191,7 +191,7 @@ public class OrdemDAO {
 
     }
     
-    public void mostrarTodos() {
+    public void mostrarTodos() throws SQLException{
         List<Ordem> ordens = null;
         ordens = this.lista(null);
         StringBuilder builder = new StringBuilder("");
@@ -223,7 +223,7 @@ public class OrdemDAO {
 //    }
     
     
-    public String bookOfertas(long id) throws SQLException{  // fazer um join para trazer todas as ordens de um ativo
+    public String bookOfertas(long id) throws SQLException{  
         AtivoDAO ativoDAO = new AtivoDAO();
         List<Ordem> ordens = new ArrayList<>();
 

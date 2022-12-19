@@ -66,13 +66,13 @@ public class AtivoDAO {
 
             System.out.println("Elemento inserido com sucesso.");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            JOptionPane.showMessageDialog(null, "Não foi possível cadastrar o ativo", "Erro", JOptionPane.INFORMATION_MESSAGE);
         }
         //na verdade deveria retornar o elemento que foi inserido agora
         return elemento;
     }
        
-     public List<Ativo> lista(Ativo elemento) {
+     public List<Ativo> lista(Ativo elemento) throws SQLException{
         String sql = "select * from ativo";
 
         List<Ativo> ativos = new ArrayList<>();

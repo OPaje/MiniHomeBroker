@@ -28,7 +28,7 @@ import mvc.view.GUI;
 public class Controladora {
     ClienteDAO clienteDAO = new ClienteDAO();
     AtivoDAO ativoDAO = new AtivoDAO();
-    ContaCorrenteDAO contaCorrenteDAO = new ContaCorrenteDAO(); // passando como parâmetro o vetor com os clientes
+    ContaCorrenteDAO contaCorrenteDAO = new ContaCorrenteDAO(); 
     OrdemDAO ordemDAO = new OrdemDAO();
     OrdemExecucaoDAO ordemExecucaoDAO = new OrdemExecucaoDAO();
     MovimentaContaDAO movimentaContaDAO = new MovimentaContaDAO();
@@ -80,21 +80,33 @@ public class Controladora {
                                       break;
                                     case 3:
                                         List<Ativo> ativos = null;
-                                        ativos = ativoDAO.lista(null);
-                                        JOptionPane.showMessageDialog(null, ativos.toString(), "Ativos", 0);
-                                        
-                                        String pegaId = JOptionPane.showInputDialog(null, "Informe o ID do ativo: ");
-                                        long idAtivo = Long.parseLong(pegaId);
+                                        try {
+                                            ativos = ativoDAO.lista(null);
+                                            JOptionPane.showMessageDialog(null, ativos.toString(), "Ativos", 0);
 
                                         String novoNome = JOptionPane.showInputDialog(null, "Informe o novo nome da empresa: ");
                                         // cuidar depois das exceções
                                         ativoDAO.altera(idAtivo, novoNome);                                        
+                                            String pegaId = JOptionPane.showInputDialog(null, "Informe o ID do ativo: ");
+                                            long idAtivo = Long.parseLong(pegaId);
+                                            novoNome = JOptionPane.showInputDialog(null, "Informe o novo nome da empresa: ");
+
+                                            ativoDAO.altera(idAtivo, novoNome);
+                                            
+                                        } catch (SQLException e) {
+                                            JOptionPane.showMessageDialog(null, "Não foi possível fazer alterações no ativo", "Erro", JOptionPane.INFORMATION_MESSAGE);
+                                        }
                                         
                                         break;
                                     
-                                    case 4:                                     
-                                        ordemExecucaoDAO.executarOrdem(ordemDAO, contaCorrenteDAO, movimentaContaDAO);
-                                        meusAtivosDAO.organizaMeusAtivos(ordemExecucaoDAO);
+                                    case 4:    
+                                        try {
+                                            ordemExecucaoDAO.executarOrdem(ordemDAO, contaCorrenteDAO, movimentaContaDAO);
+                                            meusAtivosDAO.organizaMeusAtivos(ordemExecucaoDAO);
+                                        
+                                        } catch (SQLException e) {
+                                            JOptionPane.showMessageDialog(null, "Não foi possível executar as ordens", "Erro", JOptionPane.INFORMATION_MESSAGE);
+                                        }
                                         break;
                                         
                                     case 5:
@@ -108,7 +120,12 @@ public class Controladora {
                                         break;
                                         
                                     case 7: 
-                                        ordemDAO.mostrarTodos();
+                                        try {
+                                            ordemDAO.mostrarTodos();
+                                        
+                                        } catch (SQLException e) {
+                                            JOptionPane.showMessageDialog(null, "Não foi possível mostrar as ordens", "Erro", JOptionPane.INFORMATION_MESSAGE);
+                                        }
                                         break;
                                 }
                                 
@@ -159,16 +176,30 @@ public class Controladora {
                                     
                                     case 6:
                                         List<Ativo> ativos = null;
-                                        ativos = ativoDAO.lista(null);
-                                        JOptionPane.showMessageDialog(null, ativos.toString(), "Ativos", 0);
+                                        try {
+                                            ativos = ativoDAO.lista(null);
+                                            JOptionPane.showMessageDialog(null, ativos.toString(), "Ativos", 0);
+                                         
+                                        } catch (SQLException e) {
+                                            JOptionPane.showMessageDialog(null, "Não foi possível carregar a lista de ativos", "Erro", JOptionPane.INFORMATION_MESSAGE);
+                                        }
                                         break;
                                     
                                     case 7:
+                                        try {
                                         ordemDAO.adicionaOrdem(gui.criarOrdemCompra(ativoDAO, contaCorrenteDAO));
-                                        break;
+
+                                    } catch (SQLException e) {
+                                        JOptionPane.showMessageDialog(null, "Ocorreu um erro ao adcionar sua ordem", "Erro", JOptionPane.INFORMATION_MESSAGE);
+                                    }
+                                    break;
                                         
                                     case 8:
-                                        ordemDAO.adicionaOrdem(gui.criarOrdemVenda(ativoDAO, contaCorrenteDAO));                                      
+                                        try {
+                                            ordemDAO.adicionaOrdem(gui.criarOrdemVenda(ativoDAO, contaCorrenteDAO));                                      
+                                        } catch (SQLException e) {
+                                            JOptionPane.showMessageDialog(null, "Ocorreu um erro ao adcionar sua ordem", "Erro", JOptionPane.INFORMATION_MESSAGE);
+                                        }
                                         break;
                                         
 //                                    case 9:
@@ -194,6 +225,25 @@ public class Controladora {
 //                                        
 //                                        break;
                                         
+                                    case 9:
+                                        int qtdTotalAtivos = 0;
+                                        StringBuilder builder = new StringBuilder("");
+                                        List<MeusAtivos> meus = meusAtivosDAO.buscaPorID(conta.getId());
+                                        
+                                        for (MeusAtivos a : meus) {
+                                            qtdTotalAtivos += a.getQtdAtivos() ;
+                                            valorTotalAtivos += a.getTotalDinheiroAtivos();
+                                        }
+                                        
+                                        builder.append("\nTotal de Ativos: ").append(qtdTotalAtivos).append("\n");
+                                        builder.append("Dinheiro Total em Ativos: ").append(valorTotalAtivos);
+                                        
+                                        JOptionPane.showMessageDialog(null, builder.toString(), "Meus Ativos", JOptionPane.INFORMATION_MESSAGE);
+                                        
+                                        valorTotalAtivos = 0.0;
+                                        
+                                        break;
+
                                     case 10:
                                         clienteDAO.alterar(gui.perguntarLogin(), gui.perguntarSenha(), gui.perguntarSenhaNova());
                                         conta.setDataModificacao(LocalDate.now());
@@ -206,17 +256,29 @@ public class Controladora {
                                         break;
                                         
                                     case 12:
-                                        ordemExecucaoDAO.mostraUltimaNegociacao();  // sempre que uma ordem é executada guardar ela em algum lugar
+                                        try {
+                                            ordemExecucaoDAO.mostraUltimaNegociacao();  
+                                        } catch (ArrayIndexOutOfBoundsException e) {
+                                            JOptionPane.showMessageDialog(null, "O ativo ainda não possui negociações ", "Erro", JOptionPane.INFORMATION_MESSAGE);
+                                        }
                                         break;
                                         
                                     case 13:
+                                        try {
+                                            JOptionPane.showMessageDialog(null, ordemDAO.bookOfertas(gui.perguntarId()), "Book de Ofertas", JOptionPane.INFORMATION_MESSAGE);
 
-                                        JOptionPane.showMessageDialog(null, ordemDAO.bookOfertas(gui.perguntarId()), "Book de Ofertas", JOptionPane.INFORMATION_MESSAGE);
+                                        } catch (SQLException e) {
+                                            JOptionPane.showMessageDialog(null, "Não foi possível trazer o book de ofertas", "Erro", JOptionPane.INFORMATION_MESSAGE);
+                                        }
                                         
                                         break;
                                         
                                     case 14:
-                                        gui.criarOrdem0(ativoDAO, contaCorrenteDAO, meusAtivosDAO, movimentaContaDAO);
+                                        try {
+                                            gui.criarOrdem0(ativoDAO, contaCorrenteDAO, meusAtivosDAO, movimentaContaDAO);  
+                                        } catch (SQLException e) {
+                                            JOptionPane.showMessageDialog(null, "Não possível registrar sua ordem", "Erro", JOptionPane.INFORMATION_MESSAGE);
+                                        }
                                         break;
                                 }                                
                             }while(decisao > 0 && decisao < 15);                            
