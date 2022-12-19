@@ -58,8 +58,8 @@ public class Controladora {
                     break;
                     
                 case 2:                    
-                    String login = JOptionPane.showInputDialog(null, "Informe o login: ");                   
-                    String senha = JOptionPane.showInputDialog(null, "Informe sua senha: ");                   
+                    String login = gui.perguntarLogin();                   
+                    String senha = gui.perguntarSenha();                   
                     Cliente cliente = clienteDAO.buscarPorLoginESenha(login, senha); // cliente do login
                     
                     if(cliente != null){
@@ -70,7 +70,8 @@ public class Controladora {
                                 escolha = gui.menuADM();                                
                                 switch (escolha) {
                                     case 1:
-                                        //contaCorrenteDAO.pagarDividendos(contaCorrenteDAO, gui.perguntarValor(), quantidade, gui.perguntarId()); // pegar a quantidade nos meus ativos
+                                        String ticker = JOptionPane.showInputDialog(null, "Informe o nome do ticker: ");
+                                        contaCorrenteDAO.pagarDividendos(contaCorrenteDAO, ticker, gui.perguntarValor(), gui.perguntarId()); // pegar a quantidade nos meus ativos
                                         break;
                                         
                                     case 2:
@@ -87,8 +88,7 @@ public class Controladora {
 
                                         String novoNome = JOptionPane.showInputDialog(null, "Informe o novo nome da empresa: ");
                                         // cuidar depois das exceções
-                                        ativoDAO.altera(idAtivo, novoNome);
-                                        
+                                        ativoDAO.altera(idAtivo, novoNome);                                        
                                         
                                         break;
                                     
@@ -110,7 +110,6 @@ public class Controladora {
                                     case 7: 
                                         ordemDAO.mostrarTodos();
                                         break;
-
                                 }
                                 
                             }while(escolha > 0 && escolha < 8);
@@ -122,7 +121,10 @@ public class Controladora {
                                 
                                 switch (decisao) {
                                     case 1:
-                                        contaCorrenteDAO.depositar(conta.getId(), gui.perguntarValor(), conta);
+                                        long id = conta.getId();
+                                        double quantia = gui.perguntarValor();
+                                        contaCorrenteDAO.depositar(id, quantia, conta);
+                                        movimentaContaDAO.novaMovimentacao("Crédito", "Depósito", quantia, LocalDate.now(), LocalDate.now(), conta.getId());
                                         break;
                                         
                                     case 2:
@@ -152,7 +154,7 @@ public class Controladora {
                                         break;
                                         
                                     case 5:
-                                        JOptionPane.showMessageDialog(null,contaCorrenteDAO.gerarExtrato(conta.getId(), movimentaContaDAO, valorTotalAtivos) , "Extrato", JOptionPane.INFORMATION_MESSAGE);      
+                                        JOptionPane.showMessageDialog(null,contaCorrenteDAO.gerarExtrato(conta.getId(), movimentaContaDAO) , "Extrato", JOptionPane.INFORMATION_MESSAGE);      
                                         break;
                                     
                                     case 6:
@@ -169,32 +171,31 @@ public class Controladora {
                                         ordemDAO.adicionaOrdem(gui.criarOrdemVenda(ativoDAO, contaCorrenteDAO));                                      
                                         break;
                                         
-                                    case 9:
-                                        MeusAtivos[] meus = meusAtivosDAO.getMeusAtivos();
-                                        int qtdTotalAtivos = 0;
-                                        StringBuilder builder = new StringBuilder("");
+//                                    case 9:
+//                                        MeusAtivos[] meus = meusAtivosDAO.getMeusAtivos();
+//                                        int qtdTotalAtivos = 0;
+//                                        StringBuilder builder = new StringBuilder("");
+//                                        
+//                                        for (int i = 0; i < meus.length; i++) {
+//                                            if(meus[i] != null){
+//                                                if(meus[i].getConta().getId() == conta.getId()){
+//                                                    valorTotalAtivos += meus[i].getTotalDinheiroAtivos();
+//                                                    qtdTotalAtivos += meus[i].getQtdAtivos();
+//                                                }
+//                                            }                                            
+//                                        }
+//                                        
+//                                        builder.append("\nTotal de Ativos: ").append(qtdTotalAtivos).append("\n");
+//                                        builder.append("Dinheiro Total em Ativos: ").append(valorTotalAtivos);
+//                                        
+//                                        JOptionPane.showMessageDialog(null, builder.toString(), "Meus Ativos", JOptionPane.INFORMATION_MESSAGE);
+//                                        
+//                                        valorTotalAtivos = 0.0;
+//                                        
+//                                        break;
                                         
-                                        for (int i = 0; i < meus.length; i++) {
-                                            if(meus[i] != null){
-                                                if(meus[i].getConta().getId() == conta.getId()){
-                                                    valorTotalAtivos += meus[i].getTotalDinheiroAtivos();
-                                                    qtdTotalAtivos += meus[i].getQtdAtivos();
-                                                }
-                                            }                                            
-                                        }
-                                        
-                                        builder.append("\nTotal de Ativos: ").append(qtdTotalAtivos).append("\n");
-                                        builder.append("Dinheiro Total em Ativos: ").append(valorTotalAtivos);
-                                        
-                                        JOptionPane.showMessageDialog(null, builder.toString(), "Meus Ativos", JOptionPane.INFORMATION_MESSAGE);
-                                        
-                                        valorTotalAtivos = 0.0;
-                                        
-                                        break;
-
-                                    
                                     case 10:
-                                        clienteDAO.alterarNome(cliente.getNome(), gui.perguntarNome());
+                                        clienteDAO.alterar(gui.perguntarLogin(), gui.perguntarSenha(), gui.perguntarSenhaNova());
                                         conta.setDataModificacao(LocalDate.now());
                                         
                                         break;

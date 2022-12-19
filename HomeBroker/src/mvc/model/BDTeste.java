@@ -133,7 +133,8 @@ public class BDTeste {
 //        }else{
 //            System.out.println("Erro");
 //        }
-        ccdao.gerarExtrato(35, mdao, 100000);
+        Cliente cl = cdao.buscarPorLoginESenha("Sthe", "abcd");
+        System.out.println(cl);
         return conta;
     }
          
