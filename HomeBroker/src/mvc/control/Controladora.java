@@ -80,23 +80,14 @@ public class Controladora {
                                       break;
                                     case 3:
                                         List<Ativo> ativos = null;
-                                        try {
-                                            ativos = ativoDAO.lista(null);
-                                            JOptionPane.showMessageDialog(null, ativos.toString(), "Ativos", 0);
+                                        ativos = ativoDAO.lista(null);
+                                        JOptionPane.showMessageDialog(null, ativos.toString(), "Ativos", 0);
 
                                         String novoNome = JOptionPane.showInputDialog(null, "Informe o novo nome da empresa: ");
-                                        // cuidar depois das exceções
-                                        ativoDAO.altera(idAtivo, novoNome);                                        
-                                            String pegaId = JOptionPane.showInputDialog(null, "Informe o ID do ativo: ");
-                                            long idAtivo = Long.parseLong(pegaId);
-                                            novoNome = JOptionPane.showInputDialog(null, "Informe o novo nome da empresa: ");
+                                        String pegaId = JOptionPane.showInputDialog(null, "Informe o ID do ativo: ");
+                                        long idAtivo = Long.parseLong(pegaId);
 
-                                            ativoDAO.altera(idAtivo, novoNome);
-                                            
-                                        } catch (SQLException e) {
-                                            JOptionPane.showMessageDialog(null, "Não foi possível fazer alterações no ativo", "Erro", JOptionPane.INFORMATION_MESSAGE);
-                                        }
-                                        
+                                        ativoDAO.altera(idAtivo, novoNome);
                                         break;
                                     
                                     case 4:    
@@ -176,13 +167,9 @@ public class Controladora {
                                     
                                     case 6:
                                         List<Ativo> ativos = null;
-                                        try {
-                                            ativos = ativoDAO.lista(null);
-                                            JOptionPane.showMessageDialog(null, ativos.toString(), "Ativos", 0);
-                                         
-                                        } catch (SQLException e) {
-                                            JOptionPane.showMessageDialog(null, "Não foi possível carregar a lista de ativos", "Erro", JOptionPane.INFORMATION_MESSAGE);
-                                        }
+                                        ativos = ativoDAO.lista(null);
+                                        JOptionPane.showMessageDialog(null, ativos.toString(), "Ativos", 0);
+                                       
                                         break;
                                     
                                     case 7:
@@ -193,28 +180,6 @@ public class Controladora {
                                         ordemDAO.adicionaOrdem(gui.criarOrdemVenda(ativoDAO, contaCorrenteDAO));                                      
                                         break;
                                         
-//                                    case 9:
-//                                        MeusAtivos[] meus = meusAtivosDAO.getMeusAtivos();
-//                                        int qtdTotalAtivos = 0;
-//                                        StringBuilder builder = new StringBuilder("");
-//                                        
-//                                        for (int i = 0; i < meus.length; i++) {
-//                                            if(meus[i] != null){
-//                                                if(meus[i].getConta().getId() == conta.getId()){
-//                                                    valorTotalAtivos += meus[i].getTotalDinheiroAtivos();
-//                                                    qtdTotalAtivos += meus[i].getQtdAtivos();
-//                                                }
-//                                            }                                            
-//                                        }
-//                                        
-//                                        builder.append("\nTotal de Ativos: ").append(qtdTotalAtivos).append("\n");
-//                                        builder.append("Dinheiro Total em Ativos: ").append(valorTotalAtivos);
-//                                        
-//                                        JOptionPane.showMessageDialog(null, builder.toString(), "Meus Ativos", JOptionPane.INFORMATION_MESSAGE);
-//                                        
-//                                        valorTotalAtivos = 0.0;
-//                                        
-//                                        break;
                                         
                                     case 9:
                                         int qtdTotalAtivos = 0;

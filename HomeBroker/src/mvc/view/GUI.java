@@ -192,7 +192,6 @@ public class GUI {
             
         }while(c == null);
 
-        
         do{
             String ticker = JOptionPane.showInputDialog(null, "Informe o ticker do ativo: ");
             a = (ativos.buscaPorTicker(ticker));
