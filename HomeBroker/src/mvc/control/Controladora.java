@@ -162,7 +162,13 @@ public class Controladora {
                                         break;
                                         
                                     case 5:
-                                        JOptionPane.showMessageDialog(null,contaCorrenteDAO.gerarExtrato(conta.getId(), movimentaContaDAO) , "Extrato", JOptionPane.INFORMATION_MESSAGE);      
+                                        List<MeusAtivos> meusAtv = meusAtivosDAO.buscaPorID(conta.getId());
+                                        double valorAtivos = 0;
+                                        for(MeusAtivos a : meusAtv){
+                                            valorAtivos = a.getTotalDinheiroAtivos();
+                                        }                                        
+                                        JOptionPane.showMessageDialog(null,contaCorrenteDAO.gerarExtrato(conta.getId(), movimentaContaDAO, valorAtivos) , "Extrato", JOptionPane.INFORMATION_MESSAGE);
+                                        //JOptionPane.showMessageDialog(null,contaCorrenteDAO.gerarExtrato(conta.getId(), movimentaContaDAO) , "Extrato", JOptionPane.INFORMATION_MESSAGE);      
                                         break;
                                     
                                     case 6:
