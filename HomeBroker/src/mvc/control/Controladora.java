@@ -182,20 +182,11 @@ public class Controladora {
                                         break;
                                     
                                     case 7:
-                                        try {
-                                        ordemDAO.adicionaOrdem(gui.criarOrdemCompra(ativoDAO, contaCorrenteDAO));
-
-                                    } catch (SQLException e) {
-                                        JOptionPane.showMessageDialog(null, "Ocorreu um erro ao adcionar sua ordem", "Erro", JOptionPane.INFORMATION_MESSAGE);
-                                    }
+                                       ordemDAO.adicionaOrdem(gui.criarOrdemCompra(ativoDAO, contaCorrenteDAO));
                                     break;
                                         
                                     case 8:
-                                        try {
-                                            ordemDAO.adicionaOrdem(gui.criarOrdemVenda(ativoDAO, contaCorrenteDAO));                                      
-                                        } catch (SQLException e) {
-                                            JOptionPane.showMessageDialog(null, "Ocorreu um erro ao adcionar sua ordem", "Erro", JOptionPane.INFORMATION_MESSAGE);
-                                        }
+                                        ordemDAO.adicionaOrdem(gui.criarOrdemVenda(ativoDAO, contaCorrenteDAO));                                      
                                         break;
                                         
                                     case 9:
@@ -233,7 +224,7 @@ public class Controladora {
                                         try {
                                             ordemExecucaoDAO.mostraUltimaNegociacao();  
                                         } catch (ArrayIndexOutOfBoundsException e) {
-                                            JOptionPane.showMessageDialog(null, "O ativo ainda não possui negociações ", "Erro", JOptionPane.INFORMATION_MESSAGE);
+                                            JOptionPane.showMessageDialog(null, "Nenhuma negociação feita", "Erro", JOptionPane.INFORMATION_MESSAGE);
                                         }
                                         break;
                                         

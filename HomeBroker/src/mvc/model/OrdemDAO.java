@@ -57,7 +57,7 @@ public class OrdemDAO {
 //        this.adicionaOrdem(o3);
 //    }
     
-        public Ordem adicionaOrdem(Ordem elemento) throws SQLException{
+        public Ordem adicionaOrdem(Ordem elemento){
         String sql = "insert into ordem "
                 + "(qtde_ordem,valor_ordem,valor_total_ordem,tipo_ordem,estado_ordem,data_criacao_ordem,data_modificacao_ordem, "
                 + "ordem_ccorrente, ordem_ativo)" + " values (?,?,?,?,?,?,?,?,?)";
@@ -77,7 +77,8 @@ public class OrdemDAO {
 
             System.out.println("Elemento inserido com sucesso.");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            //throw new RuntimeException(e);
+            JOptionPane.showMessageDialog(null, "Não foi possível cadastrar sua ordem", "Erro", 0);
         }
         
         return elemento;
@@ -124,7 +125,8 @@ public class OrdemDAO {
                 ordens.add(ordem);
             }
         } catch (SQLException e) {
-             throw new RuntimeException(e);
+             //throw new RuntimeException(e);
+             JOptionPane.showMessageDialog(null, "Não foi possível trazer a lista de ordens", "Erro", 0);
         }
 
         // itera no ResultSet

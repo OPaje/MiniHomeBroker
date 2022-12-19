@@ -72,7 +72,7 @@ public class AtivoDAO {
         return elemento;
     }
        
-     public List<Ativo> lista(Ativo elemento) throws SQLException{
+     public List<Ativo> lista(Ativo elemento){
         String sql = "select * from ativo";
 
         List<Ativo> ativos = new ArrayList<>();
@@ -104,7 +104,8 @@ public class AtivoDAO {
                 ativos.add(ativo);
             }
         } catch (SQLException e) {
-             throw new RuntimeException(e);
+             //throw new RuntimeException(e);
+             JOptionPane.showMessageDialog(null, "Não foi possível trazer a lista", "Erro", 0);
         }
 
         // itera no ResultSet
@@ -140,7 +141,8 @@ public class AtivoDAO {
                 return ativo;
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            //throw new RuntimeException(e);
+            JOptionPane.showMessageDialog(null, "Ativo não encontrado", "Erro", 0);
         }
         return null;
     }
@@ -174,7 +176,8 @@ public class AtivoDAO {
                 return ativo;
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            //throw new RuntimeException(e);
+            JOptionPane.showMessageDialog(null, "Ativo não encontrado", "Erro", 0);
         }
         return null;
     }
@@ -191,7 +194,8 @@ public class AtivoDAO {
             
             System.out.println("Elemento alterado com sucesso.");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            //throw new RuntimeException(e);
+            JOptionPane.showMessageDialog(null, "Não foi possível alterar o ativo", "Erro", 0);
         }
     }
     
@@ -207,7 +211,8 @@ public class AtivoDAO {
             
             System.out.println("Elemento excluído com sucesso.");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            //throw new RuntimeException(e);
+            JOptionPane.showMessageDialog(null, "Não foi possível excluir o ativo", "Erro", 0);
         }
 
     }

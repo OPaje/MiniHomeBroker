@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -21,7 +22,7 @@ public class MeusAtivosDAO {
      
     public MeusAtivos adicionaMeusAtivos(MeusAtivos elemento) {
         String sql = "insert into meus_ativos "
-                + "(qtde_ativo,valor_pago_ativo,cotacao_ativo, total_din_ativo, atv_meus_atv, ccorrente_meus_atv" 
+                + "(qtde_ativo,valor_pago_ativo,cotacao_ativo, total_din_ativo, atv_meus_atv, ccorrente_meus_atv)" 
                 + " values (?,?,?,?,?,?)";
 
         try ( Connection connection = new ConnectionFactory().getConnection();  PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -37,7 +38,8 @@ public class MeusAtivosDAO {
 
             System.out.println("Elemento inserido com sucesso.");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            //throw new RuntimeException(e);
+            JOptionPane.showMessageDialog(null, "Não foi possível adicionar", "Erro", 0);
         }
         
         return elemento;
@@ -131,7 +133,8 @@ public class MeusAtivosDAO {
   
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            //throw new RuntimeException(e);
+            JOptionPane.showMessageDialog(null, "Não foi possível buscar o item pedido", "Erro", 0);
         }
         return meus;
     }

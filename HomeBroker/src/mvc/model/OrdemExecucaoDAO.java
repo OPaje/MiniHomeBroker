@@ -192,8 +192,8 @@ public class OrdemExecucaoDAO {
                                     movimenta.novaMovimentacao("Débito", "Negociação de Ativos", ordensCompra.get(j).getValorTotal(), LocalDate.now(), LocalDate.now(), ordensCompra.get(j).getConta().getId()); // movimento conta compra
                                     movimenta.novaMovimentacao("Débito", "Negociação de Ativos", ordensCompra.get(i).getValorTotal(), LocalDate.now(), LocalDate.now(), ordensVenda.get(i).getConta().getId()); // movimento conta venda
 
-                                    ordens.exclui(ordensVenda.get(i).getId());
-                                    ordens.exclui(ordensCompra.get(j).getId()); 
+//                                    ordens.exclui(ordensVenda.get(i).getId());
+//                                    ordens.exclui(ordensCompra.get(j).getId()); 
                   
                                 }else if(ordensVenda.get(i).getQuantidade() < ordensCompra.get(j).getQuantidade()){
                                     OrdemExecucao o = new OrdemExecucao();
@@ -217,8 +217,8 @@ public class OrdemExecucaoDAO {
                                     movimenta.novaMovimentacao("Débito", "Negociação de Ativos", ordensCompra.get(i).getValorTotal(), LocalDate.now(), LocalDate.now(), ordensVenda.get(i).getConta().getId()); // movimento conta venda
 
                                     
-                                    ordens.exclui(ordensVenda.get(i).getId());
-                                    ordens.exclui(ordensCompra.get(j).getId()); 
+//                                    ordens.exclui(ordensVenda.get(i).getId());
+//                                    ordens.exclui(ordensCompra.get(j).getId()); 
 
                                 }else if(ordensVenda.get(i).getQuantidade() > ordensCompra.get(j).getQuantidade()){
                                     OrdemExecucao o = new OrdemExecucao();
@@ -241,8 +241,8 @@ public class OrdemExecucaoDAO {
                                     movimenta.novaMovimentacao("Débito", "Negociação de Ativos", ordensCompra.get(j).getValorTotal(), LocalDate.now(), LocalDate.now(), ordensCompra.get(j).getConta().getId()); // movimento conta compra
                                     movimenta.novaMovimentacao("Débito", "Negociação de Ativos", ordensCompra.get(i).getValorTotal(), LocalDate.now(), LocalDate.now(), ordensVenda.get(i).getConta().getId()); // movimento conta venda
 
-                                    ordens.exclui(ordensVenda.get(i).getId());
-                                    ordens.exclui(ordensCompra.get(j).getId());
+//                                    ordens.exclui(ordensVenda.get(i).getId());
+//                                    ordens.exclui(ordensCompra.get(j).getId());
                                 }
                             }
                         }
@@ -274,7 +274,8 @@ public class OrdemExecucaoDAO {
 
             System.out.println("Elemento inserido com sucesso.");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            //throw new RuntimeException(e);
+            JOptionPane.showMessageDialog(null, "Não foi possível adicionar", "Erro", 0);
         }
         
         return elemento;
@@ -299,8 +300,8 @@ public class OrdemExecucaoDAO {
                 LocalDate dataModificacao = currenteMod.toLocalDate();
                 long idOrdemCompra = rs.getLong("ordem_exec_ordemc");
                 long idOrdemVenda = rs.getLong("ordem_exec_ordemv");
-                long idContaCompra = rs.getLong("ordem_ccorrentec");
-                long idContaVenda = rs.getLong("ordem_ccorrentev");
+                long idContaCompra = rs.getLong("ordem_exec_ccorrentec");
+                long idContaVenda = rs.getLong("ordem_exec_ccorrentev");
 
                 
                 ContaCorrente contaCompra = contaCorrenteDAO.buscaPorId(idContaCompra);
@@ -321,7 +322,8 @@ public class OrdemExecucaoDAO {
                 ordens.add(ordem);
             }
         } catch (SQLException e) {
-             throw new RuntimeException(e);
+             //throw new RuntimeException(e);
+             JOptionPane.showMessageDialog(null, "Não foi possível trazer a lista", "Erro", 0);
         }
 
         // itera no ResultSet

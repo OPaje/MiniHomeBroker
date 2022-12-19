@@ -33,10 +33,20 @@ public class TestePaje {
         ordens = ordemDAO.lista(null);
         List<Ordem> ordensCompra = new ArrayList<>();
         MeusAtivosDAO meusAtivosDAO = new MeusAtivosDAO();
+        MeusAtivos a = new MeusAtivos();
         List<MeusAtivos> meus = meusAtivosDAO.buscaPorID(2);
         OrdemExecucaoDAO ordemExecucaoDAO = new OrdemExecucaoDAO();
         int qtdAtivos = 0;
         double dividendos;
+        
+        a.setQtdAtivos(20);
+        a.setValorPago(10);
+        a.setCotacao(10);
+        a.setTotalDinheiroAtivos(200);
+        a.setAtivo(ativoDAO.buscaPorID(9));
+        a.setConta(contaCorrenteDAO.buscaPorId(2));
+        meusAtivosDAO.adicionaMeusAtivos(a);
+        
         
         
 //        for(MeusAtivos a : meus){
@@ -49,11 +59,11 @@ public class TestePaje {
 //        dividendos = qtdAtivos * 3;   // 30% do valor do ativo
 //        System.out.println(dividendos);
         
-        try {
-            ordemExecucaoDAO.mostraUltimaNegociacao();
-        } catch (ArrayIndexOutOfBoundsException e) {
-            JOptionPane.showMessageDialog(null, "O ativo ainda não possui negociações ", "Erro", JOptionPane.INFORMATION_MESSAGE);
-        }
+//        try {
+//            ordemExecucaoDAO.mostraUltimaNegociacao();
+//        } catch (ArrayIndexOutOfBoundsException e) {
+//            JOptionPane.showMessageDialog(null, "O ativo ainda não possui negociações ", "Erro", JOptionPane.INFORMATION_MESSAGE);
+//        }
         
         //ordensCompra.add(ordens.get(0));
         

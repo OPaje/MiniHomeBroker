@@ -107,6 +107,7 @@ public class GUI {
         }while(o.getConta() == null);
         
         o.setTipoOrdem("Venda");
+        o.setEstadoOrdem(" ");
         
         do{
             String ticker = JOptionPane.showInputDialog(null, "Informe o ticker do ativo: ");
@@ -147,6 +148,7 @@ public class GUI {
         }while(o.getConta() == null);
 
         o.setTipoOrdem("Compra");
+        o.setEstadoOrdem(" ");
         
         do{
             String ticker = JOptionPane.showInputDialog(null, "Informe o ticker do ativo: ");
