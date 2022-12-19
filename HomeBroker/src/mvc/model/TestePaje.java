@@ -34,19 +34,26 @@ public class TestePaje {
         List<Ordem> ordensCompra = new ArrayList<>();
         MeusAtivosDAO meusAtivosDAO = new MeusAtivosDAO();
         List<MeusAtivos> meus = meusAtivosDAO.buscaPorID(2);
+        OrdemExecucaoDAO ordemExecucaoDAO = new OrdemExecucaoDAO();
         int qtdAtivos = 0;
         double dividendos;
         
         
-        for(MeusAtivos a : meus){
-            if(a.getAtivo().getTicker().equals("NTCO3")){
-                qtdAtivos += a.getQtdAtivos();
-            }
-        }
+//        for(MeusAtivos a : meus){
+//            if(a.getAtivo().getTicker().equals("NTCO3")){
+//                qtdAtivos += a.getQtdAtivos();
+//            }
+//        }
+//        
+//        System.out.println(qtdAtivos);
+//        dividendos = qtdAtivos * 3;   // 30% do valor do ativo
+//        System.out.println(dividendos);
         
-        System.out.println(qtdAtivos);
-        dividendos = qtdAtivos * 3;   // 30% do valor do ativo
-        System.out.println(dividendos);
+        try {
+            ordemExecucaoDAO.mostraUltimaNegociacao();
+        } catch (ArrayIndexOutOfBoundsException e) {
+            JOptionPane.showMessageDialog(null, "O ativo ainda não possui negociações ", "Erro", JOptionPane.INFORMATION_MESSAGE);
+        }
         
         //ordensCompra.add(ordens.get(0));
         

@@ -44,7 +44,7 @@ public class MeusAtivosDAO {
     }
    
      
-    public void organizaMeusAtivos(OrdemExecucaoDAO ordens){
+    public void organizaMeusAtivos(OrdemExecucaoDAO ordens) throws SQLException{
         List<OrdemExecucao> todas = ordens.lista(null);
         
         for (int i = 0; i < todas.size(); i++) {
